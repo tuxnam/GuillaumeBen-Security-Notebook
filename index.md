@@ -1,3 +1,9 @@
+---
+layout: default
+title: Guillaume's Security Notebook
+description: Guillaume Benats, Cloud Security Architect @ Microsoft
+---
+
 # Content
 ___
 
