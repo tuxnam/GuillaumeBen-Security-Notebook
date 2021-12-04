@@ -1,3 +1,8 @@
-<H1>Guillaume B. - Sharing my personal work around security when it could be of interest </H1>
+# Content
 
-Welcome to my GitHub pages where I share scripts, research or projects I do related to Security, with a focus on Azure and Microsoft products. 
+## Microsoft Sentinel
+
+1. Protect your GitLab instance(s) against threats 
+2. Analyze malicious traffic on your Azure Firewall 
+
+## IaC Templates
