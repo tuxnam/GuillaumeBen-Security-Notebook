@@ -283,30 +283,32 @@ GitLabAudit
 **Description:** This hunting query identify an unusual increase of repo deletion activities adversaries may want to disrupt availability or compromise integrity by deleting business data.
 **Parameters:** learning period, time window, thresholds
 
+~~~
  let LearningPeriod = 7d;
-  let BinTime = 1h;
-  let RunTime = 1h;
-  let StartTime = 1h;
-  let NumberOfStds = 3;
-  let MinThreshold = 10.0;
-  let EndRunTime = StartTime - RunTime;
-  let EndLearningTime = StartTime + LearningPeriod;
-  let GitLabRepositoryDestroyEvents = (GitLabAudit
-  | where RemoveAction == "project" or RemoveAction == "repository");
-  GitLabRepositoryDestroyEvents
-  | where TimeGenerated between (ago(EndLearningTime) .. ago(StartTime))
-  | summarize count() by bin(TimeGenerated, BinTime)
-  | summarize AvgInLearning = avg(count_), StdInLearning = stdev(count_)
-  | extend LearningThreshold = max_of(AvgInLearning + StdInLearning * NumberOfStds, MinThreshold)
-  | extend Dummy = 1
-  | join kind=innerunique (
-    GitLabRepositoryDestroyEvents
-    | where TimeGenerated between (ago(StartTime) .. ago(EndRunTime))
-    | summarize CountInRunTime = count() by bin(TimeGenerated, BinTime)
-    | extend Dummy = 1
-  ) on Dummy
-  | project-away Dummy
-  | where CountInRunTime > LearningThreshold
+ let BinTime = 1h;
+ let RunTime = 1h;
+ let StartTime = 1h;
+ let NumberOfStds = 3;
+ let MinThreshold = 10.0;
+ let EndRunTime = StartTime - RunTime;
+ let EndLearningTime = StartTime + LearningPeriod;
+ let GitLabRepositoryDestroyEvents = (GitLabAudit
+ | where RemoveAction == "project" or RemoveAction == "repository");
+ GitLabRepositoryDestroyEvents
+ | where TimeGenerated between (ago(EndLearningTime) .. ago(StartTime))
+ | summarize count() by bin(TimeGenerated, BinTime)
+ | summarize AvgInLearning = avg(count_), StdInLearning = stdev(count_)
+ | extend LearningThreshold = max_of(AvgInLearning + StdInLearning * NumberOfStds, MinThreshold)
+ | extend Dummy = 1
+ | join kind=innerunique (
+   GitLabRepositoryDestroyEvents
+   | where TimeGenerated between (ago(StartTime) .. ago(EndRunTime))
+   | summarize CountInRunTime = count() by bin(TimeGenerated, BinTime)
+   | extend Dummy = 1
+ ) on Dummy
+ | project-away Dummy
+ | where CountInRunTime > LearningThreshold
+~~~
 
 #### Sign-in Bursts ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_SignInBurst))
 
@@ -314,7 +316,6 @@ GitLabAudit
 **Parameters:** minimum number of different locations, GitLab application name in AAD
 
 ~~~
-
 let locationCountMin = 1;
 let appRegistrationName = "GitLab";
 SigninLogs
