@@ -9,7 +9,7 @@ description: Guillaume Benats, Cloud Security Architect @ Microsoft
 <span style="color:#145DA0;">*In the recent years, supply chain attacks have been on the rise, and software factories are often not adwqutely monitored by security teams, or not with the required focus. Next to GitHub, GitLab is one of the most commonly used source-code repository platform. Microsoft Sentinel already has some great integration (and more to come...) with GitHub platform (see this <a href="https://techcommunity.microsoft.com/t5/microsoft-sentinel-blog/protecting-your-github-assets-with-azure-sentinel/ba-p/1457721">excellent article</a>) but no existing connector for GitLab as of the time of writing.
 Inspired by the article here above and after discussions with some customers using GitLab self-hosted, my goal is to provide parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to your supply chain.*</span>
 
-### GitLab versions and required logs
+## GitLab versions and required logs
 
 This articles focuses on GitLab self-hosted Enterprise Edition (EE)(or higher SKU like Premium). Audit events are not available in the Community Edition (CE) but some of these analytics rules require only application logs or NGINX access logs and will therefore also work for CE edition. 
 
@@ -22,7 +22,7 @@ The logs used in the scope of the Microsoft Sentinel integration are:
 
 There are much more log files part of GitLab but most of the interesting security events will be captured in these three categories. 
 
-### Connecting GitLab server and ingesting logs to Sentinel
+## Connecting GitLab server and ingesting logs to Sentinel
 
 The first step is to actually ingest GitLab data into Microsoft Sentinel. We are using here the standard syslog output. GitLab logs are written into */var/log/gitlab*. 
 In order to ingest syslog data into Microsoft Sentinel, you will need to deploy the log analytics agent on the host, and connect it to the Sentinel workspace. 
@@ -32,7 +32,7 @@ All details about syslog collection [here](https://docs.microsoft.com/en-us/azur
 
 **Note:** the advantage of using syslog is that logs are ingested directly into Sentinel Syslog native table. You could also ingest GitLab logs using a custom table in the log analytics workspace behind Sentinel (*GitLab_Audit_logs_CL* for instance) but there are drawbacks conpared to using native tables (correlation and machine learning is one of them). The goal is not to cover this in this article, please refer to [official documentation](https://docs.microsoft.com/en-us/azure/sentinel/connect-data-sources).
 
-### Parsers
+## Parsers
 
 The first thing to do when GitLab logging data starts to be ingested into Sentinel, is to parse the SyslogMessage accordingly.
 I created three parsers according to the logging sources:
@@ -49,7 +49,7 @@ In a few simple steps:
 
 **Note:** In my case I used syslog Facility *local7* and *ProcessName* in ('GitLab-Audit-Logs', 'GitLab-Application-Logs', 'GitLab-Access-Logs') in the rsyslog.d configuration files for audit, application and NGINX access logs respectively. Feel free to use your own Facility or ProcessName and adapt the below parsers.
 
-##### GitLab Audit Logs parser
+#### GitLab Audit Logs parser
 
 ```
 // GitLab Enterprise Edition Audit Logs Data Parser
@@ -102,7 +102,7 @@ Syslog
   ChangeType = parsedMessage.change
 ```
 
-##### GitLab Application parser
+#### GitLab Application parser
 
 ```
 // GitLab Enterprise Edition Application Logs Data Parser
@@ -133,7 +133,7 @@ Syslog
 | project TimeGenerated, Computer, HostName, HostIP, Message = SyslogMessage
 ```
 
-##### GitLab NGINX access parser
+#### GitLab NGINX access parser
 
 ```
 // GitLab Enterprise Edition Application Logs Data Parser
@@ -166,11 +166,11 @@ Syslog
 | project TimeGenerated, EventTime, IPAddress, RequestVerb, URI, HTTPVersion, ResponseCode, BytesSent, HTTPReferer, UserAgent
 ```
 
-### Hunting Queries
+## Hunting Queries
 
 And now into the real 'meat' with the actual queries to be used for analytics rules or threat hunting for GitLab in Microsoft Sentinel.
 
-##### Identify brute-force attempts on GitLab
+#### Identify brute-force attempts on GitLab
 
 **Description:** This query relies on GitLab Application Logs to get failed logins to highlight brute-force attempts from different IP addresses in a short space of time.
 **Parameters:** learning period, time window, thresholds
@@ -202,7 +202,7 @@ GitLabFailedLogins
   | extend User, IpAddress
 ~~~
 
-##### External user added on GitLab
+#### External user added on GitLab
 
 **Description:** This queries GitLab Application logs to list external user accounts (i.e.: account not in allow-listed domains) which have been added to GitLab users. 
 **Parameters:** Allow-list of domains.
@@ -222,7 +222,7 @@ GitLabAudit
 ~~~
 
 
-##### Actions done under user impersonation
+#### Actions done under user impersonation
 
 **Description:** This queries GitLab Audit Logs for user impersonation. A malicious operator or a compromised admin account could leverage the impersonation feature of GitLab to change code or repository settings bypassing usual processes. This hunting queries allows you to track the audit actions done under impersonation. 
 **Parameters:** /
@@ -243,5 +243,117 @@ and $left.AuthorID == $right.AuthorID
 | where todatetime(ImpStartTime) < todatetime(ActionTime) and todatetime(ActionTime) > todatetime(ImpStopTime)
 ~~~
 
-##### GitLab 
+#### Local authentication without multi-factor authentication
 
+**Description:** This query checks GitLab Audit Logs to see if a user authenticated without MFA. Ot might mean that MFA was disabled for the GitLab server or that an external authentication provider was bypassed. This rule focuses on 'admin' privileges but the parameter can be adapted to also include all users.
+**Parameters:" admin or not
+
+~~~
+let isAdmin = true;
+GitLabAudit
+| where AuthenticationType == "standard" and ((isAdmin and TargetDetails contains "Administrator") or (isAdmin==false));
+~~~
+
+#### Threat Intelligence flagged IP accessing GitLab 
+
+**Description:** This query correlates Threat Intelligence data from Sentinel with GitLab NGINX Access Logs (available in GitLab CE as well) to identify access from potentially TI-flagged IPs.
+**Parameters:** /
+
+~~~
+ThreatIntelligenceIndicator
+  | where Action == true
+  // Picking up only IOCs that contain the entities we want
+  | where isnotempty(NetworkIP) or isnotempty(EmailSourceIpAddress) or isnotempty(NetworkDestinationIP) or isnotempty(NetworkSourceIP)
+  // Taking the first non-empty value based on potential IOC match availability
+  | extend TI_ipEntity = iff(isnotempty(NetworkIP), NetworkIP, NetworkDestinationIP)
+  | extend TI_ipEntity = iff(isempty(TI_ipEntity) and isnotempty(NetworkSourceIP), NetworkSourceIP, TI_ipEntity)
+  | extend TI_ipEntity = iff(isempty(TI_ipEntity) and isnotempty(EmailSourceIpAddress), EmailSourceIpAddress, TI_ipEntity)
+  | join (
+GitLabAccess) on $left.TI_ipEntity == $right.IPAddress
+ | summarize LatestIndicatorTime = arg_max(TimeGenerated, *) by IndicatorId
+ | project LatestIndicatorTime, Description, ActivityGroupNames, IndicatorId, ThreatType, Url, ExpirationDateTime, ConfidenceScore, TimeGenerated = EventTime, TI_ipEntity, IPAddress, URI
+ ~~~
+ 
+ #### Personal Access Tokens creation over time
+ 
+**Description:** This query uses GitLab Audit Logs for access tokens. Attacker can exfiltrate data from you GitLab repository after gaining access to it by generating or hijacking access tokens. This hunting queries allows you to track the personal access tokens creation or each of your repositories. The visualization allow you to quickly identify anomalies/excessive creation, to further investigate repo access & permissions.
+**Parameters:** minimum tokens created per day to consider, date to start
+
+```
+// l_min_tokens_created - minimum tokens created per repository per day to consider
+let l_min_tokens_created = 1;
+// Earliest date from GitLab Audit logs - adapt if too far away - for instance, replace by ago(30d)
+let min_t = toscalar(GitLabAudit
+| summarize min(TimeGenerated));
+// Most recent date from GitLab Audit logs 
+let max_t = toscalar(GitLabAudit
+| summarize max(TimeGenerated));
+// Graph Interval
+let interval = 1d;
+GitLabAudit
+| where TargetType == "PersonalAccessToken"
+| project Severity, EventDay = bin(todatetime(EventTime),1d), AuthorName, IPAddress, Repository = tostring(EntityPath), Action, TargetType
+| summarize sumTokens = count() by Repository, EventDay
+| where sumTokens > l_min_tokens_created
+| make-series num=sum(sumTokens) default=0 on EventDay in range(ago(30d), now(), interval) by Repository
+| extend (anomalies, score, baseline) = series_decompose_anomalies(num, 1.5, -1, 'linefit')
+| render timechart
+```
+
+#### Repository visbility changed to Public
+
+**Description:** This query leverages GitLab Audit Logs. A repository in GitLab changed visibility from Private or Internal to Public which could indicate compromise, error or misconfiguration leading to exposing the repository to the public.
+**Parameters:** /
+
+~~~
+GitLabAudit
+| where SourceVisibility == "Public" and ChangeType == "visibility" and TargetVisibility != "Public"
+| project EventTime, IPAddress, AuthorName, ChangeType, TargetType, SourceVisibility,  TargetVisibility, EntityPath
+~~~
+
+#### Unusual number of repositories deleted
+
+**Description:** This hunting queries identify an unusual increase of repo deletion activities adversaries may want to disrupt availability or compromise integrity by deleting business data.
+**Parameters:** learning period, time window, thresholds
+
+ let LearningPeriod = 7d;
+  let BinTime = 1h;
+  let RunTime = 1h;
+  let StartTime = 1h;
+  let NumberOfStds = 3;
+  let MinThreshold = 10.0;
+  let EndRunTime = StartTime - RunTime;
+  let EndLearningTime = StartTime + LearningPeriod;
+  let GitLabRepositoryDestroyEvents = (GitLabAudit
+  | where RemoveAction == "project" or RemoveAction == "repository");
+  GitLabRepositoryDestroyEvents
+  | where TimeGenerated between (ago(EndLearningTime) .. ago(StartTime))
+  | summarize count() by bin(TimeGenerated, BinTime)
+  | summarize AvgInLearning = avg(count_), StdInLearning = stdev(count_)
+  | extend LearningThreshold = max_of(AvgInLearning + StdInLearning * NumberOfStds, MinThreshold)
+  | extend Dummy = 1
+  | join kind=innerunique (
+    GitLabRepositoryDestroyEvents
+    | where TimeGenerated between (ago(StartTime) .. ago(EndRunTime))
+    | summarize CountInRunTime = count() by bin(TimeGenerated, BinTime)
+    | extend Dummy = 1
+  ) on Dummy
+  | project-away Dummy
+  | where CountInRunTime > LearningThreshold
+
+#### Sign-in Bursts
+
+**Description:** This query relies on Azure Active Directory sign-in activity when Azure AD is used for SSO with GitLab to highlights GitLab accounts associated with multiple authentications from different geographical locations in a short space of time.
+**Parameters:** minimum number of different locations, GitLab application name in AAD
+
+~~~
+
+let locationCountMin = 1;
+let appRegistrationName = "GitLab";
+SigninLogs
+| where AppDisplayName == appRegistrationName
+| where ResultType == 0
+| where Location != ""
+| summarize CountOfLocations = dcount(Location), Locations = make_set(Location) by User = Identity
+| where CountOfLocations > locationCountMin
+~~~
