@@ -7,12 +7,13 @@ description: Guillaume Benats, Cloud Security Architect @ Microsoft
 # Monitoring threats to your GitLab environment using Microsoft Sentinel
 
 <img src="images/GitLab-Sentinel.png" style="float: left;margin: 5px;width: 25%;height: auto;" alt="Monitor GitLab using Sentinel" />
-<p style="color:#145DA0;text-align: justify;">In the recent years, supply chain attacks have been on the rise, and software factories are often not adwqutely monitored by security teams, or not with the required focus. Next to GitHub, GitLab is one of the most commonly used source-code repository platform. Microsoft Sentinel already has some great integration (and more to come...) with GitHub platform (see this <a href="https://techcommunity.microsoft.com/t5/microsoft-sentinel-blog/protecting-your-github-assets-with-azure-sentinel/ba-p/1457721">excellent article</a>) but no existing connector for GitLab as of the time of writing.
-Inspired by the article here above and after discussions with some customers using GitLab self-hosted, my goal is to provide parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to your supply chain.*</p>
+<p style="color:#145DA0;text-align: justify;">In the recent years, supply chain attacks have been on the rise, and software factories are often not adequtely monitored by security teams, or not with the required focus. Next to GitHub, GitLab is one of the most commonly used DevOps and source-code repository platform. <br />
+Microsoft Sentinel already has some great integration (and more to come...) with GitHub platform (see this <a href="https://techcommunity.microsoft.com/t5/microsoft-sentinel-blog/protecting-your-github-assets-with-azure-sentinel/ba-p/1457721">excellent article</a>) but no existing connector for GitLab as of the time of writing. <br />
+Inspired by the article on GitHub and Sentinel and following discussions with some customers using GitLab themselves, I wrote parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to GitLab environment.</p>
 
 ## GitLab versions and required logs
 
-This articles focuses on GitLab self-hosted Enterprise Edition (EE)(or higher SKU like Premium). Audit events are not available in the Community Edition (CE) but some of these analytics rules require only application logs or NGINX access logs and will therefore also work for CE edition. 
+This articles focuses on GitLab self-hosted Enterprise Edition (EE)(or higher SKU like Premium). Audit events are not available in the Community Edition (CE) but some of these analytics rules require only application logs or NGINX access logs and should therefore also work for CE edition. 
 
 More details on logging system in GitLab: https://docs.gitlab.com/ee/administration/logs.html
 
