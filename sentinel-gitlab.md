@@ -42,7 +42,7 @@ local7.=alert;local7.=crit;local7.=debug;local7.=emerg;local7.=err;local7.=info;
 ~~~
 <br />
 This article does not intend to deep-dive into syslog configuration or logs ingestion into Sentinel, all details about syslog collection [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-syslog).<br /><br />
-**Note:** the advantage of using syslog is that logs are ingested directly into Sentinel Syslog native table. You could also ingest GitLab logs using a custom table in the log analytics workspace behind Sentinel (*GitLab_Audit_logs_CL* for instance) but there are drawbacks conpared to using native tables (correlation and machine learning is one of them). The goal is not to cover this in this article, please refer to [official documentation](https://docs.microsoft.com/en-us/azure/sentinel/connect-data-sources).
+**Note:** the advantage of using syslog is that logs are ingested directly into Sentinel *Syslog* native table. You could also ingest GitLab logs using a custom table in the log analytics workspace behind Sentinel (*GitLab_Audit_logs_CL* for instance) but there are drawbacks compared to using native tables (correlation in fusion rules is one of them). The goal is not to cover this in this article, please refer to [official documentation](https://docs.microsoft.com/en-us/azure/sentinel/connect-data-sources).
 
 **Note 2:** usually, in a corporate environment, you would use a syslog server and forward GitLab logs to it. The principle is the same, except that the ingestion should then happen from the syslog server and not GitLab host. 
 
