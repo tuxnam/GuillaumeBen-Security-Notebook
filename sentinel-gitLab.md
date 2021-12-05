@@ -42,6 +42,13 @@ I created three parsers according to the logging sources:
 
 The goal of these parsers is to register them as *functions* (see [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-azure-functions-template?tabs=ARM)) in your Sentinel environment to then use them seamlessly as data sources in your hunting queries without having to parse again each time manually. 
 
+In a few simple steps:
+- Copy the below parsers code 
+- Go into Sentinel *Logs* tab and paste it in the query area
+- Click 'Save As Function' and name it  according to the comments in the parser's code (example: GitLabAudit)
+
+**Note:** In my case I used syslog Facility *local7* and *ProcessName* in ('GitLab-Audit-Logs', 'GitLab-Application-Logs', 'GitLab-Access-Logs') in the rsyslog.d configuration files for audit, application and NGINX access logs respectively. Feel free to use your own Facility or ProcessName and adapt the below parsers.
+
 ##### GitLab Audit Logs parser
 
 ```
@@ -69,7 +76,7 @@ The goal of these parsers is to register them as *functions* (see [here](https:/
 
 Syslog
 | where Facility == 'local7'
-| where ProcessName contains 'audit'
+| where ProcessName contains 'HitLab-Audit-Logs'
 | extend parsedMessage = parse_json(SyslogMessage)
 | project TimeGenerated, 
   Severity = parsedMessage.severity,
