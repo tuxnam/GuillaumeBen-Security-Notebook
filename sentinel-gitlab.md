@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Guillaume's Security Notebook
-description: Guillaume Benats, Cloud Security Architect @ Microsoft
+description: Guillaume B., Cloud Security Architect
 ---
 
 # Monitoring threats to your GitLab environment using Microsoft Sentinel
