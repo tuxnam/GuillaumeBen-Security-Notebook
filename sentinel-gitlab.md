@@ -9,7 +9,8 @@ description: Guillaume Benats, Cloud Security Architect @ Microsoft
 <img src="images/GitLab-Sentinel.png" style="float: left;margin: 5px;width: 25%;height: auto;" alt="Monitor GitLab using Sentinel" />
 <p style="color:#145DA0;text-align: justify;">In the recent years, supply chain attacks have been on the rise, and software factories are often not adequately monitored by security teams, or not with the required focus. Next to GitHub, GitLab is one of the most commonly used DevOps and source-code repository platform. <br />
 Microsoft Sentinel already has some great integration (and more to come...) with GitHub platform (see this <a href="https://techcommunity.microsoft.com/t5/microsoft-sentinel-blog/protecting-your-github-assets-with-azure-sentinel/ba-p/1457721">excellent article</a>) but no existing connector for GitLab as of the time of writing. <br />
-Inspired by the article on GitHub and Sentinel and following discussions with some customers using GitLab themselves, I wrote parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to GitLab environment.</p>
+Inspired by the article on GitHub and Sentinel and following discussions with some customers using GitLab themselves, I wrote parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to GitLab environment.
+These queries are just a few and much more could be build out of GitLab logs, feel free to adapt or extend based on your own needs.</p>
 
 ## GitLab versions and required logs
 
