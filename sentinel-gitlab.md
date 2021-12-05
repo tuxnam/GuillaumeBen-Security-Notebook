@@ -171,7 +171,7 @@ GitLabFailedLogins
 
 #### External user added on GitLab ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_ExternalUser))
 
-**Description:** This queries GitLab Application logs to list external user accounts (i.e.: account not in allow-listed domains) which have been added to GitLab users.<br />
+**Description:** This query relies on GitLab Application logs to list external user accounts (i.e.: account not in allow-listed domains) which have been added to GitLab users.<br />
 **Parameters:** Allow-list of domains.
 
 ~~~
@@ -191,7 +191,7 @@ GitLabAudit
 
 #### Actions done under user impersonation ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_Impersonation))
 
-**Description:** This queries GitLab Audit Logs for user impersonation. A malicious operator or a compromised admin account could leverage the impersonation feature of GitLab to change code or repository settings bypassing usual processes. This hunting queries allows you to track the audit actions done under impersonation. <br />
+**Description:** This query relies on GitLab Audit Logs for user impersonation. A malicious operator or a compromised admin account could leverage the impersonation feature of GitLab to change code or repository settings bypassing usual processes. This hunting queries allows you to track the audit actions done under impersonation. <br />
 **Parameters:** /
 
 ~~~
@@ -280,7 +280,7 @@ GitLabAudit
 
 #### Unusual number of repositories deleted ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_Repo_Deletion))
 
-**Description:** This hunting queries identify an unusual increase of repo deletion activities adversaries may want to disrupt availability or compromise integrity by deleting business data.
+**Description:** This hunting query identify an unusual increase of repo deletion activities adversaries may want to disrupt availability or compromise integrity by deleting business data.
 **Parameters:** learning period, time window, thresholds
 
  let LearningPeriod = 7d;
