@@ -229,7 +229,7 @@ GitLabAccess) on $left.TI_ipEntity == $right.IPAddress
  | project LatestIndicatorTime, Description, ActivityGroupNames, IndicatorId, ThreatType, Url, ExpirationDateTime, ConfidenceScore, TimeGenerated = EventTime, TI_ipEntity, IPAddress, URI
  ~~~
  
- #### Personal Access Tokens creation over time ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_PAT_Repo))
+#### Personal Access Tokens creation over time ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_PAT_Repo))
  
 **Description:** This query uses GitLab Audit Logs for access tokens. Attacker can exfiltrate data from you GitLab repository after gaining access to it by generating or hijacking access tokens. This hunting queries allows you to track the personal access tokens creation or each of your repositories. The visualization allow you to quickly identify anomalies/excessive creation, to further investigate repo access & permissions.<br />
 **Parameters:** minimum tokens created per day to consider, date to start
