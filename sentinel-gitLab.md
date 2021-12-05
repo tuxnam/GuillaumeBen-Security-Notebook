@@ -165,3 +165,83 @@ Syslog
 | parse SyslogMessage with IPAddress " - - [" EventTime "] \"" RequestVerb " " URI " " HTTPVersion "\"" ResponseCode " " BytesSent "\"" HTTPReferer "\" \"" UserAgent
 | project TimeGenerated, EventTime, IPAddress, RequestVerb, URI, HTTPVersion, ResponseCode, BytesSent, HTTPReferer, UserAgent
 ```
+
+### Hunting Queries
+
+And now into the real 'meat' with the actual queries to be used for analytics rules or threat hunting for GitLab in Microsoft Sentinel.
+
+##### Identify brute-force attempts on GitLab
+
+**Description:** This query relies on GitLab Application Logs to get failed logins to highlight brute-force attempts from different IP addresses in a short space of time.
+**Parameters:** learning period, time window, thresholds
+
+~~~
+let LearningPeriod = 7d; 
+let BinTime = 1h; 
+let RunTime = 1h; 
+let StartTime = 1h; 
+let NumberOfStds = 3; 
+let MinThreshold = 10.0; 
+let EndRunTime = StartTime - RunTime; 
+let EndLearningTime = StartTime + LearningPeriod;
+let GitLabFailedLogins = (GitLabApp
+| where Message contains "Failed Login"
+| parse kind=regex Message with EventTime ": Failed Login: username=" Username "ip=" IpAddress 
+| project TimeGenerated, EventTime, Username, IpAddress);
+GitLabFailedLogins 
+  | where todatetime(EventTime) between (ago(EndLearningTime) .. ago(StartTime)) 
+  | summarize FailedLoginsCountInBinTime = count() by User = Username, bin(todatetime(EventTime), BinTime) 
+  | summarize AvgOfFailedLoginsInLearning = avg(FailedLoginsCountInBinTime), StdOfFailedLoginsInLearning = stdev(FailedLoginsCountInBinTime) by User 
+  | extend LearningThreshold = max_of(AvgOfFailedLoginsInLearning + StdOfFailedLoginsInLearning * NumberOfStds, MinThreshold) 
+  | join kind=innerunique ( 
+    GitLabFailedLogins 
+    | where todatetime(EventTime) between (ago(StartTime) .. ago(EndRunTime)) 
+    | summarize FailedLoginsCountInRunTime = count() by User = Username, IpAddress 
+  ) on User 
+  | where FailedLoginsCountInRunTime > LearningThreshold
+  | extend User, IpAddress
+~~~
+
+##### External user added on GitLab
+
+**Description:** This queries GitLab Application logs to list external user accounts (i.e.: account not in allow-listed domains) which have been added to GitLab users. 
+**Parameters:** Allow-list of domains.
+
+~~~
+// List of allow-listed domains
+let allowedDomain = pack_array("mydomain.com");
+GitLabAudit
+| where AddAction == "user"
+| project AuthorName, IPAddress, UserAdded = Entity_path
+| join (GitLabApp 
+| where Message contains "User" and Message contains " was created" 
+| parse kind=regex Message with EventTime ": User \"" Username "\"" EmailAddress " was created"
+| project UserAdded = tostring(Username), EmailAddress = substring(EmailAddress,2,strlen(EmailAddress)-3)) on UserAdded
+| project  AuthorName, IPAddress, UserAdded, EmailAddress, DomainName = tostring(extract("@(.*)$", 1, EmailAddress))
+| where allowedDomain !contains DomainName
+~~~
+
+
+##### Actions done under user impersonation
+
+**Description:** This queries GitLab Audit Logs for user impersonation. A malicious operator or a compromised admin account could leverage the impersonation feature of GitLab to change code or repository settings bypassing usual processes. This hunting queries allows you to track the audit actions done under impersonation. 
+**Parameters:** /
+
+~~~
+let impersonationStart = (GitLabAudit
+| where CustomMessage == 'Started Impersonation'
+| extend AuthorID = tostring(AuthorID), TargetID = tostring(AuthorID));
+let impersonationStop = (GitLabAudit
+| where CustomMessage == 'Stopped Impersonation'
+| extend AuthorID = tostring(AuthorID), TargetID = tostring(AuthorID));
+impersonationStart
+| join kind=inner impersonationStop on $left.TargetID == $right.TargetID
+and $left.AuthorID == $right.AuthorID 
+| where todatetime(EventTime1) > todatetime(EventTime)
+| extend AuthorID, AuthorName, TargetID, TargetDetails = tostring(TargetDetails), IPStart = IPAddress, IPStop = IPAddress1, ImpStartTime = EventTime, ImpStopTime = EventTime1, EntityPath
+| join kind=inner (GitLabAudit | extend ActionTime = EventTime, AuthorName = tostring(AuthorName)) on $left.TargetDetails == $right.AuthorName 
+| where todatetime(ImpStartTime) < todatetime(ActionTime) and todatetime(ActionTime) > todatetime(ImpStopTime)
+~~~
+
+##### GitLab 
+
