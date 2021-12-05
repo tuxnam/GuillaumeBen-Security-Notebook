@@ -26,30 +26,32 @@ There are much more log files part of GitLab but most of the interesting securit
 
 The first step is to actually ingest GitLab data into Microsoft Sentinel. We are using here the standard syslog output. GitLab logs are written into */var/log/gitlab*. 
 In order to ingest syslog data into Microsoft Sentinel, you will need to deploy the log analytics agent on the host, and connect it to the Sentinel workspace. 
-On the host itself, you need to define syslog configuration files for GitLab audit, application and NGINX access logs, in regular /etc/rsyslod.d/, along with the syslog facility you want to use (i.e: local1, local2, local7, syslog...) (samples can be found in the [corresponding GitHub repository](test)). Once this is done, you just need to instruct the agent to collect the specific facility of syslog messages on your system (local7 in our case). <br />
+On the host itself, you need to define syslog configuration files for GitLab audit, application and NGINX access logs, in regular /etc/rsyslod.d/, along with the syslog facility you want to use (i.e: local1, local2, local7, syslog...) (samples can be found in the [corresponding GitHub repository](https://github.com/tuxnam/Sentinel-Development/tree/main/Syslog/GitLab)). Once this is done, you just need to instruct the agent to collect the specific facility of syslog messages on your system (local7 in our case). <br />
 The agent will in fact create a collection configuration file in the sane /etc/rsyslog.d/ repository, to instruct the agent to ingest logs of the selected facility.
 All details about syslog collection [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-syslog).
 
 **Note:** the advantage of using syslog is that logs are ingested directly into Sentinel Syslog native table. You could also ingest GitLab logs using a custom table in the log analytics workspace behind Sentinel (*GitLab_Audit_logs_CL* for instance) but there are drawbacks conpared to using native tables (correlation and machine learning is one of them). The goal is not to cover this in this article, please refer to [official documentation](https://docs.microsoft.com/en-us/azure/sentinel/connect-data-sources).
 
+**Note 2:** usually, in a corporate environment, you would use a syslog server and forward GitLab logs to it. The principle is the same, except that the ingestion should then happen from the syslog server and not GitLab host. 
+
 ## Parsers
 
 The first thing to do when GitLab logging data starts to be ingested into Sentinel, is to parse the SyslogMessage accordingly.
 I created three parsers according to the logging sources:
-- One parser for GitLab NGINX access logs
-- One parser for GitLab audit logs
-- One parser for GitLab application logs
+- [One parser for GitLab NGINX access logs](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_Access)
+- [One parser for GitLab audit logs](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_AuditLogs)
+- [One parser for GitLab application logs](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_AppLog)
 
 The goal of these parsers is to register them as *functions* (see [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-azure-functions-template?tabs=ARM)) in your Sentinel environment to then use them seamlessly as data sources in your hunting queries without having to parse again each time manually. 
 
 In a few simple steps:
-- Copy the below parsers code 
+- Copy the below parsers code (or from the GitHub repository directly)
 - Go into Sentinel *Logs* tab and paste it in the query area
 - Click 'Save As Function' and name it  according to the comments in the parser's code (example: GitLabAudit)
 
 **Note:** In my case I used syslog Facility *local7* and *ProcessName* in ('GitLab-Audit-Logs', 'GitLab-Application-Logs', 'GitLab-Access-Logs') in the rsyslog.d configuration files for audit, application and NGINX access logs respectively. Feel free to use your own Facility or ProcessName and adapt the below parsers.
 
-#### GitLab Audit Logs parser
+#### GitLab Audit Logs parser ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_AuditLogs))
 
 ```
 // GitLab Enterprise Edition Audit Logs Data Parser
@@ -102,7 +104,7 @@ Syslog
   ChangeType = parsedMessage.change
 ```
 
-#### GitLab Application parser
+#### GitLab Application parser ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_AppLog))
 
 ```
 // GitLab Enterprise Edition Application Logs Data Parser
@@ -112,7 +114,7 @@ Syslog
 // It is assumed that the syslog data connector to ingest GitLab application entry data into Sentinel is enabled
 //
 // Parser Notes:
-// 1. This parser assumes logs are collected into native Syslog table, including application logs
+// 1. This parser assumes logs arhttps://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_Accesse collected into native Syslog table, including application logs
 // 2. This parser assuments that GitLab syslog configuration is leveraging 'ProcessName' and 'Facility' to categorize syslog events
 //    Example: ProcessName for audit logs would be (adapt according to your own configuration) "GitLab-App-Logs" and the Facility is "local7"
 //
@@ -133,7 +135,7 @@ Syslog
 | project TimeGenerated, Computer, HostName, HostIP, Message = SyslogMessage
 ```
 
-#### GitLab NGINX access parser
+#### GitLab NGINX access parser ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_Access))
 
 ```
 // GitLab Enterprise Edition Application Logs Data Parser
@@ -170,9 +172,9 @@ Syslog
 
 And now into the real 'meat' with the actual queries to be used for analytics rules or threat hunting for GitLab in Microsoft Sentinel.
 
-#### Identify brute-force attempts on GitLab
+#### Identify brute-force attempts on GitLab ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_BruteForce))
 
-**Description:** This query relies on GitLab Application Logs to get failed logins to highlight brute-force attempts from different IP addresses in a short space of time.
+**Description:** This query relies on GitLab Application Logs to get failed logins to highlight brute-force attempts from different IP addresses in a short space of time.<br />
 **Parameters:** learning period, time window, thresholds
 
 ~~~
@@ -204,7 +206,7 @@ GitLabFailedLogins
 
 #### External user added on GitLab
 
-**Description:** This queries GitLab Application logs to list external user accounts (i.e.: account not in allow-listed domains) which have been added to GitLab users. 
+**Description:** This queries GitLab Application logs to list external user accounts (i.e.: account not in allow-listed domains) which have been added to GitLab users.<br />
 **Parameters:** Allow-list of domains.
 
 ~~~
@@ -224,7 +226,7 @@ GitLabAudit
 
 #### Actions done under user impersonation
 
-**Description:** This queries GitLab Audit Logs for user impersonation. A malicious operator or a compromised admin account could leverage the impersonation feature of GitLab to change code or repository settings bypassing usual processes. This hunting queries allows you to track the audit actions done under impersonation. 
+**Description:** This queries GitLab Audit Logs for user impersonation. A malicious operator or a compromised admin account could leverage the impersonation feature of GitLab to change code or repository settings bypassing usual processes. This hunting queries allows you to track the audit actions done under impersonation. <br />
 **Parameters:** /
 
 ~~~
@@ -245,7 +247,7 @@ and $left.AuthorID == $right.AuthorID
 
 #### Local authentication without multi-factor authentication
 
-**Description:** This query checks GitLab Audit Logs to see if a user authenticated without MFA. Ot might mean that MFA was disabled for the GitLab server or that an external authentication provider was bypassed. This rule focuses on 'admin' privileges but the parameter can be adapted to also include all users.
+**Description:** This query checks GitLab Audit Logs to see if a user authenticated without MFA. Ot might mean that MFA was disabled for the GitLab server or that an external authentication provider was bypassed. This rule focuses on 'admin' privileges but the parameter can be adapted to also include all users.<br />
 **Parameters:" admin or not
 
 ~~~
@@ -256,7 +258,7 @@ GitLabAudit
 
 #### Threat Intelligence flagged IP accessing GitLab 
 
-**Description:** This query correlates Threat Intelligence data from Sentinel with GitLab NGINX Access Logs (available in GitLab CE as well) to identify access from potentially TI-flagged IPs.
+**Description:** This query correlates Threat Intelligence data from Sentinel with GitLab NGINX Access Logs (available in GitLab CE as well) to identify access from potentially TI-flagged IPs.<br />
 **Parameters:** /
 
 ~~~
@@ -276,7 +278,7 @@ GitLabAccess) on $left.TI_ipEntity == $right.IPAddress
  
  #### Personal Access Tokens creation over time
  
-**Description:** This query uses GitLab Audit Logs for access tokens. Attacker can exfiltrate data from you GitLab repository after gaining access to it by generating or hijacking access tokens. This hunting queries allows you to track the personal access tokens creation or each of your repositories. The visualization allow you to quickly identify anomalies/excessive creation, to further investigate repo access & permissions.
+**Description:** This query uses GitLab Audit Logs for access tokens. Attacker can exfiltrate data from you GitLab repository after gaining access to it by generating or hijacking access tokens. This hunting queries allows you to track the personal access tokens creation or each of your repositories. The visualization allow you to quickly identify anomalies/excessive creation, to further investigate repo access & permissions.<br />
 **Parameters:** minimum tokens created per day to consider, date to start
 
 ```
@@ -302,7 +304,7 @@ GitLabAudit
 
 #### Repository visbility changed to Public
 
-**Description:** This query leverages GitLab Audit Logs. A repository in GitLab changed visibility from Private or Internal to Public which could indicate compromise, error or misconfiguration leading to exposing the repository to the public.
+**Description:** This query leverages GitLab Audit Logs. A repository in GitLab changed visibility from Private or Internal to Public which could indicate compromise, error or misconfiguration leading to exposing the repository to the public.<br />
 **Parameters:** /
 
 ~~~
@@ -343,7 +345,7 @@ GitLabAudit
 
 #### Sign-in Bursts
 
-**Description:** This query relies on Azure Active Directory sign-in activity when Azure AD is used for SSO with GitLab to highlights GitLab accounts associated with multiple authentications from different geographical locations in a short space of time.
+**Description:** This query relies on Azure Active Directory sign-in activity when Azure AD is used for SSO with GitLab to highlights GitLab accounts associated with multiple authentications from different geographical locations in a short space of time.<br />
 **Parameters:** minimum number of different locations, GitLab application name in AAD
 
 ~~~
