@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Guillaume's Security Notebook
-description: Guillaume, Cloud Security Architect @ Microsoft
+description: Guillaume B., Cloud Security Architect @ Microsoft
 ---
 
 # Content
