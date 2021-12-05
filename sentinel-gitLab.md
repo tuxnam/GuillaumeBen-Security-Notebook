@@ -45,40 +45,25 @@ I created three parsers according to the logging sources:
 The goal of these parsers is to register them as *functions* (see [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-azure-functions-template?tabs=ARM)) in your Sentinel environment to then use them seamlessly as data sources in your hunting queries without having to parse again each time manually. 
 
 In a few simple steps:
-- Copy the below parsers code (or from the GitHub repository directly)
-- Go into Sentinel *Logs* tab and paste it in the query area
-- Click 'Save As Function' and name it  according to the comments in the parser's code (example: GitLabAudit)
+Paste below parser queries in log analytics, click on Save button and select as Function from drop down by specifying function name and alias. 
+To work with analytics rules built next to this parser, these functions should be given the alias of GitLabAudit, GitLabApplication and GitLabAccess respectively.
+Functions usually takes a few minutes to activate. You can then use function alias from any other queries (e.g. GitLabAudit | take 10).
+Feel free to rename them and adapt the name in the hunting queries below in this article.
 
 **Note:** In my case I used syslog Facility *local7* and *ProcessName* in ('GitLab-Audit-Logs', 'GitLab-Application-Logs', 'GitLab-Access-Logs') in the rsyslog.d configuration files for audit, application and NGINX access logs respectively. Feel free to use your own Facility or ProcessName and adapt the below parsers.
 
 #### GitLab Audit Logs parser ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_AuditLogs))
 
+**Description:** This parser parses GitLab audit logs (audit_json.log) to extract the infromation required for all audit queries on GitLab. 
+
 ```
 // GitLab Enterprise Edition Audit Logs Data Parser
-// Last Updated Date: Nov 30, 2021
-//
-// This parser parses GitLab standalone Enterprise Edition audit logs extract the infromation required for all audit queries on GitLab. 
-// It is assumed that the syslog data connector to ingest GitLab audit entry data into Sentinel is enabled
-//
-// Parser Notes:
-// 1. This parser assumes logs are collected into native Syslog table, including audit_json logs
-// 2. This parser assuments that GitLab syslog configuration is leveraging 'ProcessName' and 'Facility' to categorize syslog events
-//    Example: ProcessName for audit logs would be (adapt according to your own configuration) "GitLab-Audit-Logs" and the Facility is "local7"
-//
-// Usage Instruction : 
-// Paste below query in log analytics, click on Save button and select as Function from drop down by specifying function name and alias. 
-// To work with analytics rules built next to this parser, this Function should be given the alias of GitLabAudit.
-// Functions usually takes 10-15 minutes to activate. You can then use function alias from any other queries (e.g. GitLabAudit | take 10).
-//
-// References : 
-// Using functions in Azure monitor log queries : https://docs.microsoft.com/azure/azure-monitor/log-query/functions
-// Tech Community Blog on KQL Functions : https://techcommunity.microsoft.com/t5/Azure-Sentinel/Using-KQL-functions-to-speed-up-analysis-in-Azure-Sentinel/ba-p/712381
-// Understanding GitLab logging: https://docs.gitlab.com/ee/administration/logs.html
+// Last Updated Date: Dec 3, 2021
 //
 
 Syslog
 | where Facility == 'local7'
-| where ProcessName contains 'HitLab-Audit-Logs'
+| where ProcessName contains 'GitLab-Audit-Logs'
 | extend parsedMessage = parse_json(SyslogMessage)
 | project TimeGenerated, 
   Severity = parsedMessage.severity,
@@ -106,27 +91,11 @@ Syslog
 
 #### GitLab Application parser ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_AppLog))
 
+**Description:** This parser parses GitLab application logs (application.log) to extract the infromation required for all application events queries on GitLab. 
+
 ```
 // GitLab Enterprise Edition Application Logs Data Parser
-// Last Updated Date: Nov 30, 2021
-//
-// This parser parses GitLab standalone Enterprise Edition application logs extract the infromation required for audit queries on GitLab. 
-// It is assumed that the syslog data connector to ingest GitLab application entry data into Sentinel is enabled
-//
-// Parser Notes:
-// 1. This parser assumes logs arhttps://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_Accesse collected into native Syslog table, including application logs
-// 2. This parser assuments that GitLab syslog configuration is leveraging 'ProcessName' and 'Facility' to categorize syslog events
-//    Example: ProcessName for audit logs would be (adapt according to your own configuration) "GitLab-App-Logs" and the Facility is "local7"
-//
-// Usage Instruction : 
-// Paste below query in log analytics, click on Save button and select as Function from drop down by specifying function name and alias. 
-// To work with analytics rules built next to this parser, this Function should be given the alias of GitLabApp.
-// Functions usually takes 10-15 minutes to activate. You can then use function alias from any other queries (e.g. GitLabApp | take 10).
-//
-// References : 
-// Using functions in Azure monitor log queries : https://docs.microsoft.com/azure/azure-monitor/log-query/functions
-// Tech Community Blog on KQL Functions : https://techcommunity.microsoft.com/t5/Azure-Sentinel/Using-KQL-functions-to-speed-up-analysis-in-Azure-Sentinel/ba-p/712381
-// Understanding GitLab logging: https://docs.gitlab.com/ee/administration/logs.html
+// Last Updated Date: Dec 3, 2021
 //
 
 Syslog
@@ -137,27 +106,11 @@ Syslog
 
 #### GitLab NGINX access parser ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_Access))
 
+**Description:** This parser parses GitLab NGINX access logs (access.log) to extract the infromation required for all requests landing on GitLab server. 
+
 ```
 // GitLab Enterprise Edition Application Logs Data Parser
-// Last Updated Date: Nov 30, 2021
-//
-// This parser parses GitLab standalone Enterprise Edition application logs extract the infromation required for NGINX access logs on GitLab. 
-// It is assumed that the syslog data connector to ingest GitLab application entry data into Sentinel is enabled
-//
-// Parser Notes:
-// 1. This parser assumes logs are collected into native Syslog table, including application logs
-// 2. This parser assuments that GitLab syslog configuration is leveraging 'ProcessName' and 'Facility' to categorize syslog events
-//    Example: ProcessName for audit logs would be (adapt according to your own configuration) "GitLab-Access-Logs" and the Facility is "local7"
-//
-// Usage Instruction : 
-// Paste below query in log analytics, click on Save button and select as Function from drop down by specifying function name and alias. 
-// To work with analytics rules built next to this parser, this Function should be given the alias of GitLabAccess.
-// Functions usually takes 10-15 minutes to activate. You can then use function alias from any other queries (e.g. GitLabAccess | take 10).
-//
-// References : 
-// Using functions in Azure monitor log queries : https://docs.microsoft.com/azure/azure-monitor/log-query/functions
-// Tech Community Blog on KQL Functions : https://techcommunity.microsoft.com/t5/Azure-Sentinel/Using-KQL-functions-to-speed-up-analysis-in-Azure-Sentinel/ba-p/712381
-// Understanding GitLab logging: https://docs.gitlab.com/ee/administration/logs.html
+// Last Updated Date: Dec 3, 2021
 //
 
 Syslog
@@ -204,7 +157,7 @@ GitLabFailedLogins
   | extend User, IpAddress
 ~~~
 
-#### External user added on GitLab
+#### External user added on GitLab ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_ExternalUser))
 
 **Description:** This queries GitLab Application logs to list external user accounts (i.e.: account not in allow-listed domains) which have been added to GitLab users.<br />
 **Parameters:** Allow-list of domains.
@@ -224,7 +177,7 @@ GitLabAudit
 ~~~
 
 
-#### Actions done under user impersonation
+#### Actions done under user impersonation ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_Impersonation))
 
 **Description:** This queries GitLab Audit Logs for user impersonation. A malicious operator or a compromised admin account could leverage the impersonation feature of GitLab to change code or repository settings bypassing usual processes. This hunting queries allows you to track the audit actions done under impersonation. <br />
 **Parameters:** /
@@ -245,7 +198,7 @@ and $left.AuthorID == $right.AuthorID
 | where todatetime(ImpStartTime) < todatetime(ActionTime) and todatetime(ActionTime) > todatetime(ImpStopTime)
 ~~~
 
-#### Local authentication without multi-factor authentication
+#### Local authentication without multi-factor authentication ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_LocalAuthNoMFA))
 
 **Description:** This query checks GitLab Audit Logs to see if a user authenticated without MFA. Ot might mean that MFA was disabled for the GitLab server or that an external authentication provider was bypassed. This rule focuses on 'admin' privileges but the parameter can be adapted to also include all users.<br />
 **Parameters:" admin or not
@@ -256,7 +209,7 @@ GitLabAudit
 | where AuthenticationType == "standard" and ((isAdmin and TargetDetails contains "Administrator") or (isAdmin==false));
 ~~~
 
-#### Threat Intelligence flagged IP accessing GitLab 
+#### Threat Intelligence flagged IP accessing GitLab ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_MaliciousIP.yaml))
 
 **Description:** This query correlates Threat Intelligence data from Sentinel with GitLab NGINX Access Logs (available in GitLab CE as well) to identify access from potentially TI-flagged IPs.<br />
 **Parameters:** /
@@ -276,7 +229,7 @@ GitLabAccess) on $left.TI_ipEntity == $right.IPAddress
  | project LatestIndicatorTime, Description, ActivityGroupNames, IndicatorId, ThreatType, Url, ExpirationDateTime, ConfidenceScore, TimeGenerated = EventTime, TI_ipEntity, IPAddress, URI
  ~~~
  
- #### Personal Access Tokens creation over time
+ #### Personal Access Tokens creation over time ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_PAT_Repo))
  
 **Description:** This query uses GitLab Audit Logs for access tokens. Attacker can exfiltrate data from you GitLab repository after gaining access to it by generating or hijacking access tokens. This hunting queries allows you to track the personal access tokens creation or each of your repositories. The visualization allow you to quickly identify anomalies/excessive creation, to further investigate repo access & permissions.<br />
 **Parameters:** minimum tokens created per day to consider, date to start
@@ -302,7 +255,7 @@ GitLabAudit
 | render timechart
 ```
 
-#### Repository visbility changed to Public
+#### Repository visbility changed to Public ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_RepoVisibilityChange))
 
 **Description:** This query leverages GitLab Audit Logs. A repository in GitLab changed visibility from Private or Internal to Public which could indicate compromise, error or misconfiguration leading to exposing the repository to the public.<br />
 **Parameters:** /
@@ -313,7 +266,7 @@ GitLabAudit
 | project EventTime, IPAddress, AuthorName, ChangeType, TargetType, SourceVisibility,  TargetVisibility, EntityPath
 ~~~
 
-#### Unusual number of repositories deleted
+#### Unusual number of repositories deleted ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_Repo_Deletion))
 
 **Description:** This hunting queries identify an unusual increase of repo deletion activities adversaries may want to disrupt availability or compromise integrity by deleting business data.
 **Parameters:** learning period, time window, thresholds
@@ -343,7 +296,7 @@ GitLabAudit
   | project-away Dummy
   | where CountInRunTime > LearningThreshold
 
-#### Sign-in Bursts
+#### Sign-in Bursts ([GitHub](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/AnalyticsRules/GitLab/GitLab_SignInBurst))
 
 **Description:** This query relies on Azure Active Directory sign-in activity when Azure AD is used for SSO with GitLab to highlights GitLab accounts associated with multiple authentications from different geographical locations in a short space of time.<br />
 **Parameters:** minimum number of different locations, GitLab application name in AAD
