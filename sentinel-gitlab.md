@@ -7,9 +7,10 @@ description: Guillaume B., Cloud Security Architect
 # Monitoring threats to your GitLab environment using Microsoft Sentinel
 
 <img src="images/GitLab-Sentinel.png" style="float: left;margin: 5px;width: 25%;height: auto;" alt="Monitor GitLab using Sentinel" />
-<p style="color:#145DA0;text-align: justify;">In the recent years, supply chain attacks have been on the rise, and software factories are often not adequately monitored by security teams, or not with the required focus. Next to GitHub, GitLab is one of the most commonly used DevOps and source-code repository platform. <br />
+<p style="color:#145DA0;text-align: justify;">Over the last few, supply chain attacks have been on the rise, and led to evidence that software factories are often not adequately monitored by security teams, or not with the required visibility. <br />
+Next to GitHub, GitLab is one of the most commonly used DevOps and source-code repository platform. <br />
 Microsoft Sentinel already has some great integration (and more to come...) with GitHub platform (see this <a href="https://techcommunity.microsoft.com/t5/microsoft-sentinel-blog/protecting-your-github-assets-with-azure-sentinel/ba-p/1457721">excellent article</a>) but no existing connector for GitLab as of the time of writing. <br />
-Inspired by the article on GitHub and Sentinel and following discussions with some customers using GitLab themselves, I wrote parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to GitLab environment.
+Inspired by the article on GitHub and Sentinel and following discussions with some customers using GitLab themselves, I wrote parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to GitLab environment.<br />
 These queries are just a few and much more could be build out of GitLab logs, feel free to adapt or extend based on your own needs.</p>
 
 <a href="https://github.com/tuxnam/Sentinel-Development" target="_blank" style="margin-top: 1em; margin-bottom: 1em; display: inline-flex;  text-decoration: none; color: black;"><img src="images/GitHub-Icon.png" style="width: 28px; height: auto; vertical-align: middle;" />&nbsp;&nbsp;Check sources on my GitHub repo!</a>
