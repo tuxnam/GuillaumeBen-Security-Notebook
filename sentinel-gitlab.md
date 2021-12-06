@@ -12,17 +12,7 @@ Microsoft Sentinel already has some great integration (and more to come...) with
 Inspired by the article on GitHub and Sentinel and following discussions with some customers using GitLab themselves, I wrote parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to GitLab environment.
 These queries are just a few and much more could be build out of GitLab logs, feel free to adapt or extend based on your own needs.</p>
 
-<a href="https://github.com/tuxnam/Sentinel-Development" style="margin: 1em; display: inline-block;"><img src="images/GitHub-Icon.png" style="width: 25px; vertical-align: middle;" />Check sources on my GitHUb repo!</a>
-
-<div style="vertical-align: middle;">
-<a href="https://github.com/tuxnam/Sentinel-Development">
-<img src="images/GitHub-Icon.png" alt="Check sources on my GitHub repository" style="float: left;margin: 5px;width: 30px;height: auto;  vertical-align: middle;
-" />
-</a>
-<p style="color:#000000;text-align: justify; vertical-align: middle;">
-<a href="https://github.com/tuxnam/Sentinel-Development">Check sources on my Github repository!</a>
-</p>
-</div>
+<a href="https://github.com/tuxnam/Sentinel-Development" style="margin: 1em; display: inline-flex;"><img src="images/GitHub-Icon.png" style="width: 25px; vertical-align: middle;" />Check sources on my GitHUb repo!</a>
 
 ## GitLab versions and required logs
 
