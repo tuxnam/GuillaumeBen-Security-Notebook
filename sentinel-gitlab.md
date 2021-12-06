@@ -17,11 +17,12 @@ These queries are just a few and much more could be build out of GitLab logs, fe
 
 ## GitLab versions and required logs
 
-This article focuses on GitLab self-hosted Enterprise Edition (EE)(or higher SKU like Premium). Audit events are not available in the Community Edition (CE) but some of these analytics rules require only application logs or NGINX access logs and should therefore also work for CE edition. 
+GitLab has two main SKUs: a free, community edition and an enterprise edition. See details [here](https://about.gitlab.com/install/ce-or-ee/). <br />
+This article focuses on GitLab self-hosted Enterprise Edition (EE). Audit events are not available in the Community Edition (CE) but some of the hunting queries I built require only application logs or server access logs and should therefore also work for CE edition. 
 
-More details on logging system in GitLab can be found in the [official documentation](https://docs.gitlab.com/ee/administration/logs.html).
+All the information regarding the logging system in GitLab can be found in the [official documentation](https://docs.gitlab.com/ee/administration/logs.html).
 
-The logs used in the scope of the Microsoft Sentinel integration are:
+The logs used in the scope of this Microsoft Sentinel integration are:
 - GitLab Audit logs: changes to group or project settings and memberships (target_details) are logged to this file.
 - GitLab NGINX Access logs: a log of requests made to GitLab.
 - GitLab Application logs: helps you discover events happening in your instance such as user creation and project deletion.
