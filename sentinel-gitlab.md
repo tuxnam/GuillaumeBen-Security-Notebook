@@ -56,18 +56,18 @@ This article does not intend to deep-dive into syslog configuration or logs inge
 
 ## Parsers
 
-The first thing to do when GitLab logging data starts to be ingested into Sentinel, is to parse the syslog message accordingly.
-I created three parsers to ease the formulation of hunting queries, based on the logging sources:
+The first thing to do when GitLab logging data starts to be ingested into Sentinel, is to parse the syslog messages accordingly.
+I created three parsers to ease the writing of hunting queries, based on the logging sources:
 - [One parser for GitLab NGINX access logs](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_Access)
 - [One parser for GitLab audit logs](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_AuditLogs)
 - [One parser for GitLab application logs](https://github.com/tuxnam/Sentinel-Development/blob/58011386c48e3d02b9f744fe5f60495843d3f42f/Parsers/GitLab/GitLab_AppLog)
 
-The goal of these parsers is to register them as *functions* (see [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-azure-functions-template?tabs=ARM)) in your Sentinel environment to then use them seamlessly as data sources in your hunting queries without having to parse again each time manually. 
+The goal of these parsers is to be registered as *functions* (see [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-azure-functions-template?tabs=ARM)) in our Sentinel environment to then use them seamlessly as data sources in hunting queries without having to parse again each time manually. 
 
 In a few simple steps:<br />
 Paste below parser queries in log analytics, click on Save button and select as Function from drop down by specifying function name and alias. 
 To work with analytics rules built next to this parser, these functions should be given the alias of GitLabAudit, GitLabApplication and GitLabAccess respectively.
-Functions usually takes a few minutes to activate. You can then use function alias from any other queries (e.g. *GitLabAudit | take 10*).
+Functions usually takes a few minutes to activate. We can then use function alias from any other queries (e.g. *GitLabAudit | take 10*).
 Feel free to rename them and adapt the name in the hunting queries below in this article.
 
 **Note:** In my case I used syslog Facility *local7* and *ProcessName* in ('GitLab-Audit-Logs', 'GitLab-Application-Logs', 'GitLab-Access-Logs') in the rsyslog.d configuration files for audit, application and NGINX access logs respectively. Feel free to use your own Facility or ProcessName and adapt the below parsers.
