@@ -32,9 +32,11 @@ There are much more log files part of GitLab but most of the interesting securit
 ## Ingesting GitLab logs to Sentinel
 
 The first step is to actually ingest GitLab data into Microsoft Sentinel. <br />
-We are using here the standard syslog output. GitLab logs are written (by default) into */var/log/gitlab*. <br />
-In order to ingest syslog data into Microsoft Sentinel, you will need to deploy the log analytics agent on the host, and connect it to the Sentinel workspace where you want to query the data.<br /> Once this is done, you just need to instruct the log analytics agent on the host to collect the specific facility of syslog messages on your system (local7 in our case)(see the [official Documentation](https://docs.microsoft.com/en-us/azure/sentinel/connect-syslog#configure-the-log-analytics-agent)). <br />
-This also means, once the agent is installed on the GitLab host itself, you need to define syslog configuration files for GitLab audit, application and NGINX access logs, in regular syslog configuration folder (/etc/rsyslod.d/ for rsyslog), along with the syslog facility you want to use (i.e: local1, local2, local7, syslog...) (samples can be found in the [corresponding GitHub repository](https://github.com/tuxnam/Sentinel-Development/tree/main/Syslog/GitLab)). <br /> 
+GitLab is using syslog for logging and we will therefore use the syslog connector in Microsoft Sentinel. <br />
+GitLab logs are written (by default) into */var/log/gitlab*. <br />
+In order to ingest syslog data into Microsoft Sentinel, we will need to deploy the log analytics agent on the host, and connect it to the Sentinel workspace where we want to query the data. The simplest way to install the agent is throug [VM extensions](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/oms-linux) but you can also scale it through [scripts ormanual deployments](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agent-linux). <br /> 
+Once this is done, we just need to instruct the log analytics agent now installed on the host to collect the specific facility which we will use for GitLab syslog messages on the system (local7 in our case)(see the [official Documentation](https://docs.microsoft.com/en-us/azure/sentinel/connect-syslog#configure-the-log-analytics-agent)). <br />
+This also means, once the agent is installed on the host, that we need to define syslog configuration files for GitLab audit, application and NGINX access logs, in regular syslog configuration folder (*/etc/rsyslod.d/* for rsyslog), along with the syslog facility we configured here above (i.e: local1, local2, local7, syslog...) (samples of syslog configuration files can be found in the [corresponding GitHub repository](https://github.com/tuxnam/Sentinel-Development/tree/main/Syslog/GitLab)). <br /> 
 The agent will in fact create a collection configuration file in the same syslog  (/etc/rsyslog.d/) repository, with instructions to ingest logs of the selected facility.
 <br />
 <br />
@@ -45,8 +47,10 @@ The agent will in fact create a collection configuration file in the same syslog
 local7.=alert;local7.=crit;local7.=debug;local7.=emerg;local7.=err;local7.=info;local7.=notice;local7.=warning@127.0.0.1:25224
 ~~~
 <br />
+We should now start to see logs being ingest into *Syslog* table in Sentinel. <br />
+
 This article does not intend to deep-dive into syslog configuration or logs ingestion into Sentinel, all details about syslog collection [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-syslog).<br /><br />
-**Note:** the advantage of using syslog is that logs are ingested directly into Sentinel *Syslog* native table. You could also ingest GitLab logs using a custom table in the log analytics workspace behind Sentinel (*GitLab_Audit_logs_CL* for instance) but there are drawbacks compared to using native tables (correlation in fusion rules is one of them). The goal is not to cover this in this article, please refer to [official documentation](https://docs.microsoft.com/en-us/azure/sentinel/connect-data-sources).
+**Note:** the advantage of using syslog is that logs are ingested directly into Sentinel *Syslog* native table. You could also ingest GitLab logs using Sentinel API and a custom table in the log analytics workspace behind Sentinel (*GitLab_Audit_logs_CL* for instance) but there are drawbacks compared to using native tables (correlation in fusion rules is one of them). The goal is not to cover this in this article, please refer to [official documentation](https://docs.microsoft.com/en-us/azure/sentinel/connect-data-sources).
 
 **Note 2:** usually, in a corporate environment, you would use a syslog server and forward GitLab logs to it. The principle is the same, except that the ingestion should then happen from the syslog server and not GitLab host. 
 
