@@ -1,13 +1,3 @@
-<script>
-  var links = document.links;
-
-for (var i = 0, linksLength = links.length; i < linksLength; i++) {
-   if (links[i].hostname != window.location.hostname) {
-       links[i].target = '_blank';
-   } 
-}
- </script>
-
 ---
 layout: default
 title: Guillaume's Security Notebook
@@ -75,9 +65,9 @@ I created three parsers to ease the writing of hunting queries, based on the log
 The goal of these parsers is to be registered as *functions* (see [here](https://docs.microsoft.com/en-us/azure/sentinel/connect-azure-functions-template?tabs=ARM)) in our Sentinel environment to then use them seamlessly as data sources in hunting queries without having to parse again each time manually. 
 
 In a few simple steps:<br />
-Paste below parser queries in log analytics, click on Save button and select as Function from drop down by specifying function name and alias. 
-To work with analytics rules built next to this parser, these functions should be given the alias of GitLabAudit, GitLabApplication and GitLabAccess respectively.
-Functions usually takes a few minutes to activate. We can then use function alias from any other queries (e.g. *GitLabAudit | take 10*).
+We have to paste below parser queries in log analytics, click on <u>save</u> button and select *'as Function'* from drop down by specifying function name and alias. <br />
+To work with analytics rules built next to this parser, these functions should be given the alias of *GitLabAudit*, *GitLabApplication* and *GitLabAccess* respectively.<br />
+Functions usually takes a few minutes to activate. We can then use function alias from any other queries (e.g. *GitLabAudit | take 10*).<br />
 Feel free to rename them and adapt the name in the hunting queries below in this article.
 
 **Note:** In my case I used syslog Facility *local7* and *ProcessName* in ('GitLab-Audit-Logs', 'GitLab-Application-Logs', 'GitLab-Access-Logs') in the rsyslog.d configuration files for audit, application and NGINX access logs respectively. Feel free to use your own Facility or ProcessName and adapt the below parsers.
