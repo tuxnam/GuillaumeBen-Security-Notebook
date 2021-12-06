@@ -282,7 +282,7 @@ GitLabAudit
 
 ~~~
 GitLabAudit
-| where SourceVisibility == "Public" and ChangeType == "visibility" and TargetVisibility != "Public"
+| where SourceVisibility != "Public" and ChangeType == "visibility" and TargetVisibility == "Public"
 | project EventTime, IPAddress, AuthorName, ChangeType, TargetType, SourceVisibility,  TargetVisibility, EntityPath
 ~~~
 
