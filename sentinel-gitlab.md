@@ -14,10 +14,10 @@ These queries are just a few and much more could be build out of GitLab logs, fe
 
 <div style="vertical-align: middle;">
 <a href="https://github.com/tuxnam/Sentinel-Development">
-<img src="images/GitHub-Icon.png" alt="Check sources on my GitHub repository" style="float: left;margin: 5px;width: 50px;height: auto;  vertical-align: middle;
+<img src="images/GitHub-Icon.png" alt="Check sources on my GitHub repository" style="float: left;margin: 5px;width: 30px;height: auto;  vertical-align: middle;
 " />
 </a>
-<p style="color:#000000;text-align: justify;   vertical-align: middle;">
+<p style="color:#000000;text-align: justify; vertical-align: middle;">
 <a href="https://github.com/tuxnam/Sentinel-Development">Check sources on my Github repository!</a>
 </p>
 </div>
