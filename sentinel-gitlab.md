@@ -29,7 +29,7 @@ The logs used in the scope of this Microsoft Sentinel integration are:
 
 There are much more log files part of GitLab but most of the interesting security events will be captured in these three files. 
 
-## Connecting GitLab server and ingesting logs to Sentinel
+## Ingesting GitLab logs to Sentinel
 
 The first step is to actually ingest GitLab data into Microsoft Sentinel. <br />
 We are using here the standard syslog output. GitLab logs are written (by default) into */var/log/gitlab*. <br />
