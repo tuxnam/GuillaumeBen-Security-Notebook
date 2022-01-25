@@ -8,9 +8,10 @@ description: Guillaume B., Cloud Security Architect
 
 <img src="images/kuby-logo.png" style="align: left; margin: 5px; width: 50%;height: auto;" alt="Defender for Containers" >
 <span style="display: block;">Source: (c) original picture (without the intruder) is from Matt Butcher</span>
+
+<p></p>
+ 
+<p style="color:#145DA0;">The ubiquitous soar of Kubernetes and containarized or "cloud-native"workloads over the past years has led to an important growth of the security & threat landscape as the number and sophistication of attacks targeting cloud-native environment is booming. While container and Kubernetes security can be hard and requires security practitionners to update their skillsets, a bunch of tools and products have rised in the last years to target these new threat vectors and cope with the elasticity and scalibility of these new workloads. Some of these products include Aquasecurity Trivy, Qualys, Clair, Anchore, Snyk and, the one we will investigate in this post, Microsoft Defender for containers. <br /> <br />
+Defender for containers is a recent addition to the [Microsoft Defender for Cloud](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction) portfolio, which is a tool for security posture management and threat protection for multi-cloud and hybrid scenarios. Defender for containers is not really 'new', it is an evolution and merge of two previous plans in the defender portfolio: defender for container registries and defender for Kubernetes. This new plan is inline with Microsoft's vision of end-to-end container security: dividing the security of the platform from the security of the container images leads to gaps in a sound container security strategy. 
   
-<p style="color:#145DA0;">Over the last few years, supply chain attacks have been on the rise, and led to evidence that software factories are often not adequately monitored by security teams, or not with the required visibility. <br />
-Next to GitHub, GitLab is one of the most commonly used DevOps and source-code repository platform. <br />
-Microsoft Sentinel already has some great integration (and more to come...) with GitHub platform (see this <a href="https://techcommunity.microsoft.com/t5/microsoft-sentinel-blog/protecting-your-github-assets-with-azure-sentinel/ba-p/1457721">excellent article</a>) but no existing connector for GitLab as of the time of writing. <br />
-Inspired by the article on GitHub and Sentinel and following discussions with some customers using GitLab themselves, I wrote parsers and analytics rules for Gitlab environment, in order to give SOC the required visibility on threats related to GitLab environment.<br />
-These queries are just a few and much more could be build out of GitLab logs, feel free to adapt or extend based on your own needs.</p>
+## What is Defender for containers
