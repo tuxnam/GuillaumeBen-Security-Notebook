@@ -12,6 +12,7 @@ ___
 <span style="color:#145DA0;">*Data connectors, analytics rules, parsers, workbooks for Microsoft Sentinel*</span>
 
 - [Protect your GitLab instance(s) against threats](sentinel-gitlab.md)
+- [Container Security Series - Defender for Containers and the goat in the boat](defender-container.md)
 - Analyze malicious traffic on your Azure Firewall <span style="color:#2E8BC0;">*(soon)*</span>
 - Protecting and analyzing threats to your retail business (B2C) <span style="color:#2E8BC0;">*(soon)*</span>
 
