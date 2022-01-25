@@ -6,7 +6,7 @@ description: Guillaume B., Cloud Security Architect
 
 # A goat in the boat: a look at how Defender for Containers protect your clusters
 
-<img src="images/kuby-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="Defender for Containers" >
+<img src="images/kuby-logo.png" style="float:center; align: center; margin: 5px; width: 65%;height: auto;" alt="Defender for Containers" >
 <span style="display: block;">Source: (c) original picture (without the intruder) is from Matt Butcher</span>
 
 <p></p>
@@ -35,7 +35,7 @@ We will deploy Kubernetes Goat on our AKS cluster, go through the scenarios and 
 Kubernetes Goat is originally pulling container images used in the various scenarios from Madhu's own Docker repository. For the sake of this exercice, the ability to test the vulnerability scanning features of Defender for containers, and the principle to always deploy from a trusted registry, I modified the coressponding deployment files of Kubernetes Goat to take the same container images but from the container registry we have set up for this lab. *Thanks to Madhu for his work!*
 <p></p>
 Here is an overview of the setup with deployed namespaces: <br />
-<img src="images/Topology-goat-aks.png" style="align: center;" alt="Defender for Containers environment setup" >
+<img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
 
   
 ## What Defender for containers brings?
