@@ -6,8 +6,8 @@ description: Guillaume B., Cloud Security Architect
 
 # Defender for Containers and the goat in the boat: a look at how Defender for Containers protect your clusters
 
-<img src="images/kuby-logo.png" style="float: left;margin: 5px;width: 25%;height: auto;" alt="Defender for Containers" />
-(Source: (c) original picture (without the intruder) is from Matt Butcher)
+<img src="images/kuby-logo.png" style="float: left;margin: 5px;width: 35%;height: auto;" alt="Defender for Containers" />
+  <figcaption>(Source: (c) original picture (without the intruder) is from Matt Butcher)</figcaption>
 
 <p style="color:#145DA0;text-align: justify;">Over the last few years, supply chain attacks have been on the rise, and led to evidence that software factories are often not adequately monitored by security teams, or not with the required visibility. <br />
 Next to GitHub, GitLab is one of the most commonly used DevOps and source-code repository platform. <br />
