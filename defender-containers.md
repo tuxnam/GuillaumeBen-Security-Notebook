@@ -8,7 +8,7 @@ description: Guillaume B., Cloud Security Architect
 
 <figure>
 <img src="images/kuby-logo.png" style="float: left;margin: 5px;width: 35%;height: auto;" alt="Defender for Containers" >
-<figcaption>(Source: (c) original picture (without the intruder) is from Matt Butcher)</figcaption>
+<figcaption style="margin: 0; padding: 0;">(Source: (c) original picture (without the intruder) is from Matt Butcher)</figcaption>
 </figure>
   
 <p style="color:#145DA0;text-align: justify;">Over the last few years, supply chain attacks have been on the rise, and led to evidence that software factories are often not adequately monitored by security teams, or not with the required visibility. <br />
