@@ -4,7 +4,7 @@ title: Guillaume's Security Notebook
 description: Guillaume B., Cloud Security Architect
 ---
 
-# A goat in the boat: a look at how Defender for Containers protect your clusters
+# A goat in the boat: a look at how Defender for Containers protects your clusters
 
 <img src="images/kuby-logo.png" style="float:center; align: center; margin: 5px; width: 65%;height: auto;" alt="Defender for Containers" >
 <span style="display: block;">Source: (c) original picture (without the intruder) is from Matt Butcher</span>
