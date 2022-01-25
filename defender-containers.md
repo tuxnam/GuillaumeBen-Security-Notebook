@@ -7,7 +7,7 @@ description: Guillaume B., Cloud Security Architect
 # Defender for Containers and the goat in the boat: a look at how Defender for Containers protect your clusters
 
 <figure>
-<img src="images/kuby-logo.png" style="float: left;margin: 5px;width: 35%;height: auto;" alt="Defender for Containers" >
+<img src="images/kuby-logo.png" style="float: left;margin: 0px; padding: 0; width: 35%;height: auto;" alt="Defender for Containers" >
 <figcaption style="margin: 0; padding: 0;">(Source: (c) original picture (without the intruder) is from Matt Butcher)</figcaption>
 </figure>
   
