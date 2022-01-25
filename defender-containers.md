@@ -6,10 +6,10 @@ description: Guillaume B., Cloud Security Architect
 
 # A goat in the boat: a look at how Defender for Containers protects your clusters
 
-<img src="images/kuby-logo.png" style="float:center; align: center; margin: 5px; width: 65%;height: auto;" alt="Defender for Containers" >
+<p style="align: center;">
+<img src="images/kuby-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="Defender for Containers" >
 <span style="display: block;">Source: (c) original picture (without the intruder) is from Matt Butcher</span>
-
-<p></p>
+</p>
  
 <p style="color:#145DA0;">The ubiquitous soar of Kubernetes and containarized or "cloud-native"workloads over the past years has led to an important growth of the security & threat landscape as the number and sophistication of attacks targeting cloud-native environment is booming. While container and Kubernetes security can be hard and requires security practitionners to update their skillsets, a bunch of tools and products have rised in the last years to target these new threat vectors and cope with the elasticity and scalibility of these new workloads. Some of these products include Aquasecurity Trivy, Qualys, Clair, Anchore, Snyk and, the one we will investigate in this post, Microsoft Defender for containers. </p>
 
