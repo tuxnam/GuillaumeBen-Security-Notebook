@@ -19,6 +19,17 @@ description: Guillaume B., Cloud Security Architect
 Defender for containers is a recent addition to the <a href="https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction">Microsoft Defender for Cloud</a> portfolio, which is a tool for security posture management and threat protection for multi-cloud and hybrid scenarios. Defender for containers is not really 'new', it is an evolution and merge of two previous plans in the defender portfolio: defender for container registries and defender for Kubernetes. <br />
 This new plan is inline with Microsoft's vision of end-to-end container security: dividing the security of the platform from the security of the container images leads to gaps in a sound container security strategy. </p>
 
+
+## Content of this article
+
+1. Environment setup
+2. Exploring Defender for Containers
+3. Enabling Defender 
+4. First look at alerts
+5. Going through the goat scenarios and how Defender reacts
+6. Using policies to resolve/prevent weaknesses
+7. A note on CI/CD integration
+
 ## The setup and the goat story
 
 In order to have a valuable testing environment, we need to have a cluster of course, a container registry, container images but most importantly weaknesses, exploit them and see how Defender for containers can help. <br />
@@ -37,7 +48,6 @@ Kubernetes Goat is originally pulling container images used in the various scena
 <p></p>
 Here is an overview of the setup with deployed namespaces: <br />
 <img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
-
   
 ## Defender for Containers  
   
