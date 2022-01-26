@@ -48,7 +48,7 @@ The idea of this article is not to explore or market Defender for containers, al
 
 
 <p style="width: 100%; text-align: center;">
-![image](https://user-images.githubusercontent.com/18376283/151179154-9d313434-c093-4303-85e3-744a6065b55c.png)
+<img src="https://user-images.githubusercontent.com/18376283/151179154-9d313434-c093-4303-85e3-744a6065b55c.png" />
 </p>
 
 In summary, defender for containers provides:
@@ -65,9 +65,9 @@ The sources analyzed by Defender are multiple:
 - Security signals and events from the node level
 
 In terms of deployment, that means:
-A Defender profile deployed to each node provides the runtime protections and collects signals from nodes using eBPF technology: it relies on a DaemonSet to ensure all nodes in the cluster are covered.
-Azure Policy add-on for Kubernetes collects cluster and workload configuration for admission control policies (Gatekeeper): this basically translates Azure Policies to Gatekeepr/OPA policies for audit, enforcement and prevention of threats.
-The container registry part does not need anything specific, outside of network considerations.
+A Defender profile deployed to each node provides the runtime protections and collects signals from nodes using eBPF technology: it relies on a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/">DaemonSet</a> to ensure all nodes in the cluster are covered.
+Azure Policy add-on for Kubernetes collects cluster and workload configuration for admission control policies (Gatekeeper): this basically translates Azure Policies to Gatekeeper/OPA policies (see <a href="https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.">here</a> for details on OPA and Gatekeeper) for audit, enforcement and prevention of policies on the admission controller of your clusters.<br />
+The container registry does not need anything specific, outside of network considerations.
 
 
 
