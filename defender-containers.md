@@ -25,10 +25,11 @@ This new plan is inline with Microsoft's vision of end-to-end container security
 1. Environment setup
 2. Exploring Defender for Containers
 3. Enabling Defender 
-4. First look at alerts
-5. Going through the goat scenarios and how Defender reacts
-6. Using policies to resolve/prevent weaknesses
-7. A note on CI/CD integration
+4. Images vulnerabilities
+5. First look at cluster alerts
+6. Going through the goat scenarios and how Defender reacts
+7. Using policies to resolve/prevent weaknesses
+8. A note on CI/CD integration
 
 ## The setup and the goat story
 
@@ -56,7 +57,6 @@ Here is an overview of the setup with deployed namespaces: <br />
 The idea of this article is not to explore or market Defender for containers, all details can be found in the official ![documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks) or this ![article](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/introducing-microsoft-defender-for-containers/ba-p/2952317). 
 <br /> Rather, we will describe here the main features of the product and what they mean in terms of deployment/usage. 
 
-
 <p style="width: 100%; text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151179154-9d313434-c093-4303-85e3-744a6065b55c.png" />
 </p>
@@ -79,5 +79,10 @@ A Defender profile deployed to each node provides the runtime protections and co
 Azure Policy add-on for Kubernetes collects cluster and workload configuration for admission control policies (Gatekeeper): this basically translates Azure Policies to Gatekeeper/OPA policies (see <a href="https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.">here</a> for details on OPA and Gatekeeper) for audit, enforcement and prevention of policies on the admission controller of your clusters.<br />
 The container registry does not need anything specific, outside of network considerations.
 
+## Step 1: cluster is ready, the goat is in the boat...let's enable Defender and look at the cluster
+
+## Step 2: are there some image vulnerabilities?
+
+## Step 3:
 
 
