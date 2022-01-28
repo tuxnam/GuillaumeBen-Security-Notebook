@@ -152,12 +152,19 @@ We can also see of course a few recommendations are 'met' and compliant:
 
 ![image](https://user-images.githubusercontent.com/18376283/151578774-bc5ca6fb-18c9-4343-bed7-455c1fc1d0b7.png)
 
+You do not have to go or have to wait for an alert to see these best-practice issues.
+They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab:
 
+![image](https://user-images.githubusercontent.com/18376283/151579510-361fa0e4-9ffb-476a-8f81-7572f3214498.png)
 
 The full list of detection capabilities (up-to-date) of Defender can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/alerts-reference#alerts-k8scluster
+The list of recommendations can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
 
 
 ### Wait...we saw CVEs in container images in the registry, isn't Defender also supposed to alert me that these vulnerable images are now running in my clusters?
 
-Good catch! Indeed, Defender also provides some 
+Good catch! Indeed, it should also be part of the reommendation but is a preview feature as time of writing, details here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
+
+
+
 
