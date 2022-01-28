@@ -125,7 +125,7 @@ We notice 3 alerts, after the setup:
 - Two privileged containers running
 - One container with sensitive mount
 
-If we check details of one of these alerts, we can see interesting information, including related MITRE tactic, detailed description, pod name...
+If we check details of one of these alerts, we can see interesting information, including related [MITRE tactics](https://www.microsoft.com/security/blog/2021/04/29/center-for-threat-informed-defense-teams-up-with-microsoft-partners-to-build-the-attck-for-containers-matrix/), detailed description, pod name...
 
 ![image](https://user-images.githubusercontent.com/18376283/151575909-b61d9f49-ce81-484c-8430-8e2c7acf62c0.png)
 
@@ -142,7 +142,7 @@ All details about Gatekeeper and Azure Policy can be found [here](https://docs.m
 
 ### Nut did Defender detect all potential issues and weaknesses?
 
-Only three alerts? But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the above list of recommendations, in alert details, let's click on 'view all recommendations'...surprisethere is way more problems in our safe Kubernetes environment than we thought! 
+Only three alerts? Uh. But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the above list of recommendations, in alert details, let's click on 'view all recommendations'...surprisethere is way more problems in our safe Kubernetes environment than we thought! 
 
 ![image](https://user-images.githubusercontent.com/18376283/151578380-91e489be-b017-4577-ba1e-3ad444a9c588.png)
 
@@ -164,6 +164,20 @@ The list of recommendations can be found here: https://docs.microsoft.com/en-us/
 ### Wait...we saw CVEs in container images in the registry, isn't Defender also supposed to alert me that these vulnerable images are now running in my clusters?
 
 Good catch! Indeed, it should also be part of the reommendation but is a preview feature as time of writing, details here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
+
+## Let's dive into the first scenario's of Kubernetes Goat
+
+Now, let's play and see how Defender reacts. Details about the scenarios of the Kubernetes Goat can be found [here](https://madhuakula.com/kubernetes-goat/about.html#:~:text=Kubernetes%20Goat%20is%20designed%20to%20be%20an%20intentionally,production%20environment%20or%20alongside%20any%20sensitive%20cluster%20resources.).
+We will not expand too much on the details here, for the sake of your not falling asleep, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. Also, the idea is not to spoil solutions and try to capture the flag by yourself!
+
+The first scenario is about secrets hidden in plainsights! No specific interesting triggers for Defender here, rather good CI/CD pipeline hygiene to have, and a recurring issue in codebases.
+
+Scenario 2 looks more interesting (for our case :)) and seems to be related to container escape! Let's try it and see what Defender brings. The first thing to notice is that this scenario is linked to container image *system-monitor*. Why does it matter? because if you remember, Defender raised 3 alerts after we deployed the cluster and one of them was the following:
+
+![image](https://user-images.githubusercontent.com/18376283/151582721-b345255d-46d6-49ef-9e47-1b83c4aa8be3.png)
+
+Let's ignore the alert and still do the scenario. What will Defender do?
+
 
 
 
