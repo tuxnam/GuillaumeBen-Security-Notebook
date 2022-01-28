@@ -49,6 +49,8 @@ Kubernetes Goat is originally pulling container images used in the various scena
 <p></p>
 Here is an overview of the setup with deployed namespaces: <br />
 <img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
+
+**Note:** In my case, I ued _kubenet_ for kubernetes network driver and _Calico_ for network policies but it does not matter in this context and is not needed either.
   
 ## Defender for Containers  
   
@@ -80,6 +82,18 @@ Azure Policy add-on for Kubernetes collects cluster and workload configuration f
 The container registry does not need anything specific, outside of network considerations.
 
 ## Step 1: cluster is ready, the goat is in the boat...let's enable Defender and look at the cluster
+
+So after setting up Kubernetes (standard set up, two nodes)(you can refer [here](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal#:~:text=To%20create%20an%20AKS%20cluster%2C%20complete%20the%20following,create%20an%20Azure%20Resource%20group%2C%20such%20as%20myResourceGroup) for Azure AKS), and deploying the Kubernetes Goat (refer to Madhu's documentation [here](https://madhuakula.com/kubernetes-goat/)), we enabled Defender for Containers with auto-provisionning (see documentation for details), in Defender for Cloud portal:
+
+![image](https://user-images.githubusercontent.com/18376283/151562065-52e0cee8-b3d3-4614-b2de-a63c248ffdae.png)
+
+**Note:** _Arc-enabled cluster_ is for Kubernetes clusters on IaaS in another Cloud or on your premises. 
+Details on setup for all type of clusters, including EKS, can be found [here](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks).
+
+let's have a first look at our Kubernetes cluster and the impact of enabling Defender: we can clearly see the Defender Profile related-pods (deployed through the Daemonset) and the Gatekeeper namespace/pods, next to the Kubernetes Goat related namespaces and pods:
+
+![image](https://user-images.githubusercontent.com/18376283/151561842-f1036784-8fe6-4e71-bdd8-6878aa339946.png)
+
 
 ## Step 2: are there some image vulnerabilities?
 
