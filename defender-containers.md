@@ -97,6 +97,67 @@ let's have a first look at our Kubernetes cluster and the impact of enabling Def
 
 ## Step 2: are there some image vulnerabilities?
 
-## Step 3:
+Earlier in this article, we uploaded the various container images required for Kubernetes Goat into our Azure Container Registry. Here is what it looks like in terms of repositories:
 
+![image](https://user-images.githubusercontent.com/18376283/151572088-8d7b0994-0788-4219-b169-875d32223540.png)
+
+Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we simply go in Defender for Cloud portal, 'Workload Protection': we can there at the same time see our Kubernetes cluster inside that subscription are covered.
+
+![image](https://user-images.githubusercontent.com/18376283/151572496-050f3956-bd78-40f5-874b-f9d36142e772.png)
+
+If we click on _Container Image Scanning_ we can see that Defender indeed scanned our images (using Qualys behind the scenes) and is already giving us a list of CVEs to tackle: 
+
+![image](https://user-images.githubusercontent.com/18376283/151572831-3c15c6de-9f01-4b04-a535-07c69167cc17.png)
+
+These CVEs means that the Goat container images need some updates, to avoid introducing (yet more) vulnerabillties in our environment. You can click on a registry to see all details about affected images and tags:
+
+![image](https://user-images.githubusercontent.com/18376283/151573228-c28541e2-4e47-4911-9d8b-d0280be0c0a8.png)
+![image](https://user-images.githubusercontent.com/18376283/151573373-cb19632b-4365-4736-aade-8f5869dce44b.png)
+
+## Ok, but we deployed a goat, did Defender detect something?
+
+So, we deployed KKubernetes Goat on the cluster as you saw from the various pods listed here above in the printscreen. However, Goat is meant to be intentionnally vulnerable!  Even if we did not start the scenarios yet, did Defender already catch some issues with this deployment?
+Let's jump to security alerts in the same Defender for Cloud portal and filter on our cluster:
+
+![image](https://user-images.githubusercontent.com/18376283/151575616-66b708d4-4967-4ff3-9526-01163e82cb07.png)
+
+We notice 3 alerts, after the setup:
+- Two privileged containers running
+- One container with sensitive mount
+
+If we check details of one of these alerts, we can see interesting information, including related MITRE tactic, detailed description, pod name...
+
+![image](https://user-images.githubusercontent.com/18376283/151575909-b61d9f49-ce81-484c-8430-8e2c7acf62c0.png)
+
+However we would like to potentially trigger actions based on this alert or have information about how to mitigate the threat! This is all in the 'take action' tab:
+
+![image](https://user-images.githubusercontent.com/18376283/151576116-b7b8d355-8140-419b-a7de-dfe93633436d.png)
+
+1. We can see some detailed advise to mitigate the threats
+2. We have a list of ***actionable*** recommendations to prevent this threat in the future!
+What are these mitigations exactly? They are leveraging Gatekeeper which we briefly discussed earlier, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
+You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course, but let's keep this in mind for the end of this article. 
+
+All details about Gatekeeper and Azure Policy can be found [here](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.).
+
+### Nut did Defender detect all potential issues and weaknesses?
+
+Only three alerts? But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the above list of recommendations, in alert details, let's click on 'view all recommendations'...surprisethere is way more problems in our safe Kubernetes environment than we thought! 
+
+![image](https://user-images.githubusercontent.com/18376283/151578380-91e489be-b017-4577-ba1e-3ad444a9c588.png)
+
+We see clearly here that these rules are in 'audit' mode, we could, through the same Azure Policy for Gatekeeper feature described, enforce or remediate these issues. Have a look at corresponding documentation!
+
+We can also see of course a few recommendations are 'met' and compliant:
+
+![image](https://user-images.githubusercontent.com/18376283/151578774-bc5ca6fb-18c9-4343-bed7-455c1fc1d0b7.png)
+
+
+
+The full list of detection capabilities (up-to-date) of Defender can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/alerts-reference#alerts-k8scluster
+
+
+### Wait...we saw CVEs in container images in the registry, isn't Defender also supposed to alert me that these vulnerable images are now running in my clusters?
+
+Good catch! Indeed, Defender also provides some 
 
