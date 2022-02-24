@@ -50,7 +50,7 @@ Kubernetes Goat is originally pulling container images used in the various scena
 Here is an overview of the setup with deployed namespaces: <br />
 <img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
 
-**Note:** In my case, I ued _kubenet_ for kubernetes network driver and _Calico_ for network policies but it does not matter in this context and is not needed either.
+**Note:** In my case, I ued _Azure CNI_ for kubernetes network driver and _Azure_ for network policies but it does not matter in this context and is not needed either for our use case.
   
 ## Defender for Containers  
   
@@ -90,9 +90,14 @@ So after setting up Kubernetes (standard set up, two nodes)(you can refer [here]
 **Note:** _Arc-enabled cluster_ is for Kubernetes clusters on IaaS in another Cloud or on your premises. 
 Details on setup for all type of clusters, including EKS, can be found [here](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks).
 
-let's have a first look at our Kubernetes cluster and the impact of enabling Defender: we can clearly see the Defender Profile related-pods (deployed through the Daemonset) and the Gatekeeper namespace/pods, next to the Kubernetes Goat related namespaces and pods:
+let's have a first look at our Kubernetes cluster and the impact of enabling Defender: we can clearly see the Defender Profile related-pods (deployed through the Daemonset) (in red) and the Gatekeeper pods (in green), next to the Kubernetes Goat (in gold) related namespaces and pods:
 
-![image](https://user-images.githubusercontent.com/18376283/151561842-f1036784-8fe6-4e71-bdd8-6878aa339946.png)
+![image](https://user-images.githubusercontent.com/18376283/155592893-76703234-46e0-4209-831d-a557da469f28.png)
+![image](https://user-images.githubusercontent.com/18376283/155593066-724848e0-af6d-4a3d-828d-40a28d9e4d9d.png)
+
+We can also notice that Defender pods are indeed coming from a deployed Daemonset:
+
+![image](https://user-images.githubusercontent.com/18376283/155593233-21ac32ad-8348-4c24-a922-1898800ca475.png)
 
 
 ## Step 2: are there some image vulnerabilities?
@@ -101,7 +106,7 @@ Earlier in this article, we uploaded the various container images required for K
 
 ![image](https://user-images.githubusercontent.com/18376283/151572088-8d7b0994-0788-4219-b169-875d32223540.png)
 
-Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we simply go in Defender for Cloud portal, 'Workload Protection': we can there at the same time see our Kubernetes cluster inside that subscription are covered.
+Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we simply go in Defender for Cloud portal, *Workload Protection*: we can there at the same time see our Kubernetes cluster inside that subscription are covered.
 
 ![image](https://user-images.githubusercontent.com/18376283/151572496-050f3956-bd78-40f5-874b-f9d36142e772.png)
 
@@ -114,9 +119,29 @@ These CVEs means that the Goat container images need some updates, to avoid intr
 ![image](https://user-images.githubusercontent.com/18376283/151573228-c28541e2-4e47-4911-9d8b-d0280be0c0a8.png)
 ![image](https://user-images.githubusercontent.com/18376283/151573373-cb19632b-4365-4736-aade-8f5869dce44b.png)
 
-## Ok, but we deployed a goat, did Defender detect something?
+**Note**: the detected vulnerabilities are CVEs, or software vulnerabilities in libraries or OS version used in these containers. As of today, defender for containers does not scan for CIS, secrets in container images or similar best-practices. You can however use other tools such as Trivy in order to bring that capability to your pipeline.
 
-So, we deployed KKubernetes Goat on the cluster as you saw from the various pods listed here above in the printscreen. However, Goat is meant to be intentionnally vulnerable!  Even if we did not start the scenarios yet, did Defender already catch some issues with this deployment?
+## What about runtime scanning?
+
+We deployed already the containers listed as vulnerable in the registry to our AKS cluster, did defender spot that? Yes! If we go back to our Defender portal, and go through recommendations, there is one specific to runtime container vulnerabilities (in red), next to the container registry ones (in yellow):
+
+![image](https://user-images.githubusercontent.com/18376283/155594158-df3ab3d4-5041-4a4f-af0d-441ebd1aa645.png)
+
+When we open this recommendation, we can see the same CVEs as in the container registry scans:
+
+![image](https://user-images.githubusercontent.com/18376283/155594301-ad8bdcd6-f493-4e1a-a742-f14e93b973b1.png)
+
+**Note:** It would be good to be able to prevent vulnerable containers to be deployed. Thanks to gatekeeper and defender for containers, we will be able to do so! This is in fact one of the recommendation also made by Defender for Containers about our cluster:
+
+![image](https://user-images.githubusercontent.com/18376283/155594817-dcb97ae1-9263-4243-b639-ec0918ff566b.png)
+
+Check this link for more details: https://docs.microsoft.com/en-us/azure/aks/policy-reference#policy-definitions.
+
+## Ok, but we deployed a goat, did Defender detect something else?
+
+So, we deployed Kubernetes Goat on the cluster as you saw from the various pods listed here above in the printscreen. 
+However, Goat is meant to be intentionnally vulnerable!  
+Even if we did not start the scenarios yet, did Defender already catch some issues with this deployment?
 Let's jump to security alerts in the same Defender for Cloud portal and filter on our cluster:
 
 ![image](https://user-images.githubusercontent.com/18376283/151575616-66b708d4-4967-4ff3-9526-01163e82cb07.png)
