@@ -146,49 +146,47 @@ Let's jump to security alerts in the same Defender for Cloud portal and filter o
 
 ![image](https://user-images.githubusercontent.com/18376283/151575616-66b708d4-4967-4ff3-9526-01163e82cb07.png)
 
-We notice 3 alerts, after the setup:
-- Two privileged containers running
+We notice 4 alerts, after the setup:
+- Three privileged containers running
 - One container with sensitive mount
 
 If we check details of one of these alerts, we can see interesting information, including related [MITRE tactics](https://www.microsoft.com/security/blog/2021/04/29/center-for-threat-informed-defense-teams-up-with-microsoft-partners-to-build-the-attck-for-containers-matrix/), detailed description, pod name...
 
-![image](https://user-images.githubusercontent.com/18376283/151575909-b61d9f49-ce81-484c-8430-8e2c7acf62c0.png)
+![image](https://user-images.githubusercontent.com/18376283/155597064-df3dc78b-79dd-4a7c-a1c1-fea0c1ddae57.png)
 
 However we would like to potentially trigger actions based on this alert or have information about how to mitigate the threat! This is all in the 'take action' tab:
 
-![image](https://user-images.githubusercontent.com/18376283/151576116-b7b8d355-8140-419b-a7de-dfe93633436d.png)
+![image](https://user-images.githubusercontent.com/18376283/155598238-45ee9a3d-c72c-4256-b5c6-8f38cd7f5679.png)
 
 1. We can see some detailed advise to mitigate the threats
-2. We have a list of ***actionable*** recommendations to prevent this threat in the future!
-What are these mitigations exactly? They are leveraging Gatekeeper which we briefly discussed earlier, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
+2. We have a list of ***actionable*** recommendations to prevent this threat in the future
+
+What are these mitigations exactly? Like for preventing vulnerable image in the cluster discussed here above, they are leveraging Gatekeeper, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
 You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course, but let's keep this in mind for the end of this article. 
 
 All details about Gatekeeper and Azure Policy can be found [here](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.).
 
 ### Nut did Defender detect all potential issues and weaknesses?
 
-Only three alerts? Uh. But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the above list of recommendations, in alert details, let's click on 'view all recommendations'...surprisethere is way more problems in our safe Kubernetes environment than we thought! 
+Only four alerts? Uh. But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the above list of recommendations, in alert details, let's click on 'view all recommendations'...surprise! There is way more problems in our safe Kubernetes environment than we thought! 
 
-![image](https://user-images.githubusercontent.com/18376283/151578380-91e489be-b017-4577-ba1e-3ad444a9c588.png)
+![image](https://user-images.githubusercontent.com/18376283/155598547-8672bb32-2ddf-4e4d-97d5-d7a5e9a7a520.png)
 
-We see clearly here that these rules are in 'audit' mode, we could, through the same Azure Policy for Gatekeeper feature described, enforce or remediate these issues. Have a look at corresponding documentation!
+We see clearly here recommendations for many best-practices in a Kubernetes environment. Most of these recommendations can even be enforced (denied) in one click, through usage behind the scenes of Azure Policy (potentially translated to OPA/Gatekeeper policies):
 
-We can also see of course a few recommendations are 'met' and compliant:
+![image](https://user-images.githubusercontent.com/18376283/155598867-45be9135-ab46-4d6b-9716-36e1b65e13c3.png)
+![image](https://user-images.githubusercontent.com/18376283/155599135-188c465b-361f-4ca2-8de4-779ad3f2c613.png)
 
-![image](https://user-images.githubusercontent.com/18376283/151578774-bc5ca6fb-18c9-4343-bed7-455c1fc1d0b7.png)
+We can also see of course a few recommendations are 'met' and compliant with *Healthy* state.
 
 You do not have to go or have to wait for an alert to see these best-practice issues.
-They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab:
+They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab, like for the container runtime CVEs we checked before:
 
-![image](https://user-images.githubusercontent.com/18376283/151579510-361fa0e4-9ffb-476a-8f81-7572f3214498.png)
+![image](https://user-images.githubusercontent.com/18376283/155599524-362ea59b-dcb8-46c1-bdc4-23b89042dfc8.png)
 
 The full list of detection capabilities (up-to-date) of Defender can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/alerts-reference#alerts-k8scluster
 The list of recommendations can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
 
-
-### Wait...we saw CVEs in container images in the registry, isn't Defender also supposed to alert me that these vulnerable images are now running in my clusters?
-
-Good catch! Indeed, it should also be part of the reommendation but is a preview feature as time of writing, details here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
 
 ## Let's dive into the first scenario's of Kubernetes Goat
 
