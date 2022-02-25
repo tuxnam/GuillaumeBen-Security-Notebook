@@ -144,15 +144,13 @@ However, Goat is meant to be intentionnally vulnerable!
 Even if we did not start the scenarios yet, did Defender already catch some issues with this deployment?
 Let's jump to security alerts in the same Defender for Cloud portal and filter on our cluster:
 
-![image](https://user-images.githubusercontent.com/18376283/151575616-66b708d4-4967-4ff3-9526-01163e82cb07.png)
+![image](https://user-images.githubusercontent.com/18376283/155597064-df3dc78b-79dd-4a7c-a1c1-fea0c1ddae57.png)
 
 We notice 4 alerts, after the setup:
 - Three privileged containers running
 - One container with sensitive mount
 
 If we check details of one of these alerts, we can see interesting information, including related [MITRE tactics](https://www.microsoft.com/security/blog/2021/04/29/center-for-threat-informed-defense-teams-up-with-microsoft-partners-to-build-the-attck-for-containers-matrix/), detailed description, pod name...
-
-![image](https://user-images.githubusercontent.com/18376283/155597064-df3dc78b-79dd-4a7c-a1c1-fea0c1ddae57.png)
 
 However we would like to potentially trigger actions based on this alert or have information about how to mitigate the threat! This is all in the 'take action' tab:
 
@@ -166,7 +164,7 @@ You are able to audit, prevent or remediate issues in your cluster in an automat
 
 All details about Gatekeeper and Azure Policy can be found [here](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.).
 
-### Nut did Defender detect all potential issues and weaknesses?
+### But did Defender detected all potential issues and weaknesses?
 
 Only four alerts? Uh. But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the above list of recommendations, in alert details, let's click on 'view all recommendations'...surprise! There is way more problems in our safe Kubernetes environment than we thought! 
 
@@ -188,20 +186,24 @@ The full list of detection capabilities (up-to-date) of Defender can be found he
 The list of recommendations can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
 
 
-## Let's dive into the first scenario's of Kubernetes Goat
+## Let's dive into Kubernetes Goat
 
-Now, let's play and see how Defender reacts. Details about the scenarios of the Kubernetes Goat can be found [here](https://madhuakula.com/kubernetes-goat/about.html#:~:text=Kubernetes%20Goat%20is%20designed%20to%20be%20an%20intentionally,production%20environment%20or%20alongside%20any%20sensitive%20cluster%20resources.).
-We will not expand too much on the details here, for the sake of your not falling asleep, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. Also, the idea is not to spoil solutions and try to capture the flag by yourself!
+Now, let's play and see how Defender reacts. We will not test all Kubernetes Goat scenarios for various reasons:
+1. Some Kubernetes Goat scenarios relies on Docker as container engine, while AKS relies on containerd (which avoids mandatory root privileges for containers, behind other benefits)
+2. Some scenarios are 'inner-network' specific: cross-namespace requests for instance should be tackled with Network Policies such as Calico or Azure CNI. It is not the idea to cover this here, and Defender for Cloud has no way to know what is an authorized applicative flow inside the cluster or not. 
+3. Some scenario are related to NodePort, however AKS managed clusters are usually exposed by LoadBalancer service rather than NodePort. MDC detects exposure of various sensitive applications using LoadBalancer services.
+4. One scenario has for purpose to investigate the inner layers of a container to find crypto mining commands but the job itself is not doing any crypto mining. So while Defender can detect crypto mining activities, it would not be relevant in this context. 
 
-The first scenario is about secrets hidden in plainsights! No specific interesting triggers for Defender here, rather good CI/CD pipeline hygiene to have, and a recurring issue in codebases.
+Details about all the scenarios of the Kubernetes Goat can be found [here](https://madhuakula.com/kubernetes-goat/about.html#:~:text=Kubernetes%20Goat%20is%20designed%20to%20be%20an%20intentionally,production%20environment%20or%20alongside%20any%20sensitive%20cluster%20resources.).
+We will not expand too much on the details here, for the sake of your not falling asleep, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. Also, the idea is not to spoil solutions and try to capture the flag by yourself if you want to leverage his work!
 
-Scenario 2 looks more interesting (for our case :)) and seems to be related to container escape! Let's try it and see what Defender brings. The first thing to notice is that this scenario is linked to container image *system-monitor*. Why does it matter? because if you remember, Defender raised 3 alerts after we deployed the cluster and one of them was the following:
-
-![image](https://user-images.githubusercontent.com/18376283/151582721-b345255d-46d6-49ef-9e47-1b83c4aa8be3.png)
-
-Let's ignore the alert and still do the scenario. What will Defender do?
-
-
+Here are the scenarios we will test using Kubernetes Goat setup and see how Defender reacts to that:
+- Scenario 2 of Kubernetes Goat is about container escape to the node. We noted that one of the alerts when we deployed Goat was already about this container with the sensitive volume mount, which is what we will leverage. Let's exploit it and abuse it by doing the following:
+ - Before escaping, we will download a suspicious file on the container, which we could use for instance to maintain persistence into the cluster or for command and control from the Internet
+ -  Evade the container to the node using the sensitive volume mount weakness and stop apt-daily-upgrade.timer service
+ -  Downloading a K8S exploitation tool such as kube-hunter
+ -  Playing with kube-hunter 
+ -  Deleting bash_history file to remove our traces
 
 
 
