@@ -192,7 +192,7 @@ The full list of detection capabilities (up-to-date) of Defender can be found he
 The list of recommendations can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
 
 
-## Testing a few scenarios...
+## Testing attack patterns
 
 Now, let's play and see how Defender reacts. A introduced, we will not test all Kubernetes Goat scenarios for various reasons:
 1. Some Kubernetes Goat scenarios relies on Docker as container engine, while AKS relies on containerd (which avoids mandatory root privileges for containers, behind other benefits)
@@ -206,9 +206,79 @@ Details about all the scenarios of the Kubernetes Goat can be found [here](https
 We will not expand too much on the details here, for the sake of your not falling asleep, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. The idea is not to spoil solutions but try to capture the flag by yourself if you want to leverage his work!
 
 Here are the scenarios we will test using Kubernetes Goat setup and see how Defender reacts to that:
-- Test Set 1: Leveraging scenario 2 of Kubernetes Goat, Docker in Docker, to trigger code execution on the pod
-- Test Set 2: Leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node
-- Test Set 3: Leveraging scenario 16. and try to play with Kubernetes API
+- Abusing pod and senstive volume mount: Leveraging scenario 2 of Kubernetes Goat, Docker in Docker, to trigger code execution on the pod
+- Abusing pod and complete host volume mount: Leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node
+- Targeting Kube API: Leveraging scenario 16. and try to play with Kubernetes API and abusing known Kubernetes service accounts threat vectors
+
+### Abusing pod and senstive volume mount
+
+**Pod used:** Health Check
+**Pod properties:**
+- Privileged Context 
+- Sensitive Mount: In the original version from Kubernetes Goat's author, *health_check* deployment has host docker socket mounted in the pod. This was a recurring threat vector in the Docker world (see, https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html). As discussed, AKS does not leverage Docker daemon anymore, but rather containerd. We therefore replaced the docker.socket mount in this pod, by mounting /var from the host and re-deployed the pod:
+
+![image](https://user-images.githubusercontent.com/18376283/156258825-d8c00393-4ddd-499c-94c3-de45f16fc9d4.png)
+
+This raised an alert in Defender, about sensitive volume mounts as previous seen for the other pods:
+
+From there, if we navigate to the pod, it is exposing a *health check* service which allows for remote code execution on the pod. Indeed, we can simply execute any command by appending them to the target host to be scanned field: 
+
+![image](https://user-images.githubusercontent.com/18376283/156259432-50fdf59e-ced7-4cb1-937d-92ef0bce3fb0.png)
+
+From there we tested the following commands:
+
+- Downloading a malicious file and executing it:
+
+![image](https://user-images.githubusercontent.com/18376283/156260030-96be932d-b37a-4dc5-b33e-37167c4ff214.png)
+
+We also copied eicar file on the host itself, in /var/tmp, using the mounted host volume in /custom/var:
+
+![image](https://user-images.githubusercontent.com/18376283/156260343-dbf73620-afc4-42af-a105-d6446ae1f9c6.png)
+
+- Deleting backup files in host's /var folder
+
+![image](https://user-images.githubusercontent.com/18376283/156260635-7eab818b-d5bd-4168-9b6d-a84b5c35fd01.png)
+
+- Deleting bash_history to cover our traces
+
+![image](https://user-images.githubusercontent.com/18376283/156261238-bbe91fee-a1d2-47ce-b0f8-5f162b300a14.png)
+
+**Results:** the following alerts were raised in Defender for Cloud:
+
+### Abusing pod and complete host volume mount
+
+**Pod used:** System Monitor
+**Pod properties:**
+- Privileged Context 
+- Sensitive Mount: the full host system / voulme is mounted in the pod, in /host-system
+
+![image](https://user-images.githubusercontent.com/18376283/156262001-14395eb9-dc3c-4ec6-a447-da7fe0b7d444.png)
+
+
+From there we tested the following:
+
+- Escape to the node using chroot (basically changing our root directory to the host's and launching bash from there):
+
+`chroot /host-system bash` 
+
+- Added a newly generated attacker controlled SSH key to authorized keys on the host
+
+- Started SSH server
+
+- Added a new user to the sudoers group
+
+
+
+
+
+
+
+
+
+3. Starting the SSH server in the pod and adding a key to keep remote control
+
+
+2. 
 
 
 
