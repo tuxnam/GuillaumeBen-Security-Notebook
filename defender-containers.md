@@ -13,7 +13,7 @@ description: Guillaume B., Cloud Security Architect
  
 <p style="color:#145DA0;">The ubiquitous soar of Kubernetes and containarized or "cloud-native" workloads over the past years has led to an important growth of the security & threat landscape as the number and sophistication of attacks targeting cloud-native environment is booming. While container and Kubernetes security can be hard and requires security practitionners to update their skillsets, a bunch of tools and products have rised in the last years to target these new threat vectors and cope with the elasticity and scalibility of these new workloads. Some of these products include Aquasecurity Trivy, Qualys, Clair, Anchore, Snyk and, the one we will investigate in this post, Microsoft Defender for containers. </p>
 
-***In this article, we will explore and test Defender for Containers against a vulnerable environment and see what it can detects or prevent but also what are the current limitations compared to other solutions on the market.***
+***In this article, we will explore and test Defender for Containers against a vulnerable environment and see what it can detects or prevent as well as a few of the current limitations compared to other solutions on the market.***
 
 <p>
 Defender for containers is a recent addition to the <a href="https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction">Microsoft Defender for Cloud</a> portfolio, which is a tool for security posture management and threat protection for multi-cloud and hybrid scenarios. Defender for containers is not really 'new', it is an evolution and merge of two previous plans in the defender portfolio: defender for container registries and defender for Kubernetes. <br />
@@ -42,7 +42,7 @@ The demo environment we will leverage will therefore be the following:
 - A set of vulnerable workloads
 
 The vulnerable workload, aka the goat in the boat, will be leveraging the awesome work of a cloud-native security specialist, Madhu Akula. <a href="https://github.com/madhuakula/kubernetes-goat">Kubernetes Goat</a> is designed to be an intentionally vulnerable cluster environment to learn and practice Kubernetes security.
-We will deploy Kubernetes Goat on our AKS cluster, go through the scenarios and see how Defender is helping to detect/mitigate related weaknesses and threats.
+We will deploy Kubernetes Goat on our AKS cluster, do some steps of the scenarios (not all of them, see why later on in this article), but also leveraging the vulnerable environment to trigger other malicious acts and see how Defender is helping to detect/mitigate related weaknesses and threats.
 <br />
 <br />
 Kubernetes Goat is originally pulling container images used in the various scenarios from Madhu's own Docker repository. For the sake of this exercice, the ability to test the vulnerability scanning features of Defender for containers, and the principle to always deploy from a trusted registry, I modified the coressponding deployment files of Kubernetes Goat to take the same container images but from the container registry we have set up for this lab. *Thanks to Madhu for his work!*
@@ -50,7 +50,7 @@ Kubernetes Goat is originally pulling container images used in the various scena
 Here is an overview of the setup with deployed namespaces: <br />
 <img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
 
-**Note:** In my case, I ued _Azure CNI_ for kubernetes network driver and _Azure_ for network policies but it does not matter in this context and is not needed either for our use case.
+**Note:** In my case, I used _Azure CNI_ for kubernetes network driver and _Azure_ for network policies but it does not matter in this context and is not needed either for our use case.
   
 ## Defender for Containers  
   
@@ -99,7 +99,6 @@ We can also notice that Defender pods are indeed coming from a deployed Daemonse
 
 ![image](https://user-images.githubusercontent.com/18376283/155593233-21ac32ad-8348-4c24-a922-1898800ca475.png)
 
-
 ## Step 2: are there some image vulnerabilities?
 
 Earlier in this article, we uploaded the various container images required for Kubernetes Goat into our Azure Container Registry. Here is what it looks like in terms of repositories:
@@ -121,6 +120,12 @@ These CVEs means that the Goat container images need some updates, to avoid intr
 
 **Note**: the detected vulnerabilities are CVEs, or software vulnerabilities in libraries or OS version used in these containers. As of today, defender for containers does not scan for CIS, secrets in container images or similar best-practices. You can however use other tools such as Trivy in order to bring that capability to your pipeline.
 
+### Can I trigger an on-demand scan?
+
+No. As of today, the scans are happening on push, on pull, and recurrently on recently pulled images from your registry (weekly basis). 
+You can expect this to evolve with the solution roadmap.
+There is however ability to leverage Defender for Containers in your CI/CD pipeline, using Trivy: https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-container-registries-cicd.
+
 ## What about runtime scanning?
 
 We deployed already the containers listed as vulnerable in the registry to our AKS cluster, did defender spot that? Yes! If we go back to our Defender portal, and go through recommendations, there is one specific to runtime container vulnerabilities (in red), next to the container registry ones (in yellow):
@@ -141,7 +146,7 @@ Check this link for more details: https://docs.microsoft.com/en-us/azure/aks/pol
 
 So, we deployed Kubernetes Goat on the cluster as you saw from the various pods listed here above in the printscreen. 
 However, Goat is meant to be intentionnally vulnerable!  
-Even if we did not start the scenarios yet, did Defender already catch some issues with this deployment?
+Even if we did not start the scenarios or triggered anything malicious yet, did Defender already catch some issues with this deployment?
 Let's jump to security alerts in the same Defender for Cloud portal and filter on our cluster:
 
 ![image](https://user-images.githubusercontent.com/18376283/155597064-df3dc78b-79dd-4a7c-a1c1-fea0c1ddae57.png)
@@ -159,7 +164,8 @@ However we would like to potentially trigger actions based on this alert or have
 1. We can see some detailed advise to mitigate the threats
 2. We have a list of ***actionable*** recommendations to prevent this threat in the future
 
-What are these mitigations exactly? Like for preventing vulnerable image in the cluster discussed here above, they are leveraging Gatekeeper, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
+**What are these mitigations exactly?** 
+Like for preventing vulnerable image in the cluster discussed here above, they are leveraging Gatekeeper, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
 You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course, but let's keep this in mind for the end of this article. 
 
 All details about Gatekeeper and Azure Policy can be found [here](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.).
@@ -186,24 +192,25 @@ The full list of detection capabilities (up-to-date) of Defender can be found he
 The list of recommendations can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
 
 
-## Let's dive into Kubernetes Goat
+## Testing a few scenarios...
 
-Now, let's play and see how Defender reacts. We will not test all Kubernetes Goat scenarios for various reasons:
+Now, let's play and see how Defender reacts. A introduced, we will not test all Kubernetes Goat scenarios for various reasons:
 1. Some Kubernetes Goat scenarios relies on Docker as container engine, while AKS relies on containerd (which avoids mandatory root privileges for containers, behind other benefits)
 2. Some scenarios are 'inner-network' specific: cross-namespace requests for instance should be tackled with Network Policies such as Calico or Azure CNI. It is not the idea to cover this here, and Defender for Cloud has no way to know what is an authorized applicative flow inside the cluster or not. 
 3. Some scenario are related to NodePort, however AKS managed clusters are usually exposed by LoadBalancer service rather than NodePort. MDC detects exposure of various sensitive applications using LoadBalancer services.
 4. One scenario has for purpose to investigate the inner layers of a container to find crypto mining commands but the job itself is not doing any crypto mining. So while Defender can detect crypto mining activities, it would not be relevant in this context. 
+5. Some scenarios would not be spotted: example of the secrets in container images discussed in previous section.
 
 Details about all the scenarios of the Kubernetes Goat can be found [here](https://madhuakula.com/kubernetes-goat/about.html#:~:text=Kubernetes%20Goat%20is%20designed%20to%20be%20an%20intentionally,production%20environment%20or%20alongside%20any%20sensitive%20cluster%20resources.).
-We will not expand too much on the details here, for the sake of your not falling asleep, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. Also, the idea is not to spoil solutions and try to capture the flag by yourself if you want to leverage his work!
+
+We will not expand too much on the details here, for the sake of your not falling asleep, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. The idea is not to spoil solutions but try to capture the flag by yourself if you want to leverage his work!
 
 Here are the scenarios we will test using Kubernetes Goat setup and see how Defender reacts to that:
-- Scenario 2 of Kubernetes Goat is about container escape to the node. We noted that one of the alerts when we deployed Goat was already about this container with the sensitive volume mount, which is what we will leverage. Let's exploit it and abuse it by doing the following:
- - Before escaping, we will download a suspicious file on the container, which we could use for instance to maintain persistence into the cluster or for command and control from the Internet
- -  Evade the container to the node using the sensitive volume mount weakness and stop apt-daily-upgrade.timer service
- -  Downloading a K8S exploitation tool such as kube-hunter
- -  Playing with kube-hunter 
- -  Deleting bash_history file to remove our traces
+- Test Set 1: Leveraging scenario 2 of Kubernetes Goat, Docker in Docker, to trigger code execution on the pod
+- Test Set 2: Leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node
+- Test Set 3: Leveraging scenario 16. and try to play with Kubernetes API
+
+
 
 
 
