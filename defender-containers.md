@@ -261,6 +261,9 @@ From there we tested the following:
 
 `chroot /host-system bash` 
 
+- Installed OpenSSH server on the host 
+
+
 - Added a newly generated attacker controlled SSH key to authorized keys on the host
 
 - Started SSH server
