@@ -242,9 +242,8 @@ Here are the scenarios we will test using Kubernetes Goat setup and see how Defe
 
 ![image](https://user-images.githubusercontent.com/18376283/156258825-d8c00393-4ddd-499c-94c3-de45f16fc9d4.png)
 
-This raised an alert in Defender, about sensitive volume mounts as previous seen for the other pods:
-
-From there, if we navigate to the pod, it is exposing a *health check* service which allows for remote code execution on the pod. Indeed, we can simply execute any command by appending them to the target host to be scanned field: 
+This raised an alert in Defender, about sensitive volume mounts as previous seen for the other pods.
+From there, if we navigate to the pod, it is exposing a *health check* service which allows for remote code execution on the pod. Indeed, we can simply execute any command by appending them to the target host to be scanned field.
 
 ![image](https://user-images.githubusercontent.com/18376283/156259432-50fdf59e-ced7-4cb1-937d-92ef0bce3fb0.png)
 
@@ -265,8 +264,6 @@ We also copied eicar file on the host itself, in /var/tmp, using the mounted hos
 - Deleting bash_history to cover our traces
 
 ![image](https://user-images.githubusercontent.com/18376283/156261238-bbe91fee-a1d2-47ce-b0f8-5f162b300a14.png)
-
-**Results:** the following alerts were raised in Defender for Cloud:
 
 ### Abusing pod and complete host volume mount
 
@@ -355,6 +352,7 @@ Let's look at two of them in more details:
 
 ![image](https://user-images.githubusercontent.com/18376283/156613357-a6b29344-241d-4fee-9f5c-2fd1a31f13df.png)
 
+**Note:** Some tests did not trigger any alerts (Deleting backup files in host's /var folder, or copying *eicar* file to host from a pod). The list of alerts and detection capabilities should grow over time. Defender will however always make a informed decision between raising an alert or in some scenarios relying on a recommendation only (sensitive volume mount in this case), to avoid alert fatigue.
 
 ## Conclusion
 
@@ -365,6 +363,13 @@ In this article we took a vulnerable AKS environment and looked at the capabilit
 
 ## References
 
+Kubernetes RBAC - https://kubernetes.io/docs/reference/access-authn-authz/rbac/<br />
+Kubernetes Goat - https://madhuakula.com/kubernetes-goat/index.html<br />
+AKS Documentation - https://docs.microsoft.com/en-us/azure/aks/<br />
+MITRE for Kubernetes - https://www.microsoft.com/security/blog/2020/04/02/attack-matrix-kubernetes/
+<br />
+<br ?>
 
+*Special thanks to Microsoft's Defender for Container Product Group for their support and knowledge sharing*
 
 
