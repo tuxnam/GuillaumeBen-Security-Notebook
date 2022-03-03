@@ -210,7 +210,7 @@ They are listed as recommendations, amongst others in your Defender for Cloud Se
 
 ![image](https://user-images.githubusercontent.com/18376283/155599524-362ea59b-dcb8-46c1-bdc4-23b89042dfc8.png)
 
-The full list of detection capabilities (alerts) of Defender can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/alerts-reference#alerts-k8scluster
+The full list of detection capabilities (alerts) of Defender can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/alerts-reference#alerts-k8scluster <br />
 The list of recommendations can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
 
 
@@ -218,16 +218,16 @@ The list of recommendations can be found here: https://docs.microsoft.com/en-us/
 
 Now, let's play and see how Defender reacts. As previously introduced, we will not test all Kubernetes Goat scenarios for various reasons:
 
-1. Some Kubernetes Goat scenarios relies on Docker as container engine, while AKS relies on containerd (which avoids mandatory root privileges for containers, behind other benefits)
+1. Some Kubernetes Goat scenarios relies on Docker engine, while AKS relies on containerd (which avoids mandatory root privileges for containers, behind other benefits)
 2. Some scenarios are 'inner-network' specific: cross-namespace requests for instance should be tackled with Network Policies such as Calico or Azure CNI. It is not the idea to cover this here, and Defender for Cloud has no way to know what is an authorized applicative flow inside the cluster or not. 
 3. Some scenario are related to NodePort, however AKS managed clusters are usually exposed by LoadBalancer service rather than NodePort. MDC detects exposure of various sensitive applications using LoadBalancer services.
 4. One scenario has for purpose to investigate the inner layers of a container to find crypto mining commands but the job itself is not doing any crypto mining. So while Defender can detect crypto mining activities, it would not be relevant in this context. 
 5. Some scenarios would not be spotted: example of the secrets in container images discussed in previous section.
-
+<br />
 Details about all the scenarios of the Kubernetes Goat can be found [here](https://madhuakula.com/kubernetes-goat/about.html#:~:text=Kubernetes%20Goat%20is%20designed%20to%20be%20an%20intentionally,production%20environment%20or%20alongside%20any%20sensitive%20cluster%20resources.).
-
+<br />
 We will not expand too much on the details here, for the sake of your not falling asleep, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. The idea is not to spoil solutions but try to capture the flag by yourself if you want to leverage his work!
-
+<br />
 Here are the scenarios we will test using Kubernetes Goat setup and see how Defender reacts to that:
 - Abusing pod and senstive volume mount: Leveraging scenario 2 of Kubernetes Goat, Docker in Docker, to trigger code execution on the pod
 - Abusing pod and complete host volume mount: Leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node
@@ -235,9 +235,9 @@ Here are the scenarios we will test using Kubernetes Goat setup and see how Defe
 
 ### Abusing pod and senstive volume mount
 
-**Pod used:** Health Check
-**Pod properties:**
-- Privileged Context 
+**Pod used:** Health Check <br />
+**Pod properties:** <br />
+- Privileged Context  <br />
 - Sensitive Mount: In the original version from Kubernetes Goat's author, *health_check* deployment has host docker socket mounted in the pod. This was a recurring threat vector in the Docker world (see, https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html). As discussed, AKS does not leverage Docker daemon anymore, but rather containerd. We therefore replaced the docker.socket mount in this pod, by mounting /var from the host and re-deployed the pod:
 
 ![image](https://user-images.githubusercontent.com/18376283/156258825-d8c00393-4ddd-499c-94c3-de45f16fc9d4.png)
@@ -270,9 +270,9 @@ We also copied eicar file on the host itself, in /var/tmp, using the mounted hos
 
 ### Abusing pod and complete host volume mount
 
-**Pod used:** System Monitor
-**Pod properties:**
-- Privileged Context 
+**Pod used:** System Monitor<br />
+**Pod properties:**<br />
+- Privileged Context <br />
 - Sensitive Mount: the full host system / voulme is mounted in the pod, in /host-system
 
 ![image](https://user-images.githubusercontent.com/18376283/156262001-14395eb9-dc3c-4ec6-a447-da7fe0b7d444.png)
@@ -303,8 +303,8 @@ sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/
 
 ### Targeting Kube API
 
-**Pod used:** Hunger Check
-**Pod properties:**
+**Pod used:** Hunger Check <br />
+**Pod properties:** <br />
 - Secret reader RBAC role
 
 This pod has in fact extra-privileges being assigned. Indeed, a RBAC role 'secret reader' is assigned to the service account bind to this pod. Service accounts are identities in Kubernetes world, assigned to resources such as pods, which allows them to communicate with the Kube API, with certain privileges. 
