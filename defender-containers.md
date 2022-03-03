@@ -113,7 +113,7 @@ let's have a first look at our Kubernetes cluster and the impact of enabling Def
 ![image](https://user-images.githubusercontent.com/18376283/155592893-76703234-46e0-4209-831d-a557da469f28.png)
 ![image](https://user-images.githubusercontent.com/18376283/155593066-724848e0-af6d-4a3d-828d-40a28d9e4d9d.png)
 
-We can also notice that Defender pods are indeed coming from a deployed daemonset:
+We can also notice the daemonset we referred to:
 
 ![image](https://user-images.githubusercontent.com/18376283/155593233-21ac32ad-8348-4c24-a922-1898800ca475.png)
 
@@ -124,7 +124,7 @@ Here is what it looks like in terms of repositories:
 
 ![image](https://user-images.githubusercontent.com/18376283/151572088-8d7b0994-0788-4219-b169-875d32223540.png)
 
-Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we can navigate to the Defender for Cloud portal, *Workload Protection* tab. At the same time, we confirm that our Kubernetes cluster inside the subscription is covered.
+Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we can navigate to the Defender for Cloud portal, *Workload Protection* tab. At the same time, we can confirm that our Kubernetes clusters inside the target subscription are covered.
 
 ![image](https://user-images.githubusercontent.com/18376283/151572496-050f3956-bd78-40f5-874b-f9d36142e772.png)
 
@@ -163,7 +163,7 @@ This is in fact one of the recommendation also made by Defender for Containers a
 
 ![image](https://user-images.githubusercontent.com/18376283/155594817-dcb97ae1-9263-4243-b639-ec0918ff566b.png)
 
-You can check this [page](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes)  for more details on Azure Policy for Kubernetes, and this (one)[https://docs.microsoft.com/en-us/azure/aks/policy-reference#policy-definitions] for the list of policies, including gating deployment of vulnerable images.
+You can check this [page](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes)  for more details on Azure Policy for Kubernetes, and this [one](https://docs.microsoft.com/en-us/azure/aks/policy-reference#policy-definitions) for the list of policies, including gating deployment of vulnerable images.
 
 ## Ok, but we deployed a goat, did Defender detect something else?
 
@@ -192,13 +192,13 @@ This all happens in the 'take action' tab:
 Like for preventing vulnerable image in the cluster discussed here above, they are leveraging Gatekeeper, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
 You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course, but let's keep this in mind for the end of this article. 
 
-### But did Defender detected all potential issues and weaknesses?
+### But did Defender detect all potential issues and weaknesses?
 
-Only four alerts? Uh. But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the above list of recommendations, in alert details, let's click on 'view all recommendations'...surprise! There is way more problems in our Kubernetes environment than we thought! 
+Only four alerts? Uh. But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the alert details pane, let's click on 'view all recommendations'...surprise! There is way more problems in our Kubernetes environment than we thought! 
 
 ![image](https://user-images.githubusercontent.com/18376283/155598547-8672bb32-2ddf-4e4d-97d5-d7a5e9a7a520.png)
 
-We see clearly here recommendations for many best-practices in a Kubernetes environment. 
+We see clearly here recommendations for many best-practices in a Kubernetes environment. These recommendations can easily be mapped to [CIS best-practices](https://www.cisecurity.org/benchmark/kubernetes).
 Most of these recommendations can even be remediated or denied in a few clicks:
 
 ![image](https://user-images.githubusercontent.com/18376283/155598867-45be9135-ab46-4d6b-9716-36e1b65e13c3.png)
