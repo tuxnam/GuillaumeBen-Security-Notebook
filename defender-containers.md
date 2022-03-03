@@ -60,13 +60,12 @@ As an example:
 
 ...becomes...
 
-![Uploading image.png…]()
-
+![image](https://user-images.githubusercontent.com/18376283/156629766-bba57ca2-d232-4071-aef1-61f7932e493f.png)
 
 *Thanks to Madhu for his awesome work!*
 <p></p>
 
-Here is an overview of the complete setup with deployed namespaces: <br />
+Here is an overview of the complete setup with deployed namespaces (highlighted the namespaces were pods from k8s goat are deployed): <br />
 <img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
 
 **Note:** In my case, I used _Azure CNI_ for kubernetes network driver and _Azure_ for network policies but it does not matter in this context and is not needed either for our use case.
@@ -93,7 +92,7 @@ The sources analyzed by Defender are multiple:
 - Audit logs and security events from the API server
 - Cluster configuration information from the control plane
 - Workload configuration from Azure Policy
-- Security signals and events from the node level
+- Security signals and events from the node/pod
 
 In terms of deployment, that means:
 A Defender profile deployed to each node provides the runtime protections and collects signals from nodes using eBPF technology: it relies on a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/">DaemonSet</a> to ensure all nodes in the cluster are covered.
@@ -109,12 +108,12 @@ So after setting up Kubernetes (standard set up, two nodes)(you can refer [here]
 **Note:** _Arc-enabled cluster_ is for Kubernetes clusters on IaaS in another Cloud or on your premises. 
 Details on setup for all type of clusters, including EKS, can be found [here](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks).
 
-let's have a first look at our Kubernetes cluster and the impact of enabling Defender: we can clearly see the Defender Profile related-pods (deployed through the Daemonset) (in red) and the Gatekeeper pods (in green), next to the Kubernetes Goat (in gold) related namespaces and pods:
+let's have a first look at our Kubernetes cluster and the impact of enabling Defender: we can clearly see the Defender Profile related-pods (deployed through the daemonset) (in red) and the Gatekeeper pods (in green), next to the Kubernetes Goat (in gold) related namespaces and pods:
 
 ![image](https://user-images.githubusercontent.com/18376283/155592893-76703234-46e0-4209-831d-a557da469f28.png)
 ![image](https://user-images.githubusercontent.com/18376283/155593066-724848e0-af6d-4a3d-828d-40a28d9e4d9d.png)
 
-We can also notice that Defender pods are indeed coming from a deployed Daemonset:
+We can also notice that Defender pods are indeed coming from a deployed daemonset:
 
 ![image](https://user-images.githubusercontent.com/18376283/155593233-21ac32ad-8348-4c24-a922-1898800ca475.png)
 
