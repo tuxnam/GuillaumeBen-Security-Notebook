@@ -456,7 +456,7 @@ header {
 }
 
 header h1 {
-  width: 540px;
+  width: 750px;
   margin-top: 0;
   margin-bottom: 0.2em;
   font-size: 72px;
@@ -467,7 +467,7 @@ header h1 {
 }
 
 header h2 {
-  width: 540px;
+  width: 750px;
   margin-top: 0;
   margin-bottom: 0;
   font-size: 26px;
@@ -479,7 +479,7 @@ header h2 {
 
 .inner {
   position: relative;
-  width: 940px;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -490,7 +490,7 @@ header h2 {
 
 #main-content {
   float: left;
-  width: 690px;
+  width: 70%;
 }
 
 #main-content img {
@@ -500,7 +500,7 @@ header h2 {
 aside#sidebar {
   float: right;
   width: 200px;
-  min-height: 504px;
+  min-height: 0px;
   padding-left: 20px;
   font-size: 12px;
   line-height: 1.3;
