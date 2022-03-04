@@ -480,7 +480,7 @@ header h2 {
 
 .inner-top {
   display: inline-block;
-  text-align: left;
+  text-align: center;
 }
 
 .inner {
@@ -489,6 +489,8 @@ header h2 {
 }
 
 #content-wrapper {
+  display: inline-block;
+  width: 100%;
   padding-top: 30px;
   border-top: solid 1px #fff;
   text-align: center;
