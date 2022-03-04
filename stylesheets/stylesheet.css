@@ -492,8 +492,7 @@ header h2 {
 .inner {
   display: inline-block;
   text-align: left;
-  margin-left: 40 auto;
-  
+  width: 70%;  
 }
 
 #content-wrapper {
