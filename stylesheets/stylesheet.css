@@ -448,6 +448,7 @@ a:hover {
 }
 
 header {
+  text-align: center;
   padding-top: 40px;
   padding-bottom: 40px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
@@ -459,7 +460,7 @@ header h1 {
   width: 750px;
   margin-top: 0;
   margin-bottom: 0.2em;
-  font-size: 72px;
+  font-size: 64px;
   font-weight: normal;
   line-height: 1;
   color: #fff;
@@ -487,15 +488,15 @@ header h2 {
   padding-top: 30px;
   border-top: solid 1px #fff;
   margin: 0 auto;
+  texr-align:center;
 }
 
 #main-content {
-  float: left;
   width: 80%;
 }
 
 #main-content img {
-  max-width: 100%;
+  max-width: 75%;
 }
 
 a.button {
