@@ -39,6 +39,8 @@ This evoltion is however inline with Microsoft's vision of end-to-end container 
 #### 7. Using policies to resolve/prevent weaknesses
 ####  8. A note on CI/CD integration
 
+<p></p>
+
 ## The setup and the goat story
 
 In order to have a valuable testing environment, we need to have a Kubernetes cluster of course, a container registry, container images but most importantly weaknesses and the ability to exploit them to see how Defender for containers can help. <br />
