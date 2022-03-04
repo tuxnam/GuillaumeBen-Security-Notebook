@@ -492,6 +492,8 @@ header h2 {
 .inner {
   display: inline-block;
   text-align: left;
+  margin-left: 0 auto;
+  
 }
 
 #content-wrapper {
@@ -499,7 +501,7 @@ header h2 {
   border-top: solid 1px #fff;
 }
 
-#inner img {
+.inner img {
   max-width: 50%;
 }
 
@@ -598,7 +600,7 @@ form {
 
 /* GENERAL ELEMENT TYPE STYLES */
 
-#inner h1 {
+.inner h1 {
   margin-top: 0;
   margin-bottom: 0;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
@@ -609,14 +611,14 @@ form {
   letter-spacing: -1px;
 }
 
-#inner h1:before {
+.inner h1:before {
   padding-right: 0.3em;
   margin-left: -0.9em;
   color: #9ddcff;
   content: "/";
 }
 
-#inner h2 {
+.inner h2 {
   margin-bottom: 8px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 22px;
@@ -625,14 +627,14 @@ form {
   text-indent: 4px;
 }
 
-#inner h2:before {
+.inner h2:before {
   padding-right: 0.3em;
   margin-left: -1.5em;
   content: "//";
   color: #9ddcff;
 }
 
-#inner h3 {
+.inner h3 {
   margin-top: 24px;
   margin-bottom: 8px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
@@ -642,14 +644,14 @@ form {
   text-indent: 3px;
 }
 
-#inner h3:before {
+.inner h3:before {
   padding-right: 0.3em;
   margin-left: -2em;
   content: "///";
   color: #9ddcff;
 }
 
-#inner h4 {
+.inner h4 {
   margin-bottom: 8px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 15px;
@@ -665,7 +667,7 @@ h4:before {
   color: #9ddcff;
 }
 
-#inner h5 {
+.inner h5 {
   margin-bottom: 8px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 14px;
@@ -679,7 +681,7 @@ h5:before {
   color: #9ddcff;
 }
 
-#inner h6 {
+.inner h6 {
   margin-bottom: 8px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: .8em;
