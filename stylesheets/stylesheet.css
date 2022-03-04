@@ -488,6 +488,7 @@ header h2 {
   width: 70%;  
   margin: 0 auto;
   padding: 10px;
+  position: relative;
 }
 
 #content-wrapper {
