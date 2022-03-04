@@ -234,6 +234,7 @@ Here are the scenarios we will test using Kubernetes Goat setup and see how Defe
 - Abusing pod and senstive volume mount: Leveraging scenario 2 of Kubernetes Goat, Docker in Docker, to trigger code execution on the pod
 - Abusing pod and complete host volume mount: Leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node
 - Targeting Kube API: Leveraging scenario 16. and try to play with Kubernetes API and abusing known Kubernetes service accounts threat vectors
+- Deploying in the kube-system namespace
 
 ### Abusing pod and senstive volume mount
 
@@ -335,6 +336,19 @@ But we can therefore use the correct namespace and run the following command to 
 
 ![image](https://user-images.githubusercontent.com/18376283/156610843-96d8321b-3919-4a00-9bc8-db5eaa6a9a47.png)
 
+### Deploying in the kube-system namespace
+
+*Kube-system* namespace is a reserved namespace for all components relating to the Kubernetes system. Deploying in that namespace should be forbidden and can lead to damage or security compromise of the full cluster.
+
+For this scenario, I will use one of the pod provided by Kubernetes Goat, *hacker-container* which is essentially a pod used as hacker playground to further footprinting or compromise a kubernetes/container environment. We will write a simple YAML file to deploy this container in the *kube-system* namespace.
+
+![image](https://user-images.githubusercontent.com/18376283/156728980-c7c3142d-f1c7-46fc-9e7b-c101cbb57646.png)
+
+We notice at the same time that this deployment has *NET_ADMIN* capability as well as a sensitive volume mount, */etc*.
+Let's deploy that pod in the cluster:
+
+`kubectl apply -f maliciousYAML.yaml`
+
 ### Looking at the alerts!
 
 Ok so we did a bunch of malicious operations in our environment and it would be good now to check if Defender for Cloud spotted something? We should of course first, in a real environment, have applied recommendations which we discussed earlier in this article, and enforced policies to avoid malicious operations from happening, but the idea was to test the alerting capability as well!
@@ -342,9 +356,9 @@ Ok so we did a bunch of malicious operations in our environment and it would be 
 If we go back to our Defender for Cloud panel, in the alerts section, we can see we triggered a bunch of alerts:
 Most of the scenarios we tested did trigger suspicious activities, next to the ones raised when we deployed Kubernetes Goat in our environment.
 
-![image](https://user-images.githubusercontent.com/18376283/156612095-00af5a18-a818-450b-8b50-f2713272b1d1.png)
+![image](https://user-images.githubusercontent.com/18376283/156728549-c2c93e2e-f791-4d62-8022-d705d54593e9.png)
 
-Let's look at two of them in more details:
+Let's look at three of them in more details:
 
 1. Detected suspicious use of the useradd command
 
@@ -354,7 +368,17 @@ Let's look at two of them in more details:
 
 ![image](https://user-images.githubusercontent.com/18376283/156613357-a6b29344-241d-4fee-9f5c-2fd1a31f13df.png)
 
-**Note:** Some tests did not trigger any alerts (Deleting backup files in host's /var folder, or copying *eicar* file to host from a pod). The list of alerts and detection capabilities should grow over time. Defender will however always make a informed decision between raising an alert or in some scenarios relying on a recommendation only (sensitive volume mount in this case), to avoid alert fatigue.
+
+3. New container in the kube-system namespace detected
+
+![image](https://user-images.githubusercontent.com/18376283/156729443-d5880108-0cf5-4193-a4ab-cb214b01e18f.png)
+
+
+**Note:** Some tests did not trigger any alerts (Deleting backup files in host's /var folder, copying *eicar* file to host from a pod or yet the *NET_ADMIN* capability in our hacker container). The list of alerts and detection capabilities should grow over time. Defender will however always make a informed decision between raising an alert or in some scenarios relying on a recommendation only (sensitive volume mount in this case), to avoid alert fatigue. Example, for the capability *NET_ADMIN*, if we look back at [https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference](recommendations list), it is not one of them. For now, only capability *CAPSYSADMIN* is. This means you could see non-compliant clusters and pods for that policy, prevent that (by denying the policy for a specific cluster) but Defender will not raise an alert:
+
+![image](https://user-images.githubusercontent.com/18376283/156730083-0480eff8-695f-4f04-8e26-97817ed83603.png)
+
+All these recommendations in general should lead to deploying policies to remediate the security of the environment, and prevent malicious acts leading to alerts from even be possible.
 
 ## Conclusion
 
