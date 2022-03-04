@@ -478,8 +478,14 @@ header h2 {
   letter-spacing: 0;
 }
 
+.inner-top {
+  display: inline-block;
+  text-align: left;
+}
+
 .inner {
   display: inline-block;
+  text-align: left;
 }
 
 #content-wrapper {
