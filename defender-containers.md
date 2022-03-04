@@ -6,7 +6,7 @@ description: Guillaume B., Cloud Security Architect
 
 # A goat in the boat: a look at how Defender for Containers protects your clusters
 
-### In this article, we will explore and test Defender for Containers against a vulnerable environment and see what it can detects or prevent and how we can leverage it to make our Kubernetes workloads safer.
+<span class="subtitle">In this article, we will explore and test Defender for Containers against a vulnerable environment and see what it can detects or prevent and how we can leverage it to make our Kubernetes workloads safer.</span>
 
 
 <p style="width: 100%; text-align: center;">
