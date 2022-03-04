@@ -480,16 +480,16 @@ header h2 {
 .inner {
   position: relative;
   width: 90%;
-  margin: 0 auto;
 }
 
 #content-wrapper {
   padding-top: 30px;
   border-top: solid 1px #fff;
+  margin: 0 auto;
 }
 
 #main-content {
-  float: left;
+  float: center;
   width: 70%;
 }
 
