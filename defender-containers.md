@@ -6,6 +6,10 @@ description: Guillaume B., Cloud Security Architect
 
 # A goat in the boat: a look at how Defender for Containers protects your clusters
 
+
+###In this article, we will explore and test Defender for Containers against a vulnerable environment and see what it can detects or prevent and how we can leverage it to make our Kubernetes workloads safer.
+
+
 <p style="width: 100%; text-align: center;">
 <img src="images/kuby-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="Defender for Containers" >
 <span style="display: block; font-size: 12px;">Source: original picture (without the intruder) is from <a href="https://www.cncf.io/phippy/#:~:text=The%20Illustrated%20Children%E2%80%99s%20Guide%20to%20Kubernetes%20The%20Illustrated,try%20to%20explain%20software%20engineering%20to%20their%20children.">Matt Butcher and his illustrated guide of Kubernetes</a></span>
@@ -16,7 +20,6 @@ description: Guillaume B., Cloud Security Architect
 > Some of these products include Trivy, Qualys, Clair, Anchore, Snyk, a myriad of good open-source tools and, the one we will investigate in this post, Microsoft Defender for
 > containers. 
 
-***In this article, we will explore and test Defender for Containers against a vulnerable environment and see what it can detects or prevent and how we can leverage it to make our Kubernetes workloads safer.***
 
 ## What is Defender for Containers?
 
