@@ -41,9 +41,9 @@ This evoltion is however inline with Microsoft's vision of end-to-end container 
 
 <p></p>
 
-<a name="Item-1">
+<a name="Item-1"></a>
 ## The setup and the goat story
-</a>
+
 
 In order to have a valuable testing environment, we need to have a Kubernetes cluster of course, a container registry, container images but most importantly weaknesses and the ability to exploit them to see how Defender for containers can help. <br />
 
@@ -79,11 +79,11 @@ Here is an overview of the complete setup with deployed namespaces (highlighted 
 
 **Note:** In my case, I used _Azure CNI_ for kubernetes network driver and _Azure_ for network policies but it does not matter in this context and is not needed either for our use case.
  
-<a name="Item-2">
+<a name="Item-2"></a>
 ## Defender for Containers 
-</a>
+
   
-### What does it brings?
+### What does it bring?
 
 The idea of this article is not to explore or market Defender for containers, all details can be found in the official ![documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks) or this ![article](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/introducing-microsoft-defender-for-containers/ba-p/2952317). 
 <br /> Rather, we will describe here the main features of the product and what they mean in terms of deployment/usage. 
