@@ -447,6 +447,12 @@ a:hover {
   color: #2268b2;
 }
 
+#main-content {
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
 header {
   text-align: center;
   padding-top: 40px;
@@ -486,20 +492,11 @@ header h2 {
 .inner {
   display: inline-block;
   text-align: center;
-  width: 80%;
 }
 
 #content-wrapper {
-  width: 100%;
   padding-top: 30px;
   border-top: solid 1px #fff;
-  margin: 0 auto;
-}
-
-#main-content {
-  text-align: left;
-  width: 100%;
-  display: inline-block;
 }
 
 #main-content img {
