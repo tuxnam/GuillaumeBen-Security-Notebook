@@ -496,6 +496,12 @@ header h2 {
   margin: 0 auto;
 }
 
+#main-content {
+  text-align: left;
+  width: 100%;
+  display: inline-block;
+}
+
 #main-content img {
   max-width: 50%;
 }
