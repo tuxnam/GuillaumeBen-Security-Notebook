@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Guillaume Security Notebook
+title: Guillaume's Security Notebook
 description: Guillaume B., Cloud Security Architect
 ---
 
