@@ -454,7 +454,6 @@ header {
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
   background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
   border-bottom: solid 1px #275da1;
-  margin: 0 auto;
 }
 
 header h1 {
@@ -480,7 +479,8 @@ header h2 {
 }
 
 .inner {
-  position: relative;
+  display: inline-block;
+  
   width: 90%;
 }
 
