@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: Guillaume's Security Notebook
 description: Guillaume B., Cloud Security Architect
 ---
