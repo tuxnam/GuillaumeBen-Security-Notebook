@@ -492,7 +492,7 @@ header h2 {
 .inner {
   display: inline-block;
   text-align: left;
-  margin-left: 0 auto;
+  margin-left: 40 auto;
   
 }
 
@@ -502,7 +502,8 @@ header h2 {
 }
 
 .inner img {
-  max-width: 50%;
+  max-width: 40%;
+  height: auto;
 }
 
 a.button {
