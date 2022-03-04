@@ -31,7 +31,7 @@ This evoltion is however inline with Microsoft's vision of end-to-end container 
 ## Content of this article
 
 #### [1. The setup and the goat story](#Item-1)
-#### 2. Exploring Defender for Containers
+#### [2. Meet Defender for Containers](#Item-2)
 #### 3. Enabling Defender 
 #### 4. Images vulnerabilities
 #### 5. First look at cluster alerts
@@ -78,8 +78,10 @@ Here is an overview of the complete setup with deployed namespaces (highlighted 
 <img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
 
 **Note:** In my case, I used _Azure CNI_ for kubernetes network driver and _Azure_ for network policies but it does not matter in this context and is not needed either for our use case.
-  
-## Defender for Containers  
+ 
+<a name="Item-2">
+## Defender for Containers 
+</a>
   
 ### What does it brings?
 
