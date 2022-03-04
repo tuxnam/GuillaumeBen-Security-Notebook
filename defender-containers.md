@@ -12,6 +12,7 @@ description: Guillaume B., Cloud Security Architect
 <p style="width: 100%; text-align: center;">
 <img src="images/kuby-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="Defender for Containers" >
 <span style="display: block; font-size: 12px;">Source: original picture (without the intruder) is from <a href="https://www.cncf.io/phippy/#:~:text=The%20Illustrated%20Children%E2%80%99s%20Guide%20to%20Kubernetes%20The%20Illustrated,try%20to%20explain%20software%20engineering%20to%20their%20children.">Matt Butcher and his illustrated guide of Kubernetes</a></span>
+ <p></p>
 </p>
  
 > The skyrocketting usage Kubernetes and containarized workloads over the past years has led to new attack vectors. 
@@ -19,6 +20,7 @@ description: Guillaume B., Cloud Security Architect
 > Some of these products include Trivy, Qualys, Clair, Anchore, Snyk, a myriad of good open-source tools and, the one we will investigate in this post, Microsoft Defender for
 > containers. 
 
+ <p></p>
 
 ## What is Defender for Containers?
 
