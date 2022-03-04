@@ -485,8 +485,7 @@ header h2 {
 #content-wrapper {
   padding-top: 30px;
   border-top: solid 1px #fff;
-  margin: 0 auto;
-  texr-align:center;
+  text-align:center;
 }
 
 #main-content {
