@@ -128,11 +128,10 @@ dfn {
 }
 
 .subtitle {
-  margin-top: 24px;
-  margin-bottom: 8px;
+  margin-top: 32px;
+  margin-bottom: 15px;
   font-family: Helvetica, Arial, serif;
   font-size: 18px;
-  font-weight: bold;
   color: #474747;
   text-indent: 3px;
 }
