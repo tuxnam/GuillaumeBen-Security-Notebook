@@ -147,6 +147,21 @@ h1 {
   font-size: 2em;
 }
 
+h1 a {
+  text-decoration: none;
+  color: fff;
+}
+
+h1 a:hover {
+  text-decoration: none;
+  color: fff;
+}
+
+h1 a:visited {
+  text-decoration: none;
+  color: fff;
+}
+
 /**
  * Address styling not present in IE 8/9.
  */
