@@ -127,6 +127,16 @@ dfn {
   font-style: italic;
 }
 
+.subtitle {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
+  font-size: 18px;
+  font-weight: bold;
+  color: #474747;
+  text-indent: 3px;
+}
+
 /**
  * Address variable `h1` font-size and margin within `section` and `article`
  * contexts in Firefox 4+, Safari, and Chrome.
