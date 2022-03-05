@@ -45,32 +45,35 @@ This evoltion is however inline with Microsoft's vision of end-to-end container 
 <a name="Item-1"></a>
 ## The setup and the goat story
 
+We will first start by setting up a valuable testing environment, with a simple Kubernetes cluster, a container registry, container images but most importantly weaknesses and the ability to exploit them to see how Defender for containers can help. <br />
 
-In order to have a valuable testing environment, we need to have a Kubernetes cluster of course, a container registry, container images but most importantly weaknesses and the ability to exploit them to see how Defender for containers can help. <br />
-
-The demo environment we leverage for this article will therefore be the following:
+The demo environment will therefore consist of the following assets:
 - One Azure Kubernetes cluster (could be any CNCF-compliant cluster)
 - One Azure Container registry 
 - Defender for containers enabled on the target resources
 - One GitHub basic pipeline (*optional*)
 - A vulnerable workload
 
-### Meet our testing environment and Kubernetes Goat 
+### Introducing Kubernetes Goat and detailing the testing environment 
 
-The vulnerable workload, aka the goat in the boat, will be leveraging the awesome work of a cloud-native security specialist, Madhu Akula. 
+The vulnerable workload, aka the goat in the boat, will be leveraging the awesome work of a DevOps security specialist, Madhu Akula. 
 <a href="https://github.com/madhuakula/kubernetes-goat">Kubernetes Goat</a> is designed to be an intentionally vulnerable cluster environment to learn and practice Kubernetes security. <br />
-We will deploy Kubernetes Goat on our cluster, do some steps of the scenarios (not all of them, see why later on in this article), but also leveraging the vulnerable environment to trigger other malicious acts and see how Defender is helping to detect/mitigate related weaknesses and threats.
+We will deploy Kubernetes Goat on our cluster, do some steps of the scenarios proposed, but also trying to abuse the vulnerable environment itself and see how Defender can help to detect/mitigate related weaknesses and threats.
 <br />
 <br />
-Kubernetes Goat is originally pulling container images used in the various scenarios from Madhu's own Docker repository. 
-For the sake of this exercice, the ability to test the vulnerability scanning features of Defender for containers, and the principle to always deploy from a trusted registry, we will modify the coressponding deployment files of Kubernetes Goat to take the same container images but from the container registry we have set up for this lab. 
+Kubernetes Goat is originally pulling container images used in the various scenarios from the author's own Docker repository. For the sake of this exercice, the ability to test the vulnerability scanning features of Defender for containers, and the principle to always deploy from a trusted registry, we will adapt the deployment files of Kubernetes Goat to take the same container images but from the container registry we have set up for this lab. 
+<br />
 As an example:
 
+<div style="text-align: center">
 ![image](https://user-images.githubusercontent.com/18376283/156624921-5a46eb43-422f-433e-a591-ae837cad2c89.png)
-
+</div>
+ 
 ...becomes...
 
+<div style="text-align: center">
 ![image](https://user-images.githubusercontent.com/18376283/156629766-bba57ca2-d232-4071-aef1-61f7932e493f.png)
+</div>
 
 *Thanks to Madhu for his awesome work!*
 <p></p>
