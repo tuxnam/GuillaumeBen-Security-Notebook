@@ -250,34 +250,49 @@ However we would like to potentially trigger actions based on this alert or have
 This all happens in the 'take action' tab:
 
 <div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156884308-b0036960-56b6-46b9-93f8-c236d753d06f.png" />
 <img src="https://user-images.githubusercontent.com/18376283/155598238-45ee9a3d-c72c-4256-b5c6-8f38cd7f5679.png" />
 </div>
 <p></p>
 
 1. We can see some detailed advise to mitigate the threats
 2. We have a list of ***actionable*** recommendations to prevent this threat in the future
+
 <p></p>
+
 **What are these mitigations exactly?** 
 Like for preventing vulnerable image in the cluster discussed here above, they are leveraging Gatekeeper, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
-You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course, but let's keep this in mind for the end of this article. 
+You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course.
 
 ### But did Defender detect all potential issues and weaknesses?
 
 Only four alerts? Uh. But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the alert details pane, let's click on 'view all recommendations'...surprise! There is way more problems in our Kubernetes environment than we thought! 
 
-![image](https://user-images.githubusercontent.com/18376283/155598547-8672bb32-2ddf-4e4d-97d5-d7a5e9a7a520.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/155598547-8672bb32-2ddf-4e4d-97d5-d7a5e9a7a520.png" />
+</div>
+
+<p></p>
 
 We see clearly here recommendations for many best-practices in a Kubernetes environment. These recommendations can easily be mapped to [CIS best-practices](https://www.cisecurity.org/benchmark/kubernetes).
 Most of these recommendations can even be remediated or denied in a few clicks:
 
-![image](https://user-images.githubusercontent.com/18376283/155598867-45be9135-ab46-4d6b-9716-36e1b65e13c3.png)
-![image](https://user-images.githubusercontent.com/18376283/155599135-188c465b-361f-4ca2-8de4-779ad3f2c613.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/155598867-45be9135-ab46-4d6b-9716-36e1b65e13c3.png" />
+<img src="https://user-images.githubusercontent.com/18376283/155599135-188c465b-361f-4ca2-8de4-779ad3f2c613.png" />
+</div>
+
+<p></p>
 
 We can also see of course a few recommendations are 'met' and compliant with *Healthy* state.
 You do not have to go or have to wait for an alert to see these best-practice issues. 
 They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab, like for the container runtime CVEs we checked before:
 
-![image](https://user-images.githubusercontent.com/18376283/155599524-362ea59b-dcb8-46c1-bdc4-23b89042dfc8.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/155599524-362ea59b-dcb8-46c1-bdc4-23b89042dfc8.png" />
+</div>
+
+<p></p>
 
 The full list of detection capabilities (alerts) of Defender can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/alerts-reference#alerts-k8scluster <br />
 The list of recommendations can be found here: https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference
@@ -310,30 +325,52 @@ Here are the scenarios we will test using Kubernetes Goat setup and see how Defe
 - Privileged Context  <br />
 - Sensitive Mount: In the original version from Kubernetes Goat's author, *health_check* deployment has host docker socket mounted in the pod. This was a recurring threat vector in the Docker world (see, https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html). As discussed, AKS does not leverage Docker daemon anymore, but rather containerd. We therefore replaced the docker.socket mount in this pod, by mounting /var from the host and re-deployed the pod:
 
-![image](https://user-images.githubusercontent.com/18376283/156258825-d8c00393-4ddd-499c-94c3-de45f16fc9d4.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156258825-d8c00393-4ddd-499c-94c3-de45f16fc9d4.png" />
+</div>
 
 This raised an alert in Defender, about sensitive volume mounts as previous seen for the other pods.
 From there, if we navigate to the pod, it is exposing a *health check* service which allows for remote code execution on the pod. Indeed, we can simply execute any command by appending them to the target host to be scanned field.
 
-![image](https://user-images.githubusercontent.com/18376283/156259432-50fdf59e-ced7-4cb1-937d-92ef0bce3fb0.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156259432-50fdf59e-ced7-4cb1-937d-92ef0bce3fb0.png" />
+</div>
+                                                                                                                
+<p></p>
 
 From there we tested the following commands:
 
 - Downloading a malicious file and executing it:
 
-![image](https://user-images.githubusercontent.com/18376283/156260030-96be932d-b37a-4dc5-b33e-37167c4ff214.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156260030-96be932d-b37a-4dc5-b33e-37167c4ff214.png" />
+</div>
+
+<p></p>
 
 We also copied eicar file on the host itself, in /var/tmp, using the mounted host volume in /custom/var:
 
-![image](https://user-images.githubusercontent.com/18376283/156260343-dbf73620-afc4-42af-a105-d6446ae1f9c6.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156260343-dbf73620-afc4-42af-a105-d6446ae1f9c6.png" />
+</div>
+
+<p></p>
 
 - Deleting backup files in host's /var folder
 
-![image](https://user-images.githubusercontent.com/18376283/156260635-7eab818b-d5bd-4168-9b6d-a84b5c35fd01.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156260635-7eab818b-d5bd-4168-9b6d-a84b5c35fd01.png" />
+</div>
+
+<p></p>
 
 - Deleting bash_history to cover our traces
 
-![image](https://user-images.githubusercontent.com/18376283/156261238-bbe91fee-a1d2-47ce-b0f8-5f162b300a14.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156261238-bbe91fee-a1d2-47ce-b0f8-5f162b300a14.png" />
+</div>
+
+<p></p>
 
 ### Abusing pod and complete host volume mount
 
@@ -342,7 +379,11 @@ We also copied eicar file on the host itself, in /var/tmp, using the mounted hos
 - Privileged Context <br />
 - Sensitive Mount: the full host system / voulme is mounted in the pod, in /host-system
 
-![image](https://user-images.githubusercontent.com/18376283/156262001-14395eb9-dc3c-4ec6-a447-da7fe0b7d444.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156262001-14395eb9-dc3c-4ec6-a447-da7fe0b7d444.png" />
+</div>
+
+<p></p>
 
 
 From there we tested the following:
