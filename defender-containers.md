@@ -420,7 +420,11 @@ A good article on the subject and related threats can be found [here](https://te
 
 In this specific case, the deployment has overly permissive policy/access which allows us to gain access to other resources and services.
 
-![image](https://user-images.githubusercontent.com/18376283/156607828-fbd4dd88-5d02-4a01-872b-3dab51612b8a.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156607828-fbd4dd88-5d02-4a01-872b-3dab51612b8a.png" />
+</div>
+
+<p></p>
 
 As an attacker, I can use the service account token information and try to retrieve information from the Kube API:
 
@@ -432,17 +436,29 @@ export CACERT=${SERVICEACCOUNT}/ca.crt`
 
 I can then try to list secrets in the default namespace:
 
-![image](https://user-images.githubusercontent.com/18376283/156608451-f6b30669-3c32-414f-b555-a28a5fe31533.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156608451-f6b30669-3c32-414f-b555-a28a5fe31533.png" />
+</div>
+
+<p></p>
 
 It does not work, as I am not in the default namespace. Indeed, the pod are running in *big-monolith* namespace:
 
-![image](https://user-images.githubusercontent.com/18376283/156608884-3ab21fba-4893-450f-a0bc-a6ca4d7d967a.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156608884-3ab21fba-4893-450f-a0bc-a6ca4d7d967a.png" />
+</div>
+
+<p></p>
 
 But we can therefore use the correct namespace and run the following command to list secrets:
 
 `~curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/${NAMESPACE}/secrets`
 
-![image](https://user-images.githubusercontent.com/18376283/156610843-96d8321b-3919-4a00-9bc8-db5eaa6a9a47.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156610843-96d8321b-3919-4a00-9bc8-db5eaa6a9a47.png" />
+</div>
+
+<p></p>
 
 ### Deploying in the kube-system namespace
 
@@ -450,7 +466,12 @@ But we can therefore use the correct namespace and run the following command to 
 
 For this scenario, I will use one of the pod provided by Kubernetes Goat, *hacker-container* which is essentially a pod used as hacker playground to further footprinting or compromise a kubernetes/container environment. We will write a simple YAML file to deploy this container in the *kube-system* namespace.
 
-![image](https://user-images.githubusercontent.com/18376283/156728980-c7c3142d-f1c7-46fc-9e7b-c101cbb57646.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156728980-c7c3142d-f1c7-46fc-9e7b-c101cbb57646.png" />
+</div>
+
+<p></p>
+
 
 We notice at the same time that this deployment has *NET_ADMIN* capability as well as a sensitive volume mount, */etc*.
 Let's deploy that pod in the cluster:
@@ -464,27 +485,49 @@ Ok so we did a bunch of malicious operations in our environment and it would be 
 If we go back to our Defender for Cloud panel, in the alerts section, we can see we triggered a bunch of alerts:
 Most of the scenarios we tested did trigger suspicious activities, next to the ones raised when we deployed Kubernetes Goat in our environment.
 
-![image](https://user-images.githubusercontent.com/18376283/156728549-c2c93e2e-f791-4d62-8022-d705d54593e9.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156728549-c2c93e2e-f791-4d62-8022-d705d54593e9.png" />
+</div>
+
+<p></p>
+
 
 Let's look at three of them in more details:
 
 1. Detected suspicious use of the useradd command
 
-![image](https://user-images.githubusercontent.com/18376283/156613114-337c5711-19d0-42b6-8d04-bbf4a938265a.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156613114-337c5711-19d0-42b6-8d04-bbf4a938265a.png" />
+</div>
+
+<p></p>
+
 
 2. A file was downloaded and executed
 
-![image](https://user-images.githubusercontent.com/18376283/156613357-a6b29344-241d-4fee-9f5c-2fd1a31f13df.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156613357-a6b29344-241d-4fee-9f5c-2fd1a31f13df.png" />
+</div>
+
+<p></p>
 
 
 3. New container in the kube-system namespace detected
 
-![image](https://user-images.githubusercontent.com/18376283/156729443-d5880108-0cf5-4193-a4ab-cb214b01e18f.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156729443-d5880108-0cf5-4193-a4ab-cb214b01e18f.png" />
+</div>
+
+<p></p>
 
 
 **Note:** Some tests did not trigger any alerts (Deleting backup files in host's /var folder, copying *eicar* file to host from a pod or yet the *NET_ADMIN* capability in our hacker container). The list of alerts and detection capabilities should grow over time. Defender will however always make a informed decision between raising an alert or in some scenarios relying on a recommendation only (sensitive volume mount in this case), to avoid alert fatigue. Example, for the capability *NET_ADMIN*, if we look back at [https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference](recommendations list), it is not one of them. For now, only capability *CAPSYSADMIN* is. This means you could see non-compliant clusters and pods for that policy, prevent that (by denying the policy for a specific cluster) but Defender will not raise an alert:
 
-![image](https://user-images.githubusercontent.com/18376283/156730083-0480eff8-695f-4f04-8e26-97817ed83603.png)
+<div style="text-align: center">
+<img src="![image](https://user-images.githubusercontent.com/18376283/156730083-0480eff8-695f-4f04-8e26-97817ed83603.png" />
+</div>
+
+<p></p>
 
 All these recommendations in general should lead to deploying policies to remediate the security of the environment, and prevent malicious acts leading to alerts from even be possible.
 
