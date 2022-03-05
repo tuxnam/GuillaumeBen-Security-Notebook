@@ -131,11 +131,11 @@ So after setting up Kubernetes (standard set up, two nodes)(you can refer [here]
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151562065-52e0cee8-b3d3-4614-b2de-a63c248ffdae.png" />
 </div>
-
+<p></p>
 **Note:** _Arc-enabled cluster_ is for Kubernetes clusters on IaaS in another Cloud or on your premises. 
 Details on setup for all type of clusters, including EKS, can be found [here](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-enable?tabs=aks-deploy-portal%2Ck8s-deploy-asc%2Ck8s-verify-asc%2Ck8s-remove-arc%2Caks-removeprofile-api&pivots=defender-for-container-aks).
 
-let's have a first look at our Kubernetes cluster and the impact of enabling Defender: we can clearly see the Defender Profile related-pods (deployed through the daemonset) (in red) and the Gatekeeper pods (in green), next to the Kubernetes Goat (in gold) related namespaces and pods:
+Let's have a first look at our Kubernetes cluster and the impact of enabling Defender: we can clearly see the Defender Profile related-pods (deployed through the daemonset) (in red) and the Gatekeeper pods (in green), next to the Kubernetes Goat (in gold) related namespaces and pods:
 
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/155592893-76703234-46e0-4209-831d-a557da469f28.png" />
@@ -157,19 +157,21 @@ Here is what it looks like in terms of repositories:
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151572088-8d7b0994-0788-4219-b169-875d32223540.png" />
 </div>
+<p></p>
 
 Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we can navigate to the Defender for Cloud portal, *Workload Protection* tab. At the same time, we can confirm that our Kubernetes clusters inside the target subscription are covered.
 
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151572496-050f3956-bd78-40f5-874b-f9d36142e772.png" />
 </div>
+<p></p>
 
 If we click on _Container Image Scanning_ we can see that Defender indeed scanned our images and is already giving us a list of CVEs to tackle: 
 
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151572831-3c15c6de-9f01-4b04-a535-07c69167cc17.png" />
 </div>
-
+<p></p>
 These CVEs means that the Goat container images need some updates, to avoid introducing (yet more) vulnerabillties in our environment. 
 You can click on a registry to see all details about affected images and tags:
 
@@ -177,7 +179,7 @@ You can click on a registry to see all details about affected images and tags:
 <img src="https://user-images.githubusercontent.com/18376283/151573228-c28541e2-4e47-4911-9d8b-d0280be0c0a8.png" />
 <img src="https://user-images.githubusercontent.com/18376283/151573373-cb19632b-4365-4736-aade-8f5869dce44b.png" />
 </div>
-
+<p></p>
 **Note**: the detected vulnerabilities are CVEs, or software vulnerabilities in libraries or OS version used in these containers. As of today, defender for containers does not scan for CIS, secrets in container images or similar best-practices. You can however use other tools such as Trivy in order to bring that capability to your pipeline.
 
 ### Can I trigger an on-demand scan?
