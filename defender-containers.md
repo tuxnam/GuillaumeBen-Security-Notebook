@@ -32,7 +32,7 @@ This evoltion is however inline with Microsoft's vision of end-to-end container 
 
 #### [1. The setup and the goat story](#Item-1)
 #### [2. Meet Defender for Containers](#Item-2)
-#### [3. Cluster is ready, the goat is in the boat...let's enable Defender and look at the cluster](#Item-3) 
+#### [3. Cluster is ready, the goat is in the boat...](#Item-3) 
 #### [4. Are there some image vulnerabilities](#Item-4) 
 #### [5. What about runtime scanning?](#Item-5) 
 #### [6. We deployed a goat, did Defender detect something already?](#Item-6) 
@@ -98,7 +98,7 @@ Here is an overview of the complete setup with deployed namespaces (highlighted 
   
 ### What does it bring?
 
-The idea of this article is not to explore or market Defender for containers, all details can be found in the official ![documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks) or this ![article](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/introducing-microsoft-defender-for-containers/ba-p/2952317). 
+The idea of this article is not to explore or market Defender for containers, all details can be found in the official [documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks) or this [article](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/introducing-microsoft-defender-for-containers/ba-p/2952317). 
 <br /> Rather, we will describe here the main features of the product and what they mean in terms of deployment/usage. 
 
 <p style="width: 100%; text-align: center;">
@@ -118,13 +118,13 @@ The sources analyzed by Defender are multiple:
 - Workload configuration from Azure Policy
 - Security signals and events from the node/pod
 
-In terms of deployment, that means:
-A Defender profile deployed to each node provides the runtime protections and collects signals from nodes using eBPF technology: it relies on a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/">DaemonSet</a> to ensure all nodes in the cluster are covered.
+In terms of deployment, this means:<br />
+A Defender profile deployed to each node provides the runtime protections and collects signals from nodes using eBPF technology: it relies on a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/">DaemonSet</a> to ensure all nodes in the cluster are covered.<br />
 Azure Policy add-on for Kubernetes collects cluster and workload configuration for admission control policies (Gatekeeper): this basically translates Azure Policies to Gatekeeper/OPA policies (see <a href="https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.">here</a> for details on OPA and Gatekeeper) for audit, enforcement and prevention of policies on the admission controller of your clusters.<br />
 The container registry does not need anything specific, outside of network considerations.
 
 <a name="Item-3"></a>
-## Cluster is ready, the goat is in the boat...let's enable Defender and look at the cluster
+## Cluster is ready, the goat is in the boat...
 
 So after setting up Kubernetes (standard set up, two nodes)(you can refer [here](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal#:~:text=To%20create%20an%20AKS%20cluster%2C%20complete%20the%20following,create%20an%20Azure%20Resource%20group%2C%20such%20as%20myResourceGroup) for Azure AKS), and deploying the Kubernetes Goat (refer to Madhu's documentation [here](https://madhuakula.com/kubernetes-goat/)), we enabled Defender for Containers with auto-provisionning (see documentation for details), in Defender for Cloud portal:
 
@@ -143,33 +143,41 @@ We can also notice the daemonset we referred to:
 ![image](https://user-images.githubusercontent.com/18376283/155593233-21ac32ad-8348-4c24-a922-1898800ca475.png)
 
 <a name="Item-4"></a>
-## Are there some image vulnerabilities?
+## A look at image vulnerabilities
 
-Earlier in this article, we pushed the various container images required for Kubernetes Goat into our container registry. 
+Earlier in this article, we pushed the various container images required for Kubernetes Goat into our container registry. <br />
 Here is what it looks like in terms of repositories:
 
-![image](https://user-images.githubusercontent.com/18376283/151572088-8d7b0994-0788-4219-b169-875d32223540.png)
+<p style="width: 100%; text-align: center;">
+<img src="https://user-images.githubusercontent.com/18376283/151572088-8d7b0994-0788-4219-b169-875d32223540.png" />
+</p>
 
 Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we can navigate to the Defender for Cloud portal, *Workload Protection* tab. At the same time, we can confirm that our Kubernetes clusters inside the target subscription are covered.
 
-![image](https://user-images.githubusercontent.com/18376283/151572496-050f3956-bd78-40f5-874b-f9d36142e772.png)
+<p style="width: 100%; text-align: center;">
+<img src="https://user-images.githubusercontent.com/18376283/151572496-050f3956-bd78-40f5-874b-f9d36142e772.png" />
+</p>
 
 If we click on _Container Image Scanning_ we can see that Defender indeed scanned our images and is already giving us a list of CVEs to tackle: 
 
-![image](https://user-images.githubusercontent.com/18376283/151572831-3c15c6de-9f01-4b04-a535-07c69167cc17.png)
+<p style="width: 100%; text-align: center;">
+<img src="https://user-images.githubusercontent.com/18376283/151572831-3c15c6de-9f01-4b04-a535-07c69167cc17.png" />
+</p>
 
 These CVEs means that the Goat container images need some updates, to avoid introducing (yet more) vulnerabillties in our environment. 
 You can click on a registry to see all details about affected images and tags:
 
-![image](https://user-images.githubusercontent.com/18376283/151573228-c28541e2-4e47-4911-9d8b-d0280be0c0a8.png)
-![image](https://user-images.githubusercontent.com/18376283/151573373-cb19632b-4365-4736-aade-8f5869dce44b.png)
+<p style="width: 100%; text-align: center;">
+<img src="https://user-images.githubusercontent.com/18376283/151573228-c28541e2-4e47-4911-9d8b-d0280be0c0a8.png" />
+<img src="https://user-images.githubusercontent.com/18376283/151573373-cb19632b-4365-4736-aade-8f5869dce44b.png" />
+</p>
 
 **Note**: the detected vulnerabilities are CVEs, or software vulnerabilities in libraries or OS version used in these containers. As of today, defender for containers does not scan for CIS, secrets in container images or similar best-practices. You can however use other tools such as Trivy in order to bring that capability to your pipeline.
 
 ### Can I trigger an on-demand scan?
 
 No. As of today, the scans are happening on push, on pull, and recurrently on recently pulled images from your registry (weekly basis). 
-You can expect this to evolve with the solution roadmap.
+You can expect this to evolve with the solution roadmap. <br />
 There is however ability to leverage Defender for Containers in your CI/CD pipeline, using Trivy: https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-container-registries-cicd.
 
 <a name="Item-5"></a>
