@@ -66,16 +66,19 @@ Kubernetes Goat is originally pulling container images used in the various scena
 As an example:
 
 <div style="text-align: center">
-<img src="https://user-images.githubusercontent.com/18376283/156624921-5a46eb43-422f-433e-a591-ae837cad2c89.png" alt="original YAML" />
-</div>
- 
-...becomes...
-
-<div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156877420-7c5f41ca-79a5-4b59-bb8b-d742508d332c.png" alt="adapted YAML" />
 </div>
 
+...becomes...
+
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156877538-c73dd7b0-cd52-4a77-85f0-ac60004c00da.png" alt="original YAML" />
+</div>
+
+<p></p>
+
 *Thanks to Madhu for his awesome work!*
+
 <p></p>
 
 Here is an overview of the complete setup with deployed namespaces (highlighted the namespaces were pods from k8s goat are deployed): 
