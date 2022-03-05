@@ -66,13 +66,13 @@ Kubernetes Goat is originally pulling container images used in the various scena
 As an example:
 
 <div style="text-align: center">
-![image](https://user-images.githubusercontent.com/18376283/156624921-5a46eb43-422f-433e-a591-ae837cad2c89.png)
+<img src="https://user-images.githubusercontent.com/18376283/156624921-5a46eb43-422f-433e-a591-ae837cad2c89.png" alt="original YAML" />
 </div>
  
 ...becomes...
 
 <div style="text-align: center">
-![image](https://user-images.githubusercontent.com/18376283/156629766-bba57ca2-d232-4071-aef1-61f7932e493f.png)
+<img src="https://user-images.githubusercontent.com/18376283/156629766-bba57ca2-d232-4071-aef1-61f7932e493f.png" alt="adapted YAML" />
 </div>
 
 *Thanks to Madhu for his awesome work!*
