@@ -88,6 +88,8 @@ Here is an overview of the complete setup with deployed namespaces (highlighted 
 <img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
 </div>
 
+<p></p>
+
 **Note:** In my case, I used _Azure CNI_ for kubernetes network driver and _Azure_ for network policies but it does not matter in this context and is not needed either for our use case.
  
 <a name="Item-2"></a>
