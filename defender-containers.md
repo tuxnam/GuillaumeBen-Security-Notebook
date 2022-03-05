@@ -547,7 +547,7 @@ Kubernetes Goat - https://madhuakula.com/kubernetes-goat/index.html<br />
 AKS Documentation - https://docs.microsoft.com/en-us/azure/aks/<br />
 MITRE for Kubernetes - https://www.microsoft.com/security/blog/2020/04/02/attack-matrix-kubernetes/
 <br />
-<br ?>
+<br />
 
 *Special thanks to Microsoft's Defender for Container Product Group for their support and knowledge sharing*
 
