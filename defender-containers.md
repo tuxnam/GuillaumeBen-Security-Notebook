@@ -15,7 +15,7 @@ description: Guillaume B., Cloud Security Architect
  <p></p>
 </p>
  
-> The skyrocketting usage Kubernetes and containarized workloads over the past years has led to new attack vectors. 
+> The skyrocketting usage of Kubernetes and containarized workloads over the past years has led to new attack vectors. 
 > The number and sophistication of attacks targeting cloud-native environment is booming. While containers and Kubernetes security can be hard and require security professionals > to update their skillsets, a bunch of tools and products have rised to target these new threats cope with the elasticity and scalibility of these new workloads. 
 > Some of these products include Trivy, Qualys, Clair, Anchore, Snyk, a myriad of good open-source tools and, the one we will investigate in this post, Microsoft Defender for containers. 
 
