@@ -524,7 +524,7 @@ Most of the scenarios we tested did trigger suspicious activities, next to the o
 
 Let's look at a few of them in more details:
 
-1. Detected suspicious use of the useradd command
+#### Detected suspicious use of the useradd command
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156613114-337c5711-19d0-42b6-8d04-bbf4a938265a.png" />
@@ -533,7 +533,7 @@ Let's look at a few of them in more details:
 <p></p>
 
 
-2. A file was downloaded and executed
+#### A file was downloaded and executed
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156613357-a6b29344-241d-4fee-9f5c-2fd1a31f13df.png" />
@@ -542,7 +542,7 @@ Let's look at a few of them in more details:
 <p></p>
 
 
-3. New container in the kube-system namespace detected
+#### New container in the kube-system namespace detected
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156729443-d5880108-0cf5-4193-a4ab-cb214b01e18f.png" />
@@ -550,7 +550,7 @@ Let's look at a few of them in more details:
 
 <p></p>
 
-4. Attempt to stop apt-daily-upgrade.timer service detected 
+#### Attempt to stop apt-daily-upgrade.timer service detected 
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156892734-18769671-cdc4-4c1e-b423-c038c51da510.png" />
@@ -558,7 +558,7 @@ Let's look at a few of them in more details:
 
 <p></p>
 
-5. New high privileges role detected
+#### New high privileges role detected
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156892793-f77f19c9-b4e6-4961-954c-760171bb04e3.png" />
