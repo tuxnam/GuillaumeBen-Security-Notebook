@@ -521,7 +521,10 @@ Let's look at three of them in more details:
 <p></p>
 
 
-**Note:** Some tests did not trigger any alerts (Deleting backup files in host's /var folder, copying *eicar* file to host from a pod or yet the *NET_ADMIN* capability in our hacker container). The list of alerts and detection capabilities should grow over time. Defender will however always make a informed decision between raising an alert or in some scenarios relying on a recommendation only (sensitive volume mount in this case), to avoid alert fatigue. Example, for the capability *NET_ADMIN*, if we look back at [https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference](recommendations list), it is not one of them. For now, only capability *CAPSYSADMIN* is. This means you could see non-compliant clusters and pods for that policy, prevent that (by denying the policy for a specific cluster) but Defender will not raise an alert:
+**Note:** <br />
+Some tests did not trigger any alerts (deleting backup files in host's /var folder, copying *eicar* file to host from a pod or yet the *NET_ADMIN* capability in our hacker container). <br />
+The list of alerts and detection capabilities should grow over time. Defender will however always make a informed decision between raising an alert or in some scenarios relying on a recommendation only (sensitive volume mount in this case), to avoid alert fatigue. ,br />
+For the capability *NET_ADMIN*, if we look back at [https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference](recommendations list), it is not one of them. For now, only capability *CAPSYSADMIN* is. You could however easily build/duplicate that policy to look for *NET_ADMIN* as well, hence the power of leveraging Gatekeper and Azure Policies. <br />
 
 <div style="text-align: center">
 <img src="![image](https://user-images.githubusercontent.com/18376283/156730083-0480eff8-695f-4f04-8e26-97817ed83603.png" />
@@ -538,6 +541,8 @@ In this article we took a vulnerable AKS environment and looked at the capabilit
 - Vulnerability scanning (in registry and at runtime)
 - Policies enforcement and/or audit through usage of Azure Policy and Gatekeeper
 - Alerting and recommendations from Defender for Cloud on a vulnerable environment where malicious actions were triggered
+<p></p>
+Also remember the difference between an alert and a recommendation. If you look only at alerts, you are missing an important part of the security assessment of your cluster, being the continuous evaluation of the seurity posture in form of recommendations.
 
 <a name="Item-9"></a>
 ## References
