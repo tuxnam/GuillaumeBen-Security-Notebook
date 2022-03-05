@@ -105,6 +105,8 @@ The idea of this article is not to explore or market Defender for containers, al
 <img src="https://user-images.githubusercontent.com/18376283/151179154-9d313434-c093-4303-85e3-744a6065b55c.png" />
 </div>
 
+<p></p>
+
 In summary, defender for containers provides:
 - Environment hardening for any <a href="https://www.cncf.io/certification/software-conformance/">CNCF compliant cluster(s)</a> (AKS, EKS, Kubernetes IaaS, Openshift...): visibility into misconfigurations and guidelines to help mitigate identified threats
 - Run-time threat protection for nodes and clusters: Threat protection for clusters and Linux nodes generates security alerts for suspicious activities
@@ -141,6 +143,7 @@ Let's have a first look at our Kubernetes cluster and the impact of enabling Def
 <img src="https://user-images.githubusercontent.com/18376283/155592893-76703234-46e0-4209-831d-a557da469f28.png" />
 <img src="https://user-images.githubusercontent.com/18376283/155593066-724848e0-af6d-4a3d-828d-40a28d9e4d9d.png" />
 </div>
+<p></p>
 
 We can also notice the daemonset we referred to:
 
@@ -161,6 +164,8 @@ Here is what it looks like in terms of repositories:
 
 Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we can navigate to the Defender for Cloud portal, *Workload Protection* tab. At the same time, we can confirm that our Kubernetes clusters inside the target subscription are covered.
 
+<p></p>
+
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151572496-050f3956-bd78-40f5-874b-f9d36142e772.png" />
 </div>
@@ -171,6 +176,7 @@ If we click on _Container Image Scanning_ we can see that Defender indeed scanne
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151572831-3c15c6de-9f01-4b04-a535-07c69167cc17.png" />
 </div>
+
 <p></p>
 These CVEs means that the Goat container images need some updates, to avoid introducing (yet more) vulnerabillties in our environment. 
 You can click on a registry to see all details about affected images and tags:
@@ -179,33 +185,46 @@ You can click on a registry to see all details about affected images and tags:
 <img src="https://user-images.githubusercontent.com/18376283/151573228-c28541e2-4e47-4911-9d8b-d0280be0c0a8.png" />
 <img src="https://user-images.githubusercontent.com/18376283/151573373-cb19632b-4365-4736-aade-8f5869dce44b.png" />
 </div>
+
 <p></p>
+
 **Note**: the detected vulnerabilities are CVEs, or software vulnerabilities in libraries or OS version used in these containers. As of today, defender for containers does not scan for CIS, secrets in container images or similar best-practices. You can however use other tools such as Trivy in order to bring that capability to your pipeline.
 
 ### Can I trigger an on-demand scan?
 
 No. As of today, the scans are happening on push, on pull, and recurrently on recently pulled images from your registry (weekly basis). 
 You can expect this to evolve with the solution roadmap. <br />
-There is however ability to leverage Defender for Containers in your CI/CD pipeline, using Trivy: https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-container-registries-cicd.
+There is however the ability to leverage [Defender for Containers in your CI/CD pipeline, using Trivy](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-container-registries-cicd) and therefore act on the scans results as part of your integration or delivery pipeline, on-demand. <br />
+Also note that this scan includes not only CVEs but also best-practice checks.
 
 <a name="Item-5"></a>
 ## What about runtime scanning?
 
-We deployed already the containers listed as vulnerable in the registry to our AKS cluster, did defender spot that? Yes! If we go back to our Defender portal, and go through recommendations, there is one specific to runtime container vulnerabilities (in red), next to the container registry ones (in yellow):
+We deployed already the containers listed as vulnerable in the registry to our AKS cluster, did defender spot that? <br />
+Yes! If we go back to our Defender portal, and go through recommendations, there is one specific to runtime container vulnerabilities (in red), next to the container registry ones (in yellow):
 
-![image](https://user-images.githubusercontent.com/18376283/155594158-df3ab3d4-5041-4a4f-af0d-441ebd1aa645.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/155594158-df3ab3d4-5041-4a4f-af0d-441ebd1aa645.png" />
+</div>
+<p></p>
 
 When we open this recommendation, we can see the same CVEs as in the container registry scans:
 
-![image](https://user-images.githubusercontent.com/18376283/155594301-ad8bdcd6-f493-4e1a-a742-f14e93b973b1.png)
-
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/155594301-ad8bdcd6-f493-4e1a-a742-f14e93b973b1.png" />
+</div>
+<p></p>
+ 
 ### Can I prevent vulnerable containers from being deployed?
 
-It would be ideal to, not only have a view on vulnerable containers but also prevent vulnerable containers to be deployed. Thanks to Azure Policy for Gatekeeper and defender for containers, we will be able to do so! 
+It would be ideal to, not only have a view on vulnerable containers but also prevent vulnerable containers to be deployed. Thanks to Azure Policy for Gatekeeper and defender for containers, we will be able to do so! < br />
 This is in fact one of the recommendation also made by Defender for Containers about our cluster:
 
-![image](https://user-images.githubusercontent.com/18376283/155594817-dcb97ae1-9263-4243-b639-ec0918ff566b.png)
-
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/155594817-dcb97ae1-9263-4243-b639-ec0918ff566b.png" />
+</div>
+<p></p>
+ 
 You can check this [page](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes)  for more details on Azure Policy for Kubernetes, and this [one](https://docs.microsoft.com/en-us/azure/aks/policy-reference#policy-definitions) for the list of policies, including gating deployment of vulnerable images.
 
 <a name="Item-6"></a>
@@ -216,7 +235,10 @@ However, Goat is meant to be intentionnally vulnerable. Even if we did not start
 
 Let's jump to security alerts in the same Defender for Cloud portal and filter on our cluster:
 
-![image](https://user-images.githubusercontent.com/18376283/155597064-df3dc78b-79dd-4a7c-a1c1-fea0c1ddae57.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/155597064-df3dc78b-79dd-4a7c-a1c1-fea0c1ddae57.png" />
+</div>
+<p></p>
 
 We notice 4 alerts, after the setup:
 - Three privileged containers running
@@ -227,11 +249,14 @@ If we check details of one of these alerts, we can see interesting information, 
 However we would like to potentially trigger actions based on this alert or have information about how to mitigate the threat! 
 This all happens in the 'take action' tab:
 
-![image](https://user-images.githubusercontent.com/18376283/155598238-45ee9a3d-c72c-4256-b5c6-8f38cd7f5679.png)
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/155598238-45ee9a3d-c72c-4256-b5c6-8f38cd7f5679.png" />
+</div>
+<p></p>
 
 1. We can see some detailed advise to mitigate the threats
 2. We have a list of ***actionable*** recommendations to prevent this threat in the future
-
+<p></p>
 **What are these mitigations exactly?** 
 Like for preventing vulnerable image in the cluster discussed here above, they are leveraging Gatekeeper, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
 You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course, but let's keep this in mind for the end of this article. 
