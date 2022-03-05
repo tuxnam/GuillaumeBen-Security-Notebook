@@ -72,14 +72,18 @@ As an example:
 ...becomes...
 
 <div style="text-align: center">
-<img src="https://user-images.githubusercontent.com/18376283/156629766-bba57ca2-d232-4071-aef1-61f7932e493f.png" alt="adapted YAML" />
+<img src="https://user-images.githubusercontent.com/18376283/156877420-7c5f41ca-79a5-4b59-bb8b-d742508d332c.png" alt="adapted YAML" />
 </div>
 
 *Thanks to Madhu for his awesome work!*
 <p></p>
 
-Here is an overview of the complete setup with deployed namespaces (highlighted the namespaces were pods from k8s goat are deployed): <br />
+Here is an overview of the complete setup with deployed namespaces (highlighted the namespaces were pods from k8s goat are deployed): 
+<br />
+<br />
+<div style="text-align: center">
 <img src="images/Topology-goat-aks.png" style="float: center; align: center;" alt="Defender for Containers environment setup" >
+</div>
 
 **Note:** In my case, I used _Azure CNI_ for kubernetes network driver and _Azure_ for network policies but it does not matter in this context and is not needed either for our use case.
  
