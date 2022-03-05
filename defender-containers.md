@@ -317,6 +317,7 @@ Here are the scenarios we will test using Kubernetes Goat setup and see how Defe
 - Abusing pod and complete host volume mount: Leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node
 - Targeting Kube API: Leveraging scenario 16. and try to play with Kubernetes API and abusing known Kubernetes service accounts threat vectors
 - Deploying in the kube-system namespace
+- Creating a privileged role
 
 ### Abusing pod and senstive volume mount
 
@@ -503,8 +504,9 @@ rules:
 
 We deployed this role into our cluster. We could of course have created a service account or a user to bind this role to.
 
-![image](https://user-images.githubusercontent.com/18376283/156892614-2cefe5b6-9090-493c-8dcf-8fba6c27b656.png)
-
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156892614-2cefe5b6-9090-493c-8dcf-8fba6c27b656.png" />
+</div>
 
 ### Looking at the alerts!
 
