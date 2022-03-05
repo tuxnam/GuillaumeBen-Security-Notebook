@@ -33,7 +33,7 @@ This evoltion is however inline with Microsoft's vision of end-to-end container 
 #### [1. The setup and the goat story](#Item-1)
 #### [2. Meet Defender for Containers](#Item-2)
 #### [3. Cluster is ready, the goat is in the boat...](#Item-3) 
-#### [4. Are there some image vulnerabilities](#Item-4) 
+#### [4. A look at some vulnerabilities](#Item-4) 
 #### [5. What about runtime scanning?](#Item-5) 
 #### [6. We deployed a goat, did Defender detect something already?](#Item-6) 
 #### [7. Testing attack patterns](#Item-7) 
