@@ -405,7 +405,15 @@ sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/
 
 `useradd -g sudo Tux`
 
-- Lets' again delete our traces
+- Stopping apt-daily-upgrade.timer service
+
+Apt-Daily.Service has several functions in Linux: it performs automatic installation of services/packages, it looks for the package updates periodically, it updates the package list daily but also download and install security updates daily.
+Stopping this service allows for instance to hide evidence, delay an update or yet download a malicious package and have it run with privileges.
+In this case, this could allow us further exploitation on the node (which is self-managed in normal times). 
+
+`systemctl stop apt-daily.timer`
+
+- Let's finally again delete our traces
 
 `rm -rf ~/.bash_history`
 
@@ -472,11 +480,31 @@ For this scenario, I will use one of the pod provided by Kubernetes Goat, *hacke
 
 <p></p>
 
-
 We notice at the same time that this deployment has *NET_ADMIN* capability as well as a sensitive volume mount, */etc*.
 Let's deploy that pod in the cluster:
 
 `kubectl apply -f maliciousYAML.yaml`
+
+### Creating a cluster-level privileged role 
+
+Our last exercice for this article will be to create a cluster role. Cluster roles and cluster role bindings are like regular kubernetes (namespaced) roles except they are for a cluster scoped resource. For example a cluster admin role can be created to provide a cluster administrator permissions to vieww or list secrets in the cluster. This can be done using the following *yaml* definition file ( giving the role a generic reader name):
+
+`
+#role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+ name: get-pods
+rules:
+  apiGroups: [""] # "" indicates the core API group
+  resources: ["secrets"]
+  verbs: ["get", "watch", "list"]
+`
+
+We deployed this role into our cluster. We could of course have created a service account or a user to bind this role to.
+
+![image](https://user-images.githubusercontent.com/18376283/156892614-2cefe5b6-9090-493c-8dcf-8fba6c27b656.png)
+
 
 ### Looking at the alerts!
 
@@ -486,13 +514,13 @@ If we go back to our Defender for Cloud panel, in the alerts section, we can see
 Most of the scenarios we tested did trigger suspicious activities, next to the ones raised when we deployed Kubernetes Goat in our environment.
 
 <div style="text-align: center">
-<img src="https://user-images.githubusercontent.com/18376283/156728549-c2c93e2e-f791-4d62-8022-d705d54593e9.png" />
+<img src="https://user-images.githubusercontent.com/18376283/156892691-373635b6-4656-4179-8393-469f85c42887.png" />
 </div>
 
 <p></p>
 
 
-Let's look at three of them in more details:
+Let's look at a few of them in more details:
 
 1. Detected suspicious use of the useradd command
 
@@ -520,6 +548,22 @@ Let's look at three of them in more details:
 
 <p></p>
 
+4. Attempt to stop apt-daily-upgrade.timer service detected 
+
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156892734-18769671-cdc4-4c1e-b423-c038c51da510.png" />
+</div>
+
+<p></p>
+
+5. New high privileges role detected
+
+<div style="text-align: center">
+<img src="https://user-images.githubusercontent.com/18376283/156892793-f77f19c9-b4e6-4961-954c-760171bb04e3.png" />
+</div>
+
+<p></p>
+
 
 **Note:** <br />
 Some tests did not trigger any alerts (deleting backup files in host's /var folder, copying *eicar* file to host from a pod or yet the *NET_ADMIN* capability in our hacker container). <br />
@@ -527,7 +571,7 @@ The list of alerts and detection capabilities should grow over time. Defender wi
 For the capability *NET_ADMIN*, if we look back at [https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference](recommendations list), it is not one of them. For now, only capability *CAPSYSADMIN* is. You could however easily build/duplicate that policy to look for *NET_ADMIN* as well, hence the power of leveraging Gatekeper and Azure Policies. <br />
 
 <div style="text-align: center">
-<img src="![image](https://user-images.githubusercontent.com/18376283/156730083-0480eff8-695f-4f04-8e26-97817ed83603.png" />
+<img src="https://user-images.githubusercontent.com/18376283/156730083-0480eff8-695f-4f04-8e26-97817ed83603.png" />
 </div>
 
 <p></p>
