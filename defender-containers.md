@@ -37,7 +37,7 @@ This evoltion is however inline with Microsoft's vision of end-to-end container 
 #### [5. What about runtime scanning?](#Item-5) 
 #### [6. We deployed a goat, did Defender detect something already?](#Item-6) 
 #### [7. Testing attack patterns](#Item-7) 
-#### [8. Concluion](#Item-8) 
+#### [8. Conclusion](#Item-8) 
 #### [8. References](#Item-9) 
 
 <p></p>
