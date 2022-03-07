@@ -479,6 +479,8 @@ header {
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
   background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
   border-bottom: solid 1px #275da1;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 header h1 {
@@ -726,7 +728,7 @@ blockquote {
   padding: 0 0 0 20px;
   margin-left: 0px;
   margin-bottom: 50px;
-  font-size: 1.4em;
+  font-size: 1.2em;
   border-left: 10px solid #e9e9e9;
 }
 
