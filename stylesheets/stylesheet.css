@@ -482,7 +482,6 @@ header {
 }
 
 header h1 {
-  width: 750px;
   margin-top: 0;
   margin-bottom: 0.2em;
   font-size: 64px;
@@ -493,7 +492,6 @@ header h1 {
 }
 
 header h2 {
-  width: 750px;
   margin-top: 0;
   margin-bottom: 0;
   font-size: 36px;
@@ -512,7 +510,7 @@ header h2 {
   text-align: left;
   width: 70%;  
   margin: 0 auto;
-  padding: 10px;
+  padding-left: 10px;
   position: relative;
 }
 
@@ -523,7 +521,7 @@ header h2 {
 }
 
 .inner img {
-  max-width: 60%;
+  max-width: 65%;
   height: auto;
 }
 
