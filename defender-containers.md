@@ -324,7 +324,7 @@ Here are the scenarios we will test using Kubernetes Goat setup and see how Defe
 **Pod used:** Health Check <br />
 **Pod properties:** <br />
 - Privileged Context  <br />
-- Sensitive Mount: In the original version from Kubernetes Goat's author, *health_check* deployment has host docker socket mounted in the pod. This was a recurring threat vector in the Docker world (see, https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html). As discussed, AKS does not leverage Docker daemon anymore, but rather containerd. We therefore replaced the docker.socket mount in this pod, by mounting /var from the host and re-deployed the pod:
+- Sensitive Mount: In the original version from Kubernetes Goat's author, *health_check* deployment has host docker socket mounted in the pod. This was a recurring threat vector in the Docker world (see, [OWASP Cheat Sheets](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html)). As discussed, AKS does not leverage Docker daemon anymore, but rather containerd. We therefore replaced the docker.socket mount in this pod, by mounting /var from the host and re-deployed the pod:
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156258825-d8c00393-4ddd-499c-94c3-de45f16fc9d4.png" />
