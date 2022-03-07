@@ -593,10 +593,11 @@ Also remember the difference between an alert and a recommendation. If you look 
 <a name="Item-9"></a>
 ## References
 
-Kubernetes RBAC - https://kubernetes.io/docs/reference/access-authn-authz/rbac/<br />
-Kubernetes Goat - https://madhuakula.com/kubernetes-goat/index.html<br />
-AKS Documentation - https://docs.microsoft.com/en-us/azure/aks/<br />
-MITRE for Kubernetes - https://www.microsoft.com/security/blog/2020/04/02/attack-matrix-kubernetes/
+[Kubernetes RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)<br />
+[Kubernetes Goat](https://madhuakula.com/kubernetes-goat/index.html)<br />
+[AKS Documentation](https://docs.microsoft.com/en-us/azure/aks/)<br />
+[MITRE for Kubernetes](https://www.microsoft.com/security/blog/2020/04/02/attack-matrix-kubernetes/)
+[Defender for Cloud Documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction)
 <br />
 <br />
 
