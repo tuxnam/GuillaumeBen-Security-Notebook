@@ -705,6 +705,11 @@ h6:before {
   color: #9ddcff;
 }
 
+code {
+  max-width: 80%;
+  overflow-wrap: break-word;
+}
+
 p {
   margin-bottom: 20px;
 }
