@@ -131,7 +131,7 @@ dfn {
   margin-top: 32px;
   margin-bottom: 15px;
   font-family: Helvetica, Arial, serif;
-  font-size: 24px;
+  font-size: 1em;
   font-style: italic;
   color: #474747;
   text-indent: 3px;
@@ -726,7 +726,7 @@ blockquote {
   padding: 0 0 0 20px;
   margin-left: 0px;
   margin-bottom: 50px;
-  font-size: 1.2em;
+  font-size: 1em;
   border-left: 10px solid #e9e9e9;
 }
 
