@@ -428,7 +428,8 @@ In this case, this could allow us further exploitation on the node (which is sel
 **Pod properties:** <br />
 - Secret reader RBAC role
 <p></p>
-This pod has in fact extra-privileges being assigned. Indeed, a RBAC role 'secret reader' is assigned to the service account bind to this pod. Service accounts are identities in Kubernetes world, assigned to resources such as pods, which allows them to communicate with the Kube API, with certain privileges. 
+This pod has extra-privileges being assigned. A RBAC role 'secret reader' is assigned to the service account bound to this pod. <br />
+Service accounts are identities in Kubernetes world, assigned to resources such as pods, which allows them to communicate with the Kube API, with certain privileges. 
 A good article on the subject and related threats can be found [here](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/detecting-identity-attacks-in-kubernetes/ba-p/3232340 ). 
 <p></p>
 In this specific case, the deployment has overly permissive policy/access which allows us to gain access to other resources and services.
@@ -479,7 +480,7 @@ But we can therefore use the correct namespace and run the following command to 
 
 For this scenario, we will use one of the pod provided by Kubernetes Goat, *hacker-container* which is essentially a pod used as hacker playground to further footprinting or compromise a kubernetes/container environment. We will write a simple YAML file to deploy this container in the *kube-system* namespace.
 
-<div style="text-align: center">
+<div style="text-align: center; max-width: 70%;">
 <img src="https://user-images.githubusercontent.com/18376283/156728980-c7c3142d-f1c7-46fc-9e7b-c101cbb57646.png" />
 </div>
 
