@@ -63,6 +63,7 @@ We will deploy Kubernetes Goat on our cluster, do some steps of the scenarios pr
 <br />
 Kubernetes Goat is originally pulling container images used in the various scenarios from the author's own Docker repository. For the sake of this exercice, the ability to test the vulnerability scanning features of Defender for containers, and the principle to always deploy from a trusted registry, we will adapt the deployment files of Kubernetes Goat to take the same container images but from the container registry we have set up for this lab. 
 <br />
+<br />
 As an example:
 
 <div style="text-align: center; max-width: 70%;">
@@ -98,8 +99,8 @@ Here is an overview of the complete setup with deployed namespaces (highlighted 
   
 ### What does it bring?
 
-The idea of this article is not to explore or market Defender for containers, all details can be found in the official [documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks) or this [article](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/introducing-microsoft-defender-for-containers/ba-p/2952317). 
-<br /> Rather, we will describe here the main features of the product and what they mean in terms of deployment/usage. 
+The idea of this section is not to explore all features of Defender for containers, all details can be found in the official [documentation](https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction?tabs=defender-for-container-arch-aks) or this [article](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/introducing-microsoft-defender-for-containers/ba-p/2952317). 
+<br /> Rather, we will describe here the main aspects of the product and what they mean in terms of deployment/usage. 
 
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151179154-9d313434-c093-4303-85e3-744a6065b55c.png" />
@@ -121,14 +122,14 @@ The sources analyzed by Defender are multiple:
 - Security signals and events from the node/pod
 
 In terms of deployment, this means:<br />
-A Defender profile deployed to each node provides the runtime protections and collects signals from nodes using eBPF technology: it relies on a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/">DaemonSet</a> to ensure all nodes in the cluster are covered.<br />
-Azure Policy add-on for Kubernetes collects cluster and workload configuration for admission control policies (Gatekeeper): this basically translates Azure Policies to Gatekeeper/OPA policies (see <a href="https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.">here</a> for details on OPA and Gatekeeper) for audit, enforcement and prevention of policies on the admission controller of your clusters.<br />
-The container registry does not need anything specific, outside of network considerations.
+- A Defender profile deployed to each node provides the runtime protections and collects signals from nodes using (eBPF technology)[https://ebpf.io/]: it relies on a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/">DaemonSet</a> to ensure all nodes in the cluster are covered.<br />
+- A Azure Policy add-on for Kubernetes, which collects cluster and workload configuration for admission control policies (Gatekeeper): this basically translates Azure Policies to Gatekeeper/OPA policies (see <a href="https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes#:~:text=Azure%20Policy%20extends%20Gatekeeper%20v3%2C%20an%20admission%20controller,state%20of%20your%20Kubernetes%20clusters%20from%20one%20place.">here</a> for details on OPA and Gatekeeper) for audit, enforcement and prevention of policies on the admission controller of your clusters.<br />
+- The container registry does not need anything specific, outside of network considerations.
 
 <a name="Item-3"></a>
 ## Cluster is ready, the goat is in the boat...
 
-So after setting up Kubernetes (standard set up, two nodes)(you can refer [here](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal#:~:text=To%20create%20an%20AKS%20cluster%2C%20complete%20the%20following,create%20an%20Azure%20Resource%20group%2C%20such%20as%20myResourceGroup) for Azure AKS), and deploying the Kubernetes Goat (refer to Madhu's documentation [here](https://madhuakula.com/kubernetes-goat/)), we enabled Defender for Containers with auto-provisionning (see documentation for details), in Defender for Cloud portal:
+So after setting up Kubernetes (standard set up, two nodes)(you can refer [here](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal#:~:text=To%20create%20an%20AKS%20cluster%2C%20complete%20the%20following,create%20an%20Azure%20Resource%20group%2C%20such%20as%20myResourceGroup) for Azure AKS), and deploying the Kubernetes Goat (refer to Madhu's documentation [here](https://madhuakula.com/kubernetes-goat/)), we enabled Defender for Containers with auto-provisionning, in Defender for Cloud portal:
 
 <div style="text-align: center;">
 <img src="https://user-images.githubusercontent.com/18376283/151562065-52e0cee8-b3d3-4614-b2de-a63c248ffdae.png" />
@@ -162,7 +163,7 @@ Here is what it looks like in terms of repositories:
 </div>
 <p></p>
 
-Since we enabled Defender, and one of the features is vulnerability scanning of container images pushed, pulled and recently pulled in your registry, let's have a look at the results. For this, we can navigate to the Defender for Cloud portal, *Workload Protection* tab. At the same time, we can confirm that our Kubernetes clusters inside the target subscription are covered.
+Since we enabled Defender, and one of the features is vulnerability scanning of container images, let's have a look at the results. For this, we can navigate to the Defender for Cloud portal, *Workload Protection* tab (at the same time, we can confirm that our Kubernetes clusters inside the target subscription are covered by Defender):
 
 <p></p>
 
@@ -217,15 +218,18 @@ When we open this recommendation, we can see the same CVEs as in the container r
  
 ### Can I prevent vulnerable containers from being deployed?
 
-It would be ideal to, not only have a view on vulnerable containers but also prevent vulnerable containers to be deployed. Thanks to Azure Policy for Gatekeeper and defender for containers, we will be able to do so! < br />
+It would be ideal to, not only have a view on vulnerable containers but also prevent vulnerable containers to be deployed. Thanks to Azure Policy for Gatekeeper and defender for containers, we will be able to do so (soon)! <br />
 This is in fact one of the recommendation also made by Defender for Containers about our cluster:
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/155594817-dcb97ae1-9263-4243-b639-ec0918ff566b.png" />
 </div>
 <p></p>
- 
-You can check this [page](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes)  for more details on Azure Policy for Kubernetes, and this [one](https://docs.microsoft.com/en-us/azure/aks/policy-reference#policy-definitions) for the list of policies, including gating deployment of vulnerable images.
+
+This feature is still in preview and will require a mutation admission controller. Today, Gatekeeper supports OPA queries based only on static conditions and data which exists on request body at admission time. You can check the policy and the evolution of that capability [here](https://docs.microsoft.com/en-us/azure/aks/policy-reference#policy-definitions). <br /><br /> 
+Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
+You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course.
+You can check this [page](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes) for Azure Policy for Kubernetes in general.
 
 <a name="Item-6"></a>
 ## We deployed a goat, did Defender detect something already?
@@ -246,7 +250,7 @@ We notice 4 alerts, after the setup:
 
 If we check details of one of these alerts, we can see interesting information, including related [MITRE tactics](https://www.microsoft.com/security/blog/2021/04/29/center-for-threat-informed-defense-teams-up-with-microsoft-partners-to-build-the-attck-for-containers-matrix/), detailed description, pod name...
 
-However we would like to potentially trigger actions based on this alert or have information about how to mitigate the threat! 
+However we would like to potentially trigger actions based on these alerts or have information about how to mitigate the threat! 
 This all happens in the 'take action' tab:
 
 <div style="text-align: center">
@@ -259,10 +263,11 @@ This all happens in the 'take action' tab:
 2. We have a list of ***actionable*** recommendations to prevent this threat in the future
 
 <p></p>
+<p></p>
 
-**What are these mitigations exactly?** 
-Like for preventing vulnerable image in the cluster discussed here above, they are leveraging Gatekeeper, the admission controller, and Azure Policy, to enforce controls and best-practices on your clusters! Azure Policy extends Gatekeeper v3, the admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure provides built-in policies such as the ones proposed in the alert remediation, or yet Kubernetes CIS hardening policies but you can also come up with custom policies. <br />
-You are able to audit, prevent or remediate issues in your cluster in an automated way. We will not do this here, as this would break our vulnerable goat of course.
+**What are these mitigations exactly?** <br />
+Like for preventing vulnerable image in the cluster discussed here above, most of them are leveraging Azure Policy and the admission controller to enforce controls and best-practices on your clusters! 
+
 
 ### But did Defender detect all potential issues and weaknesses?
 
@@ -274,7 +279,7 @@ Only four alerts? Uh. But I thought the goat was damn vulnerable! Good catch! Bu
 
 <p></p>
 
-We see clearly here recommendations for many best-practices in a Kubernetes environment. These recommendations can easily be mapped to [CIS best-practices](https://www.cisecurity.org/benchmark/kubernetes).
+We see clearly here recommendations against many best-practices in a Kubernetes environment. These recommendations can easily be mapped to [CIS best-practices](https://www.cisecurity.org/benchmark/kubernetes).
 Most of these recommendations can even be remediated or denied in a few clicks:
 
 <div style="text-align: center">
@@ -284,9 +289,7 @@ Most of these recommendations can even be remediated or denied in a few clicks:
 
 <p></p>
 
-We can also see of course a few recommendations are 'met' and compliant with *Healthy* state.
-You do not have to go or have to wait for an alert to see these best-practice issues. 
-They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab, like for the container runtime CVEs we checked before:
+We can also see of course a few recommendations are 'met' and compliant with *Healthy* state. You do not have to go or have to wait for an alert to see these best-practice issues. They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab, like for the container runtime CVEs we checked before:
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/155599524-362ea59b-dcb8-46c1-bdc4-23b89042dfc8.png" />
@@ -300,7 +303,8 @@ The list of recommendations can be found here: https://docs.microsoft.com/en-us/
 <a name="Item-7"></a>
 ## Testing attack patterns
 
-Now, let's play and see how Defender reacts. As previously introduced, we will not test all Kubernetes Goat scenarios for various reasons:
+Now, let's play and see how Defender reacts in terms of alerting.<br />
+As previously introduced, we will not test all Kubernetes Goat scenarios for various reasons:
 
 1. Some Kubernetes Goat scenarios relies on Docker engine, while AKS relies on containerd (which avoids mandatory root privileges for containers, behind other benefits)
 2. Some scenarios are 'inner-network' specific: cross-namespace requests for instance should be tackled with Network Policies such as Calico or Azure CNI. It is not the idea to cover this here, and Defender for Cloud has no way to know what is an authorized applicative flow inside the cluster or not. 
