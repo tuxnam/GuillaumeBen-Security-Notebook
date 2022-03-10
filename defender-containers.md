@@ -591,7 +591,7 @@ In this article we took a vulnerable AKS environment and looked at the capabilit
 - Policies enforcement and/or audit through usage of Azure Policy and Gatekeeper
 - Alerting and recommendations from Defender for Cloud on a vulnerable environment where malicious actions were triggered
 <p></p>
-Also remember the difference between an alert and a recommendation. If you look only at alerts, you are missing an important part of the security assessment of your cluster, being the continuous evaluation of the seurity posture in form of recommendations.
+Important to remember the difference between an alert and a recommendation. If you look only at alerts, you are missing an important part of the security assessment of your cluster, being the continuous evaluation of the seurity posture and preventing the above threats from being possible.  
 
 <a name="Item-9"></a>
 ## References
