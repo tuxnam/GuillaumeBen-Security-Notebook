@@ -318,7 +318,7 @@ We will not expand too much on the details here, for the sake of limiting the le
 <br />
 Here are the scenarios we will test using Kubernetes Goat setup and see how Defender reacts to that:
 - Abusing pod and senstive volume mount: leveraging scenario 2 of Kubernetes Goat, which has remote code execution weakness, to trigger code execution on the pod
-- Abusing pod and complete host volume mount: leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node this time
+- Abusing pod and host through root volume mount: leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node this time
 - Targeting Kube API: Leveraging scenario 16 and try to play with Kubernetes API and abusing known Kubernetes service accounts threat vectors
 - Deploying in the kube-system namespace
 - Creating a privileged role
@@ -378,10 +378,10 @@ We also copied that same eicar file on the host itself, in /var/tmp, using the m
 
 <p></p>
 
-### Abusing pod and complete host volume mount
+### Abusing pod and host through root volume mount
 
 **Pod used:** System Monitor<br />
-**Pod properties:**<br />
+**Pod properties:** <br />
 - Privileged Context <br />
 - Sensitive Mount: the full host system / volume is mounted in the pod, in /host-system
 
@@ -437,6 +437,7 @@ rm -rf ~/.bash_history
 **Pod used:** Hunger Check <br />
 **Pod properties:** <br />
 - Secret reader RBAC role
+
 <p></p>
 This pod has extra-privileges being assigned. A RBAC role 'secret reader' is assigned to the service account bound to this pod. <br />
 Service accounts are identities in Kubernetes world, assigned to resources such as pods, which allows them to communicate with the Kube API, with certain privileges. 
