@@ -495,14 +495,14 @@ Let's deploy that pod in the cluster:
 
 Our last exercice for this article will be to create a cluster role. Cluster roles and cluster role bindings are like regular kubernetes (namespaced) roles except they are for a cluster scoped resource. For example a cluster admin role can be created to provide a cluster administrator permissions to vieww or list secrets in the cluster. This can be done using the following *yaml* definition file (giving the role a generic reader name):
 
-`#role.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
- name: get-pods
-rules:
-  apiGroups: [""] # "" indicates the core API group
-  resources: ["secrets"]
+`#role.yaml  
+apiVersion: rbac.authorization.k8s.io/v1  
+kind: ClusterRole  
+metadata:  
+ name: get-pods  
+rules:  
+  apiGroups: [""] # "" indicates the core API group  
+  resources: ["secrets"]  
   verbs: ["get", "watch", "list"]`
 
 We deploy this role into our cluster. We could have created a service account or a user to bind this role to, but we stopped here at cluster role creation.
