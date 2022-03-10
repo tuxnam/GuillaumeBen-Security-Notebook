@@ -466,7 +466,7 @@ It does not work, as we are not in the default namespace. Indeed, the pod are ru
 
 But we can therefore use the correct namespace and run the following command to list secrets:
 
-`~curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/${NAMESPACE}/secrets`
+`curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/${NAMESPACE}/secrets`
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156610843-96d8321b-3919-4a00-9bc8-db5eaa6a9a47.png" />
