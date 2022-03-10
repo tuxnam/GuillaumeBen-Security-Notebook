@@ -297,7 +297,7 @@ We can also see a few recommendations are 'met' and compliant with *Healthy* sta
 
 <p></p>
 
-The full list of detection capabilities (alerts) of Defender can be found [here]{https://docs.microsoft.com/en-us/azure/defender-for-cloud/alerts-reference#alerts-k8scluster). <br />
+The full list of detection capabilities (alerts) of Defender can be found [here](https://docs.microsoft.com/en-us/azure/defender-for-cloud/alerts-reference#alerts-k8scluster). <br />
 The list of recommendations can be found [here](https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference)
 
 <a name="Item-7"></a>
