@@ -442,11 +442,13 @@ In this specific case, the deployment has overly permissive policy/access which 
 
 As an attacker, we can use the service account token information and try to retrieve information from the Kube API:
 
-`export APISERVER=https://${KUBERNETES_SERVICE_HOST}
+```bash
+export APISERVER=https://${KUBERNETES_SERVICE_HOST}
 export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
 export NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
 export TOKEN=$(cat ${SERVICEACCOUNT}/token)
-export CACERT=${SERVICEACCOUNT}/ca.crt`
+export CACERT=${SERVICEACCOUNT}/ca.crt
+```
 
 We can then try to list secrets in the default namespace:
 
@@ -495,7 +497,8 @@ Let's deploy that pod in the cluster:
 
 Our last exercice for this article will be to create a cluster role. Cluster roles and cluster role bindings are like regular kubernetes (namespaced) roles except they are for a cluster scoped resource. For example a cluster admin role can be created to provide a cluster administrator permissions to vieww or list secrets in the cluster. This can be done using the following *yaml* definition file (giving the role a generic reader name):
 
-`#role.yaml  
+```yaml
+#role.yaml  
 apiVersion: rbac.authorization.k8s.io/v1  
 kind: ClusterRole  
 metadata:  
@@ -503,7 +506,8 @@ metadata:
 rules:  
   apiGroups: [""] # "" indicates the core API group  
   resources: ["secrets"]  
-  verbs: ["get", "watch", "list"]`
+  verbs: ["get", "watch", "list"]
+ ```
 
 We deploy this role into our cluster. We could have created a service account or a user to bind this role to, but we stopped here at cluster role creation.
 
