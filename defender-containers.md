@@ -274,7 +274,7 @@ Like for preventing vulnerable image in the cluster discussed here above, most o
 Only four alerts? Uh. But I thought the goat was damn vulnerable! Good catch! But it is not only about alerts, also about recommendations! In the alert details pane, let's click on 'view all recommendations'...surprise! There is way more problems in our Kubernetes environment than we thought! 
 
 <div style="text-align: center">
-<img src="https://user-images.githubusercontent.com/18376283/155598547-8672bb32-2ddf-4e4d-97d5-d7a5e9a7a520.png" />
+<img src="https://user-images.githubusercontent.com/18376283/157689074-460b6210-e48c-4dac-9758-0ef29113766d.png" />
 </div>
 
 <p></p>
@@ -292,7 +292,7 @@ Most of these recommendations can even be remediated or denied in a few clicks:
 We can also see a few recommendations are 'met' and compliant with *Healthy* state. You do not have to go or have to wait for an alert to see these best-practice issues. They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab, like for the container runtime CVEs we checked before:
 
 <div style="text-align: center">
-<img src="https://user-images.githubusercontent.com/18376283/155599524-362ea59b-dcb8-46c1-bdc4-23b89042dfc8.png" />
+<img src="https://user-images.githubusercontent.com/18376283/157689257-ed00fc70-1c42-484e-8047-fb53fde39e3e.png" />
 </div>
 
 <p></p>
