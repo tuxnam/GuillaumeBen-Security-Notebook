@@ -279,7 +279,7 @@ Only four alerts? Uh. But I thought the goat was damn vulnerable! Good catch! Bu
 
 <p></p>
 
-We see clearly here recommendations against many best-practices in a Kubernetes environment. These recommendations can easily be mapped to [CIS best-practices](https://www.cisecurity.org/benchmark/kubernetes).
+We see here recommendations against many best-practices in a Kubernetes environment. These recommendations can easily be mapped to [CIS best-practices](https://www.cisecurity.org/benchmark/kubernetes).
 Most of these recommendations can even be remediated or denied in a few clicks:
 
 <div style="text-align: center">
@@ -289,7 +289,7 @@ Most of these recommendations can even be remediated or denied in a few clicks:
 
 <p></p>
 
-We can also see of course a few recommendations are 'met' and compliant with *Healthy* state. You do not have to go or have to wait for an alert to see these best-practice issues. They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab, like for the container runtime CVEs we checked before:
+We can also see a few recommendations are 'met' and compliant with *Healthy* state. You do not have to go or have to wait for an alert to see these best-practice issues. They are listed as recommendations, amongst others in your Defender for Cloud Security Posture Management tab, like for the container runtime CVEs we checked before:
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/155599524-362ea59b-dcb8-46c1-bdc4-23b89042dfc8.png" />
@@ -306,20 +306,20 @@ The list of recommendations can be found [here](https://docs.microsoft.com/en-us
 Now, let's play and see how Defender reacts in terms of alerting.<br />
 As previously introduced, we will not test all Kubernetes Goat scenarios for various reasons:
 
-1. Some Kubernetes Goat scenarios relies on Docker engine, while AKS relies on containerd (which avoids mandatory root privileges for containers, behind other benefits)
+1. Some Kubernetes Goat scenarios rely on Docker engine, while AKS use containerd directly (which avoids mandatory root privileges for containers, behind other benefits)
 2. Some scenarios are 'inner-network' specific: cross-namespace requests for instance should be tackled with Network Policies such as Calico or Azure CNI. It is not the idea to cover this here, and Defender for Cloud has no way to know what is an authorized applicative flow inside the cluster or not. 
-3. Some scenario are related to NodePort, however AKS managed clusters are usually exposed by LoadBalancer service rather than NodePort. MDC detects exposure of various sensitive applications using LoadBalancer services.
+3. Some scenario are related to [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/), however AKS managed clusters are usually exposed by LoadBalancer service rather than NodePort. MDC detects exposure of various sensitive applications using LoadBalancer services.
 4. One scenario has for purpose to investigate the inner layers of a container to find crypto mining commands but the job itself is not doing any crypto mining. So while Defender can detect crypto mining activities, it would not be relevant in this context. 
 5. Some scenarios would not be spotted: example of the secrets in container images discussed in previous section.
 <br />
 Details about all the scenarios of the Kubernetes Goat can be found [here](https://madhuakula.com/kubernetes-goat/about.html#:~:text=Kubernetes%20Goat%20is%20designed%20to%20be%20an%20intentionally,production%20environment%20or%20alongside%20any%20sensitive%20cluster%20resources.).
 <br />
-We will not expand too much on the details here, for the sake of your not falling asleep, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. The idea is not to spoil solutions but try to capture the flag by yourself if you want to leverage his work!
+We will not expand too much on the details here, for the sake of limiting the length of this article, but also because Madhu desceibes already everything you should know in his documentation, and in some good videos such as Defcon talks. The idea is not to spoil solutions but try to capture the flag by yourself if you want to leverage his work!
 <br />
 Here are the scenarios we will test using Kubernetes Goat setup and see how Defender reacts to that:
-- Abusing pod and senstive volume mount: Leveraging scenario 2 of Kubernetes Goat, Docker in Docker, to trigger code execution on the pod
-- Abusing pod and complete host volume mount: Leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node
-- Targeting Kube API: Leveraging scenario 16. and try to play with Kubernetes API and abusing known Kubernetes service accounts threat vectors
+- Abusing pod and senstive volume mount: leveraging scenario 2 of Kubernetes Goat, which has remote code execution weakness, to trigger code execution on the pod
+- Abusing pod and complete host volume mount: leveraging scenario 4 of Kubernetes Goat, escaping to the host, to triger code execution on the pod and the node this time
+- Targeting Kube API: Leveraging scenario 16 and try to play with Kubernetes API and abusing known Kubernetes service accounts threat vectors
 - Deploying in the kube-system namespace
 - Creating a privileged role
 
@@ -328,14 +328,15 @@ Here are the scenarios we will test using Kubernetes Goat setup and see how Defe
 **Pod used:** Health Check <br />
 **Pod properties:** <br />
 - Privileged Context  <br />
-- Sensitive Mount: In the original version from Kubernetes Goat's author, *health_check* deployment has host docker socket mounted in the pod. This was a recurring threat vector in the Docker world (see, [OWASP Cheat Sheets](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html)). As discussed, AKS does not leverage Docker daemon anymore, but rather containerd. We therefore replaced the docker.socket mount in this pod, by mounting /var from the host and re-deployed the pod:
-
-<div style="text-align: center">
-<img src="https://user-images.githubusercontent.com/18376283/156258825-d8c00393-4ddd-499c-94c3-de45f16fc9d4.png" />
+- Sensitive Mount: In the original version from Kubernetes Goat's author, *health_check* deployment has host docker socket mounted in the pod. This was a recurring threat vector in the Docker world (see, [OWASP Cheat Sheets](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html)). As discussed, AKS does not leverage Docker daemon anymore, but rather containerd. We therefore replaced the docker.socket mount in this pod, by another sensitive mount, /var from the host and re-deployed the pod:
+<p></p>
+<div style="text-align: center;">
+<img src="https://user-images.githubusercontent.com/18376283/157660943-45bb3f4b-88aa-4a5a-ba55-88498528583a.png" />
 </div>
-
-This raised an alert in Defender, about sensitive volume mounts as previous seen for the other pods.
-From there, if we navigate to the pod, it is exposing a *health check* service which allows for remote code execution on the pod. Indeed, we can simply execute any command by appending them to the target host to be scanned field.
+<p></p>
+As we have seen in the previous section, this raised an alert in Defender, about sensitive volume mount.<br />
+Now, we can actually try to abuse the application exposed through this pod. If we navigate to the pod, it is in fact exposing a *health check* service. This service allows to monitor the cluster but it has a catch, it allows for remote code execution on the pod. We can simply execute any command by appending them to the target host to be scanned field. Example, running the `mount` command on the pod:
+<p></p>
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156259432-50fdf59e-ced7-4cb1-937d-92ef0bce3fb0.png" />
@@ -345,7 +346,7 @@ From there, if we navigate to the pod, it is exposing a *health check* service w
 
 From there we tested the following commands:
 
-- Downloading a malicious file and executing it:
+- Downloading a malicious file (*eicar* is a sample malware used for testing purposes) and executing it:
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156260030-96be932d-b37a-4dc5-b33e-37167c4ff214.png" />
@@ -353,7 +354,7 @@ From there we tested the following commands:
 
 <p></p>
 
-We also copied eicar file on the host itself, in /var/tmp, using the mounted host volume in /custom/var:
+We also copied that same eicar file on the host itself, in /var/tmp, using the mounted host volume in /custom/var (which we got from the mount command executed in first step):
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156260343-dbf73620-afc4-42af-a105-d6446ae1f9c6.png" />
@@ -369,7 +370,7 @@ We also copied eicar file on the host itself, in /var/tmp, using the mounted hos
 
 <p></p>
 
-- Deleting bash_history to cover our traces
+- Deleting .bash_history to cover our traces: this is a regular evidence hiding step taken by attackers to remove traces of the commands they ran on a system.
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156261238-bbe91fee-a1d2-47ce-b0f8-5f162b300a14.png" />
@@ -382,7 +383,7 @@ We also copied eicar file on the host itself, in /var/tmp, using the mounted hos
 **Pod used:** System Monitor<br />
 **Pod properties:**<br />
 - Privileged Context <br />
-- Sensitive Mount: the full host system / voulme is mounted in the pod, in /host-system
+- Sensitive Mount: the full host system / volume is mounted in the pod, in /host-system
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156262001-14395eb9-dc3c-4ec6-a447-da7fe0b7d444.png" />
@@ -390,10 +391,9 @@ We also copied eicar file on the host itself, in /var/tmp, using the mounted hos
 
 <p></p>
 
+In this scenario, we took the following actions:
 
-From there we tested the following:
-
-- Enabled the SSH server on the host to allow for instance for remote access (persistency) and added a newly generated attacker controlled SSH key to authorized keys on the host. I simply used ssh-keygen to generate a new sample key pair for SSH on my machine:
+- Enabled the SSH server on the host to allow for instance for remote access (persistency) and added a newly generated attacker controlled SSH key to authorized keys on the host. We simply used ssh-keygen to generate a new sample key pair for SSH:
 
 `/usr/bin/sshd start~`
 `echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmljeUnkk3eBlavzDmw3Dm5gQJrjCs//3CxJ+4mjbRbja4Hu1o46smTsHJkgXVfwyelUbTTCjRny5LcP9A
@@ -406,13 +406,13 @@ sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/
 
 `chroot /host-system bash` 
 
-- Added a new user to the sudoers group:
+- Adding a new user to the sudoers group:
 
 `useradd -g sudo Tux`
 
 - Stopping apt-daily-upgrade.timer service
 
-Apt-Daily.Service has several functions in Linux: it performs automatic installation of services/packages, it looks for the package updates periodically, it updates the package list daily but also download and install security updates daily.
+*apt-Daily.Service* has several functions in Linux: it performs automatic installation of services/packages, it looks for the package updates periodically, it updates the package list daily but also download and install security updates daily.
 Stopping this service allows for instance to hide evidence, delay an update or yet download a malicious package and have it run with privileges.
 In this case, this could allow us further exploitation on the node (which is self-managed in normal times). 
 
@@ -427,19 +427,19 @@ In this case, this could allow us further exploitation on the node (which is sel
 **Pod used:** Hunger Check <br />
 **Pod properties:** <br />
 - Secret reader RBAC role
-
+<p></p>
 This pod has in fact extra-privileges being assigned. Indeed, a RBAC role 'secret reader' is assigned to the service account bind to this pod. Service accounts are identities in Kubernetes world, assigned to resources such as pods, which allows them to communicate with the Kube API, with certain privileges. 
 A good article on the subject and related threats can be found [here](https://techcommunity.microsoft.com/t5/microsoft-defender-for-cloud/detecting-identity-attacks-in-kubernetes/ba-p/3232340 ). 
-
+<p></p>
 In this specific case, the deployment has overly permissive policy/access which allows us to gain access to other resources and services.
-
+<p></p>
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156607828-fbd4dd88-5d02-4a01-872b-3dab51612b8a.png" />
 </div>
 
 <p></p>
 
-As an attacker, I can use the service account token information and try to retrieve information from the Kube API:
+As an attacker, we can use the service account token information and try to retrieve information from the Kube API:
 
 `export APISERVER=https://${KUBERNETES_SERVICE_HOST}
 export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
@@ -447,7 +447,7 @@ export NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
 export TOKEN=$(cat ${SERVICEACCOUNT}/token)
 export CACERT=${SERVICEACCOUNT}/ca.crt`
 
-I can then try to list secrets in the default namespace:
+We can then try to list secrets in the default namespace:
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156608451-f6b30669-3c32-414f-b555-a28a5fe31533.png" />
@@ -455,7 +455,7 @@ I can then try to list secrets in the default namespace:
 
 <p></p>
 
-It does not work, as I am not in the default namespace. Indeed, the pod are running in *big-monolith* namespace:
+It does not work, as we are not in the default namespace. Indeed, the pod are running in *big-monolith* namespace:
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156608884-3ab21fba-4893-450f-a0bc-a6ca4d7d967a.png" />
@@ -477,7 +477,7 @@ But we can therefore use the correct namespace and run the following command to 
 
 *Kube-system* namespace is a reserved namespace for all components relating to the Kubernetes system. Deploying in that namespace should be forbidden and can lead to damage or security compromise of the full cluster.
 
-For this scenario, I will use one of the pod provided by Kubernetes Goat, *hacker-container* which is essentially a pod used as hacker playground to further footprinting or compromise a kubernetes/container environment. We will write a simple YAML file to deploy this container in the *kube-system* namespace.
+For this scenario, we will use one of the pod provided by Kubernetes Goat, *hacker-container* which is essentially a pod used as hacker playground to further footprinting or compromise a kubernetes/container environment. We will write a simple YAML file to deploy this container in the *kube-system* namespace.
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156728980-c7c3142d-f1c7-46fc-9e7b-c101cbb57646.png" />
@@ -485,14 +485,14 @@ For this scenario, I will use one of the pod provided by Kubernetes Goat, *hacke
 
 <p></p>
 
-We notice at the same time that this deployment has *NET_ADMIN* capability as well as a sensitive volume mount, */etc*.
+We notice at the same time that this deployment has *NET_ADMIN* capability as well as a sensitive volume mount, */etc*.<br />
 Let's deploy that pod in the cluster:
 
 `kubectl apply -f maliciousYAML.yaml`
 
 ### Creating a cluster-level privileged role 
 
-Our last exercice for this article will be to create a cluster role. Cluster roles and cluster role bindings are like regular kubernetes (namespaced) roles except they are for a cluster scoped resource. For example a cluster admin role can be created to provide a cluster administrator permissions to vieww or list secrets in the cluster. This can be done using the following *yaml* definition file ( giving the role a generic reader name):
+Our last exercice for this article will be to create a cluster role. Cluster roles and cluster role bindings are like regular kubernetes (namespaced) roles except they are for a cluster scoped resource. For example a cluster admin role can be created to provide a cluster administrator permissions to vieww or list secrets in the cluster. This can be done using the following *yaml* definition file (giving the role a generic reader name):
 
 `
 #role.yaml
@@ -506,7 +506,7 @@ rules:
   verbs: ["get", "watch", "list"]
 `
 
-We deployed this role into our cluster. We could of course have created a service account or a user to bind this role to.
+We deploy this role into our cluster. We could of course have created a service account or a user to bind this role to.
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156892614-2cefe5b6-9090-493c-8dcf-8fba6c27b656.png" />
@@ -514,9 +514,10 @@ We deployed this role into our cluster. We could of course have created a servic
 
 ### Looking at the alerts!
 
-Ok so we did a bunch of malicious operations in our environment and it would be good now to check if Defender for Cloud spotted something? We should of course first, in a real environment, have applied recommendations which we discussed earlier in this article, and enforced policies to avoid malicious operations from happening, but the idea was to test the alerting capability as well!
-
-If we go back to our Defender for Cloud panel, in the alerts section, we can see we triggered a bunch of alerts:
+Ok so we did a bunch of malicious operations in our environment and it would be good now to check if Defender for Cloud spotted something else than the alerts and recommendations we looked at.<br />
+We should of course first, in a real environment, have applied recommendations which we discussed earlier in this article, and enforced policies to avoid malicious operations from happening, but the intent here was to test the alerting capability as well!
+<p></p>
+If we go back to our Defender for Cloud panel, in the alerts section, we can see we triggered a bunch of alerts:<br />
 Most of the scenarios we tested did trigger suspicious activities, next to the ones raised when we deployed Kubernetes Goat in our environment.
 
 <div style="text-align: center">
@@ -524,7 +525,6 @@ Most of the scenarios we tested did trigger suspicious activities, next to the o
 </div>
 
 <p></p>
-
 
 Let's look at a few of them in more details:
 
@@ -582,7 +582,7 @@ For the capability *NET_ADMIN*, if we look back at [https://docs.microsoft.com/e
 
 <p></p>
 
-All these recommendations in general should lead to deploying policies to remediate the security of the environment, and prevent malicious acts leading to alerts from even be possible.
+All these recommendations should lead to deploying policies to remediate the security of the environment, and prevent malicious acts leading to alerts from even be possible.
 
 <a name="Item-8"></a>
 ## Conclusion
