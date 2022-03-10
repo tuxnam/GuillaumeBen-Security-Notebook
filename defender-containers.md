@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Guillaume's Security Notebook
+title: A goat in the boat: a look at how Defender for Containers protects your clusters
 description: Guillaume B., Cloud Security Architect
 ---
 
