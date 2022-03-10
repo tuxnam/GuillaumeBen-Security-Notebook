@@ -16,7 +16,7 @@ description: Guillaume B., Cloud Security Architect
 </p>
  
 > The skyrocketting usage of Kubernetes and containarized workloads over the past years has led to new attack vectors. 
-> The number and sophistication of attacks targeting cloud-native environment is booming. While containers and Kubernetes security can be hard and require security professionals to update their skillsets, a bunch of tools and products have rised to target these new threats cope with the elasticity and scalibility of these new workloads. 
+> The number and sophistication of attacks targeting cloud-native environment is booming. While containers and Kubernetes security can be hard and require security professionals to update their skillsets, a bunch of tools and products have rised to target these new threats and cope with the elasticity and scalibility needs of Kubernetes workloads. 
 > Some of these products include Trivy, Qualys, Clair, Anchore, Snyk, a myriad of good open-source tools and, the one we will investigate in this post, Microsoft Defender for containers. 
 
  <p></p>
@@ -25,7 +25,7 @@ description: Guillaume B., Cloud Security Architect
 
 Defender for containers is a recent addition to the <a href="https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction">Microsoft Defender for Cloud</a> portfolio, which is a tool for security posture management and threat protection for multi-cloud and hybrid scenarios. 
 Defender for containers is not really 'new', it is an evolution and merge of two previous plans in the defender portfolio: defender for container registries and defender for Kubernetes. <br />
-This evoltion is however inline with Microsoft's vision of end-to-end container security: bridging the gap between the security of the platform (Kubernetes) and the security of the container(s) themselves. Isolating these concepts leads to gaps in a sound container security strategy.
+This evoltuon, however, is inline with Microsoft's vision of end-to-end container security: bridging the gap between the security of the platform (Kubernetes) and the security of the container(s) themselves. Isolating these concepts leads to gaps in a sound container security strategy.
 
 
 ## Content of this article
@@ -45,7 +45,7 @@ This evoltion is however inline with Microsoft's vision of end-to-end container 
 <a name="Item-1"></a>
 ## The setup and the goat story
 
-We will first start by setting up a valuable testing environment, with a simple Kubernetes cluster, a container registry, container images but most importantly weaknesses and the ability to exploit them to see how Defender for containers can help. <br />
+The first element we need is to setup a valuable testing environment, with a simple Kubernetes cluster, a container registry, container images and most importantly weaknesses and the ability to exploit them to see how Defender for containers can help. <br />
 
 The demo environment will therefore consist of the following assets:
 - One Azure Kubernetes cluster (could be any CNCF-compliant cluster)
@@ -56,22 +56,22 @@ The demo environment will therefore consist of the following assets:
 
 ### Introducing Kubernetes Goat and detailing the testing environment 
 
-The vulnerable workload, aka the goat in the boat, will be leveraging the awesome work of a DevOps security specialist, Madhu Akula. 
+The vulnerable workload, aka the goat in the boat, will be leveraging the awesome work of a DevOps security specialist, Madhu Akula. <br />
 <a href="https://github.com/madhuakula/kubernetes-goat">Kubernetes Goat</a> is designed to be an intentionally vulnerable cluster environment to learn and practice Kubernetes security. <br />
-We will deploy Kubernetes Goat on our cluster, do some steps of the scenarios proposed, but also trying to abuse the vulnerable environment itself and see how Defender can help to detect/mitigate related weaknesses and threats.
+We will deploy Kubernetes Goat on our cluster, do some steps of the scenarios proposed, but also we will attempt abusing the vulnerable environment itself and see how Defender can help to detect/mitigate related weaknesses and threats.
 <br />
 <br />
 Kubernetes Goat is originally pulling container images used in the various scenarios from the author's own Docker repository. For the sake of this exercice, the ability to test the vulnerability scanning features of Defender for containers, and the principle to always deploy from a trusted registry, we will adapt the deployment files of Kubernetes Goat to take the same container images but from the container registry we have set up for this lab. 
 <br />
 As an example:
 
-<div style="text-align: center">
+<div style="text-align: center; max-width: 70%;">
 <img src="https://user-images.githubusercontent.com/18376283/156877420-7c5f41ca-79a5-4b59-bb8b-d742508d332c.png" alt="adapted YAML" />
 </div>
 
 ...becomes...
 
-<div style="text-align: center">
+<div style="text-align: center; max-width: 70%;">
 <img src="https://user-images.githubusercontent.com/18376283/156877538-c73dd7b0-cd52-4a77-85f0-ac60004c00da.png" alt="original YAML" />
 </div>
 
