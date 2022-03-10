@@ -505,7 +505,7 @@ rules:
   resources: ["secrets"]
   verbs: ["get", "watch", "list"]`
 
-We deploy this role into our cluster. We could of course have created a service account or a user to bind this role to.
+We deploy this role into our cluster. We could have created a service account or a user to bind this role to, but we stopped here at cluster role creation.
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156892614-2cefe5b6-9090-493c-8dcf-8fba6c27b656.png" />
