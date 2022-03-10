@@ -330,7 +330,7 @@ Here are the scenarios we will test using Kubernetes Goat setup and see how Defe
 - Privileged Context  <br />
 - Sensitive Mount: In the original version from Kubernetes Goat's author, *health_check* deployment has host docker socket mounted in the pod. This was a recurring threat vector in the Docker world (see, [OWASP Cheat Sheets](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html)). As discussed, AKS does not leverage Docker daemon anymore, but rather containerd. We therefore replaced the docker.socket mount in this pod, by another sensitive mount, /var from the host and re-deployed the pod:
 <p></p>
-<div style="text-align: center;">
+<div style="text-align: center; max-width: 70%;">
 <img src="https://user-images.githubusercontent.com/18376283/157660943-45bb3f4b-88aa-4a5a-ba55-88498528583a.png" />
 </div>
 <p></p>
