@@ -412,7 +412,7 @@ sWE4Y1lCLqTdRjtYsuRshcdJj8soa9tKWwwDbiEPANLvuilsyRrwp0YpWwv2XhpjnpWl+gU= " >> ~/
 
 - Stopping apt-daily-upgrade.timer service
 
-*apt-Daily.Service* has several functions in Linux: it performs automatic installation of services/packages, it looks for the package updates periodically, it updates the package list daily but also download and install security updates daily.
+*apt-daily.service* has several functions in Linux: it performs automatic installation of services/packages, it looks for the package updates periodically, it updates the package list daily but also download and install security updates daily.
 Stopping this service allows for instance to hide evidence, delay an update or yet download a malicious package and have it run with privileges.
 In this case, this could allow us further exploitation on the node (which is self-managed in normal times). 
 
