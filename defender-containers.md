@@ -255,7 +255,7 @@ This all happens in the 'take action' tab:
 
 <div style="text-align: center">
 <img src="https://user-images.githubusercontent.com/18376283/156884308-b0036960-56b6-46b9-93f8-c236d753d06f.png" />
-<img src="https://user-images.githubusercontent.com/18376283/155598238-45ee9a3d-c72c-4256-b5c6-8f38cd7f5679.png" />
+<img src="https://user-images.githubusercontent.com/18376283/157689922-6bba8e00-fe09-4ad8-aa1c-bead3b9c8a69.png" />
 </div>
 <p></p>
 
