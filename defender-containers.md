@@ -572,7 +572,7 @@ Let's look at a few of them in more details:
 
 **Note:** <br />
 Some tests did not trigger any alerts (deleting backup files in host's /var folder, copying *eicar* file to host from a pod or yet the *NET_ADMIN* capability in our hacker container). <br />
-The list of alerts and detection capabilities should grow over time. Defender will however always make a informed decision between raising an alert or in some scenarios relying on a recommendation only (sensitive volume mount in this case), to avoid alert fatigue. ,br />
+The list of alerts and detection capabilities should grow over time. Defender will however always make a informed decision between raising an alert or in some scenarios relying on a recommendation only (sensitive volume mount in this case), to avoid alert fatigue. <br />
 For the capability *NET_ADMIN*, if we look back at [https://docs.microsoft.com/en-us/azure/defender-for-cloud/recommendations-reference](recommendations list), it is not one of them. For now, only capability *CAPSYSADMIN* is. You could however easily build/duplicate that policy to look for *NET_ADMIN* as well, hence the power of leveraging Gatekeper and Azure Policies. <br />
 
 <div style="text-align: center">
