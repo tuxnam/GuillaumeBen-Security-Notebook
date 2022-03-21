@@ -7,7 +7,7 @@ description: Guillaume B., Cloud Security Architect @ Microsoft
 # Who Am I
 
 <div class="card">
-  <img src="images/1618471779247.jpg" alt="Guillaume" style="width:100%">
+  <img src="images/1618471779247.jpg" alt="Guillaume" style="width:100px">
   <h1>Guillaume Benats/h1>
   <p class="title">Security Cloud Solution Architect, Microsoft</p>
   <a href="https://www.linkedin.com/in/guillaume-benats-25550426/" target="_blamk"><i class="fa fa-linkedin"></i></a>
