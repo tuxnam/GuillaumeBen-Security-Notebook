@@ -3,7 +3,6 @@
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   max-width: 300px;
-  margin: auto;
   text-align: center;
   float: right;
   margin: 20px;
@@ -23,7 +22,7 @@
   border: none;
   outline: 0;
   display: inline-block;
-  padding: 8px;
+  padding-top: 8px;
   color: #FFFFFF;
   background-color: #2e7bcf;
   text-align: center;
