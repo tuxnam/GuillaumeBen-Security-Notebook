@@ -1,7 +1,7 @@
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
   max-width: 300px;
   text-align: center;
   float: right;
@@ -22,7 +22,7 @@
   border: none;
   outline: 0;
   display: inline-block;
-  padding-top: 8px;
+  padding: 8px;
   color: #FFFFFF;
   background-color: #2e7bcf;
   text-align: center;
