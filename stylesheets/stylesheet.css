@@ -12,6 +12,12 @@
   font-size: 18px;
 }
 
+
+.profiletitle {
+  padding-bottom: 30px;
+  font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
+}
+
 button {
   border: none;
   outline: 0;
