@@ -6,8 +6,16 @@
  *    user zoom.
  */
 
-h1.a {
- text-decoration: none; 
+a.head:link {
+    all: unset;
+}
+
+a.head:hover {
+    all: unset;
+}
+
+a.head:visited {
+    all: unset;
 }
 
 html {
