@@ -3,9 +3,6 @@ layout: default
 title: Guillaume's Security Notebook
 description: Guillaume B., Cloud Security Architect @ Microsoft
 ---
-
-# Who Am I
-
 <div class="card">
   <img src="images/1618471779247.jpg" alt="Guillaume" style="width:100px">
   <p class="profiletitle">Guillaume Benats</p>
