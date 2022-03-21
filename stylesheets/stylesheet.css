@@ -19,7 +19,7 @@
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
 }
 
-button {
+.button {
   border: none;
   outline: 0;
   display: inline-block;
