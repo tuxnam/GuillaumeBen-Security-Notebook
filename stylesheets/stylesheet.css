@@ -6,6 +6,10 @@
  *    user zoom.
  */
 
+h1.a {
+ text-decoration: none; 
+}
+
 html {
   font-family: sans-serif; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
@@ -147,17 +151,17 @@ h1 {
   font-size: 2em;
 }
 
-h1 a {
+h1.a {
   text-decoration: none;
   color: fff;
 }
 
-h1 a:hover {
+h1.a:hover {
   text-decoration: none;
   color: fff;
 }
 
-h1 a:visited {
+h1.a:visited {
   text-decoration: none;
   color: fff;
 }
