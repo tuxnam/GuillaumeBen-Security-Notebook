@@ -7,15 +7,18 @@
  */
 
 a.head:link {
-    all: unset;
+    color: white;
+    text-decoration: none;
 }
 
 a.head:hover {
-    all: unset;
+    color: white;
+    text-decoration: none;
 }
 
 a.head:visited {
-    all: unset;
+    color: white;
+    text-decoration: none;
 }
 
 html {
