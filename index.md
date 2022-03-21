@@ -11,7 +11,6 @@ description: Guillaume B., Cloud Security Architect @ Microsoft
   <h1>Guillaume Benats</h1>
   <p class="title">Security Cloud Solution Architect, Microsoft</p>
   <a href="https://www.linkedin.com/in/guillaume-benats-25550426/" target="_blamk"><i class="fa fa-linkedin"></i></a>
-  <p><button>Contact</button></p>
 </div>
 
 # Content
