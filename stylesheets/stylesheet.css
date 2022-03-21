@@ -22,7 +22,8 @@
   color: #FFFFFF;
   background-color: #2e7bcf;
   text-align: center;
-  height: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   font-size: 18px;
 }
 
@@ -543,8 +544,7 @@ header {
 footer {
   text-align: center;
   margin-top: 50px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  margin-bottom: 0;
   font-family: Helvetica, Arial, serif;
   font-size: 14px;
   color: #BBBBBB;
