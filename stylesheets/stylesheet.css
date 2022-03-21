@@ -5,6 +5,7 @@
   max-width: 300px;
   margin: auto;
   text-align: center;
+  float: left;
 }
 
 .title {
@@ -12,9 +13,8 @@
   font-size: 18px;
 }
 
-
 .profiletitle {
-  padding-bottom: 30px;
+  padding-bottom: 40px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
 }
 
