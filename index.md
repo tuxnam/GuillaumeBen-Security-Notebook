@@ -4,6 +4,12 @@ title: Guillaume's Security Notebook
 description: Guillaume B., Cloud Security Architect @ Microsoft
 ---
 
+# Who Am I
+
+Guillaume Benats, Cloud Security Architect @ Microsoft.
+
+https://www.linkedin.com/in/guillaume-benats-25550426/
+
 # Content
 ___
 
