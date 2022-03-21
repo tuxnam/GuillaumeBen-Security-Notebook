@@ -5,6 +5,7 @@
   max-width: 300px;
   text-align: center;
   float: right;
+  margin: 30 0 30 30;
 }
 
 .title {
@@ -18,12 +19,12 @@
 }
 
 .button {
-  display: inline-block;
   color: #FFFFFF;
   background-color: #2e7bcf;
   text-align: center;
   width: 100%;
   font-size: 18px;
+  padding: 8px;
 }
 
 a {
