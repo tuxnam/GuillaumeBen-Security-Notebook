@@ -7,16 +7,22 @@
  */
 
 a.head:link {
+    margin: 0.67em 0;
+    font-size: 2em;
     color: white;
     text-decoration: none;
 }
 
 a.head:hover {
+    margin: 0.67em 0;
+    font-size: 2em;
     color: white;
     text-decoration: none;
 }
 
 a.head:visited {
+    margin: 0.67em 0;
+    font-size: 2em;
     color: white;
     text-decoration: none;
 }
