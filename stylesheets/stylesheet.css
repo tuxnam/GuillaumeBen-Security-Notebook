@@ -6,7 +6,7 @@
   margin: auto;
   text-align: center;
   float: right;
-  margin: 20px;
+  /*margin: 20px;*/
 }
 
 .title {
@@ -23,11 +23,10 @@ button {
   border: none;
   outline: 0;
   display: inline-block;
-  padding-top: 14px;
+  padding: 8px;
   color: white;
   background-color: #2e7bcf;
   text-align: center;
-  cursor: pointer;
   width: 100%;
   font-size: 18px;
 }
