@@ -540,6 +540,12 @@ header {
   border-bottom: solid 1px #275da1;
 }
 
+.bio {
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: #eeeeee url(../images/header-bg.jpg) 0 0 repeat-x;
+}
 
 footer {
   text-align: center;
