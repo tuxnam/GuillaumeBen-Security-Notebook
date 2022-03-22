@@ -575,6 +575,11 @@ header h2 {
   text-align: center;
 }
 
+.inner-footer {
+  display: inline-block;
+  text-align: center;
+}
+
 .inner {
   text-align: left;
   width: 70%;  
