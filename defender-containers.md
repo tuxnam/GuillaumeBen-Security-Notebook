@@ -4,6 +4,10 @@ title: Guillaume's Security Notebook
 description: Guillaume B., Cloud Security Architect
 ---
 
+#### Last update: March 2022
+<br />
+<br />
+
 # A goat in the boat: a look at how Defender for Containers protects your clusters
 <p></p>
 <span class="subtitle">In this article, we will explore and test Defender for Containers against a vulnerable environment and see what it can detects or prevent and how we can leverage it to make our Kubernetes workloads safer.</span>
