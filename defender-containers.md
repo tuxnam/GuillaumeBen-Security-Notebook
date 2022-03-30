@@ -5,7 +5,6 @@ description: Guillaume B., Cloud Security Architect
 ---
 
 #### Last update: March 2022
-<br />
 
 # A goat in the boat: a look at how Defender for Containers protects your clusters
 <p></p>
