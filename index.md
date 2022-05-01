@@ -10,7 +10,7 @@ ___
 ### Microsoft Defender for Cloud
 #### Features review. custom development or integration scenarios for Microsoft Defender for Cloud
 
-- [Container Security Series - Regulatory Compliance for NSA-CISA Kubernetes Herdening Guidance](nsa-cisa-regulatory.md) - [WIP]
+- [Container Security Series - Automated Incident Response on AKS](DFIR-for-AKS.md) - [WIP]
 - [Container Security Series - Defender for Containers and the goat in the boat](defender-containers.md)
 
 ### Microsoft Sentinel
