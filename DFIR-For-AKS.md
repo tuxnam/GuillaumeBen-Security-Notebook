@@ -6,15 +6,14 @@ description: Guillaume B., Cloud Security Architect
 
 #### Last update: April 2022
 
-# Automated incident response on AKS: playbooks to respond to Kubernetes security alerts
+# Automated incident response on AKS: leverage Azure SOAR capabilities to respond to Kubernetes security issues
 <p></p>
 <span class="subtitle">In this article, I am describing and sharing playbooks which allow a SOC analyst to perform incident response on a target Kubernetes cluster, as part of an incident investigation in Microsoft Sentinel or in a response to an alert raised by Microsoft Defender for Cloud, for instance. </span>
 <p></p>
 
 <p style="width: 100%; text-align: center;">
-<img src="images/kuby-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="Defender for Containers" >
-<span style="display: block; font-size: 12px;">Source: original picture (without the intruder) is from <a href="https://www.cncf.io/phippy/#:~:text=The%20Illustrated%20Children%E2%80%99s%20Guide%20to%20Kubernetes%20The%20Illustrated,try%20to%20explain%20software%20engineering%20to%20their%20children.">Matt Butcher and his illustrated guide of Kubernetes</a></span>
- <p></p>
+<img src="images/resp-aks-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="DFIR on AKS" >
+<p></p>
 </p>
  
 > The skyrocketting usage of Kubernetes and containarized workloads over the past years has led to new attack vectors. 
