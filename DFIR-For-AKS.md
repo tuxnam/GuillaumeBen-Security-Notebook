@@ -4,11 +4,11 @@ title: Guillaume's Security Notebook
 description: Guillaume B., Cloud Security Architect
 ---
 
-#### Last update: March 2022
+#### Last update: April 2022
 
-# A goat in the boat: a look at how Defender for Containers protects your clusters
+# Automated incident response on AKS: playbooks to respond to Kubernetes security alerts
 <p></p>
-<span class="subtitle">In this article, we will explore and test Defender for Containers against a vulnerable environment and see what it can detects or prevent and how we can leverage it to make our Kubernetes workloads safer.</span>
+<span class="subtitle">In this article, I am describing and sharing playbooks which allow a SOC analyst to perform incident response on a target Kubernetes cluster, as part of an incident investigation in Microsoft Sentinel or in a response to an alert raised by Microsoft Defender for Cloud, for instance. </span>
 <p></p>
 
 <p style="width: 100%; text-align: center;">
