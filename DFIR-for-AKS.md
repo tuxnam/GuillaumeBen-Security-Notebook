@@ -23,8 +23,28 @@ description: Guillaume B., Cloud Security Architect
 
  <p></p>
 
-## Current Status and Limitations
 
 ## Description of the solution
 
-### List of Supported Responses
+The solution leverages the following assets:
+* An Azure Function written in Python 
+* A set of logic apps based on the required response 
+* A BLOB storage to upload collected artifacts
+
+### Authentication and security
+
+The Azure Function leverages a [Azure Managed Identity](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview) to issue command and response actions to the targeted AKS cluster. This allows to avoid using or managing static credentials. <br />
+The function also allows to upload targeted artifacts to a pre-existing BLOB storage, relying on SAS token. <br />
+The function and the logic apps should all enforce TLS 1.2.<br />
+
+### List of supported responses
+
+The solution currently allows for analysts to trigger the following responses:
+- Label and isolate a specific pod on targeted cluster
+- Label and isolate a complete namespace on targeted cluster
+- Label and cordon a AKS node on targeted cluster
+- Collect pod artifacts and upload them to a BLOB storage on targeted cluster
+- Run a command on a pod on targeted cluster
+
+All operations can be reverted (uncordon, remove isolation...)
+
