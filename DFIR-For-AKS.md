@@ -12,7 +12,7 @@ description: Guillaume B., Cloud Security Architect
 <p></p>
 
 <p style="width: 100%; text-align: center;">
-<img src="images/resp-aks-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="DFIR on AKS" >
+<img src="images/AKS-resp-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="DFIR on AKS" >
 <p></p>
 </p>
  
