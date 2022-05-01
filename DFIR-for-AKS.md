@@ -48,3 +48,20 @@ The solution currently allows for analysts to trigger the following responses:
 
 All operations can be reverted (uncordon, remove isolation...)
 
+## Installation
+
+All the code used in this solution can be found here: .
+
+1. The setup of the function can be done using the following link. This will deploy a Python Azure Function. 
+
+2. Assign roles to the managed identity of the Azure Function
+
+3. Playbooks 
+
+Microsoft Sentinel and Defender for Cloud playbooks can be imported by using the following link: 
+
+4. BLOB Storage (optional)
+
+## Usage
+
+## Limitations and next steps
