@@ -16,17 +16,19 @@ description: Guillaume B., Cloud Security Architect
 <p></p>
 </p>
  
-> As discussed in my [previous article](http://guillaumeben.xyz/defender-containers.html) on Defender for Containers, the skyrocketting usage of Kubernetes and containarized workloads over the past years has led to new attack vectors. 
-> One of the recurring issue for Security Operations teams is to be able not only to monitor critical Kubernetes environment in their respective organizations, have the ability to detect a security incident on Kubernetes, but also there is a need to respond.
+> As discussed in my [previous article](http://guillaumeben.xyz/defender-containers.html) on Defender for Containers, the skyrocketting usage of Kubernetes and containarized workloads over the past years has led to new attack vectors. We can expect these attacks to grow in number and sophistications in the future, and be also (more) leveraged by nation-state actors and in advanced persistent threats. 
+> One of the recurring issue for Security Operations teams is to be able not only to monitor critical Kubernetes environment in their respective organizations, have the ability, knowledge and tools to be able to detect a security incident on Kubernetes, but also the need to respond adequately or collect evidence.
 > Incident Response on Kubernetes can range fron artifacts collection, to pod or namespace isolation. 
 > I am describing in this article a solution to automate incident response on AKS, from Defender for Cloud or Microsoft Sentinel. 
-
+> The solution will work natively with alerts raised by Defender for Containers, but can be adapted for your own alerts and detection capabilities in Azure.
  <p></p>
 
+---
 ***DISCLAIMER: This solution and the code therein are meant to be run in a development or testing environment first and adapted to your own needs.<br />
 The python code used for the Azure Function could benefit some refactoring and may lead to errors or exceptions in specific cases.<br />
 The current set of supported scenarios is limited and meant to work with alerts raised by Defender for Cloud or alerts having entities formatted the same way (see corrsponding API specification section). <br />
 Current features, limitations and next steps are described here. Any idea or suggestion is welcomed as a GitHub Issue ().***
+---
 
 ## Description of the solution
 
