@@ -6,7 +6,7 @@ description: Guillaume B., Cloud Security Architect
 
 #### Last update: April 2022
 
-# Automated incident response on AKS: leverage Sentinel SOAR capabilities to respond to Kubernetes security issues
+# Automated incident response on Kubernetes: leverage Azure SOAR capabilities to respond to Kubernetes security alerts
 <p></p>
 <span class="subtitle">In this article, I am describing and sharing playbooks which allow a SOC analyst to perform incident response on a target Kubernetes cluster, in Microsoft Sentinel, in a response to an alert raised by Microsoft Defender for Cloud or from Defender for Cloud directly. Automatically or with a manual trigger, depending on the analyst needs. </span>
 <p></p>
@@ -23,27 +23,29 @@ description: Guillaume B., Cloud Security Architect
 
  <p></p>
 
-<p style="background-color: #FFFFFF;">
-This solution and the code therein are meant to be tested in a development or testing environment first and adapted to your own needs.<br />
-The python code used for the Azure Function could benefit some refactoring and may lead to errors or exceptions in specific cases.
-</p>
+***DISCLAIMER: This solution and the code therein are meant to be run in a development or testing environment first and adapted to your own needs.<br />
+The python code used for the Azure Function could benefit some refactoring and may lead to errors or exceptions in specific cases.<br />
+The current set of supported scenarios is limited and meant to work with alerts raised by Defender for Cloud or alerts having entities formatted the same way (see corrsponding API specification section). <br />
+Current features, limitations and next steps are described here. Any idea or suggestion is welcomed as a GitHub Issue ().***
 
 ## Description of the solution
 
-The solution leverages the following assets:
-* An Azure Function written in Python 
-* A set of logic apps based on the required response 
-* A BLOB storage to upload collected artifacts
+The solution's goal is to perform automated reponse on alerts raised by Defender for Containers and leverages the following assets:
+* An Azure Function written in Python
+* A set of logic apps (playbooks) for each supported response 
+* A BLOB storage to upload collected artifacts (Optional)
 
 ### Authentication and security
 
-The Azure Function leverages a [Azure Managed Identity](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview) to issue command and response actions to the targeted AKS cluster. This allows to avoid using or managing static credentials. <br />
-The function also allows to upload targeted artifacts to a pre-existing BLOB storage, relying on SAS token. <br />
+The Azure Function leverages an [Azure Managed Identity](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview) to issue command and response actions to the targeted AKS cluster. This allows to avoid using or managing static credentials. <br />
+The function also allows to upload targeted artifacts to a pre-existing BLOB storage, relying on SAS token which can be short-lived. <br />
 The function and the logic apps should all enforce TLS 1.2.<br />
+<br />
+Malicious access to the function could lead to a full compromise of your AKS cluster. Managed identity should thus be controlled carefully.
 
 ### List of supported responses
 
-The solution currently allows for analysts to trigger the following responses:
+The solution currently allows for analysts to trigger the following responses, as playbook:
 - Label and isolate a specific pod on targeted cluster
 - Label and isolate a complete namespace on targeted cluster
 - Label and cordon a AKS node on targeted cluster
@@ -51,6 +53,8 @@ The solution currently allows for analysts to trigger the following responses:
 - Run a command on a pod on targeted cluster
 
 All operations can be reverted (uncordon, remove isolation...)
+
+### Detail and requirements of each playbook 
 
 ### API specification for HTTP triggered Azure Function
 
@@ -118,14 +122,11 @@ The format used by the Azure function as input to trigger a response is based on
 }
 ```
 
-### Detailed API specification
-
-
 ## Example usage
 
 ### From Defender for Cloud: automation on alerts from Defender for Containers
 
-### From Sentinel: automation rule and playbooks
+### From Sentinel: run a playbook as a response to an alert
 
 
 ## Installation
