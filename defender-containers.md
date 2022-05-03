@@ -27,7 +27,7 @@ description: Guillaume B., Cloud Security Architect
 
 Defender for containers is a recent addition to the <a href="https://docs.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction">Microsoft Defender for Cloud</a> portfolio, which is a tool for security posture management and threat protection for multi-cloud and hybrid scenarios. 
 Defender for containers is not really 'new', it is an evolution and merge of two previous plans in the defender portfolio: defender for container registries and defender for Kubernetes. <br />
-This evoltuon, however, is inline with Microsoft's vision of end-to-end container security: bridging the gap between the security of the platform (Kubernetes) and the security of the container(s) themselves. Isolating these concepts leads to gaps in a sound container security strategy.
+This evolution, however, is inline with Microsoft's vision of end-to-end container security: bridging the gap between the security of the platform (Kubernetes) and the security of the container(s) themselves. Isolating these concepts leads to gaps in a sound container security strategy.
 
 
 ## Content of this article
