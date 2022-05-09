@@ -53,81 +53,6 @@ The solution currently allows for analysts to trigger the following responses, a
 
 All operations can be reverted (uncordon, remove isolation...)
 
-## Specifications and usage
-
-### API specification for HTTP triggered Azure Function
-
-The format used by the Azure function as input to trigger a response is based on the JSON format of entities part of alerts raised by Defender for Containers.<br />
-<br />
-**Example:**<br /><br />
-
-```
-{
-  "action": "<ACTION>",
-  "entities": [
-    {
-      "$id": "2",
-      "ImageId": "<CONTAINER_IMAGE>",
-      "Type": "container-image"
-    },
-    {
-      "$id": "3",
-      "Name": "<CONTAINER_NAME>",
-      "Image": {
-        "$ref": "2"
-      },
-      "Type": "container"
-    },
-    {
-      "$id": "4",
-      "ResourceId": "/subscriptions/<SUBSCRIPTION_ID/resourceGroups/<RG_NAME>/providers/Microsoft.ContainerService/managedClusters/<CLUSTER_NAME>",
-      "Type": "azure-resource"
-    },
-    {
-      "$id": "5",
-      "CloudResource": {
-        "$ref": "4"
-      },
-      "Type": "K8s-cluster"
-    },
-    {
-      "$id": "6",
-      "Name": "<NAMESPACE-NAME>",
-      "Cluster": {
-        "$ref": "5"
-      },
-      "Type": "K8s-namespace"
-    },
-    {
-      "$id": "7",
-      "Name": "<DEPLOYMENT-NAME>",
-      "Namespace": {
-        "$ref": "6"
-      },
-      "Type": "K8s-deployment"
-    },
-    {
-      "$id": "8",
-      "Name": "<POD-NAME>",
-      "Namespace": {
-        "$ref": "6"
-      },
-      "Type": "K8s-pod"
-    }
-  ],
-  "storageaccount":"<STORAGE-ACCOUNT-NAME>",
-  "blobcontainer":"<BLOB-CONTAINER-NAME>",
-  "blobsastoken":"<BLOB-SAS-TOKEN>"
-}
-```
-
-## Example usage
-
-### From Defender for Cloud: automation on alerts from Defender for Containers
-
-### From Sentinel: run a playbook as a response to an alert
-
-
 ## Installation
 
 ### Azure Function
@@ -177,19 +102,54 @@ This playbook allows to collect the following artifcats from a pod entity contai
   ]
  ```
  
+**Deploy Artifcats Collection playbook:** <br />
+ 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CollectArtifacts/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GM4WRI7H65LZZRHEAYTYZSHA)
 
+ 
 #### Isolate Pod
 
+**Specification:**<br />
+ 
+**Required Parameters:**<br />
+ 
+**Expected Entities in Sentinel Alert:** <br />
+ 
+**Deploy Pod Isolation playbook:** <br />
+
+
 #### Isolate Namespace
+ 
+**Specification:**<br />
+ 
+**Required Parameters:**<br />
+ 
+**Expected Entities in Sentinel Alert:** <br />
+ 
+**Deploy Namespace Isolation playbook:** <br />
 
 #### Cordon Node
 
+**Specification:**<br />
+ 
+**Required Parameters:**<br />
+ 
+**Expected Entities in Sentinel Alert:** <br />
+ 
+**Deploy Cordon Node playbook:** <br /> 
+ 
 #### Run Command
 
+**Specification:**<br />
+ 
+**Required Parameters:**<br />
+ 
+**Expected Entities in Sentinel Alert:** <br />
+ 
+**Deploy Command Execution playbook:** <br />
 
-
-All the code used in this solution can be found here: .
+ 
+### All the code used in this solution can be found here: .
 
 1. The setup of the function can be done using the following link. This will deploy a Python Azure Function. 
 
