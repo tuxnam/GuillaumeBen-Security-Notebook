@@ -130,6 +130,24 @@ The format used by the Azure function as input to trigger a response is based on
 
 ## Installation
 
+### Azure Function
+
+### Playbooks 
+
+#### Collect Artifacts Playbook 
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CollectArtifacts/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GM4WRI7H65LZZRHEAYTYZSHA)
+
+#### Isolate Pod
+
+#### Isolate Namespace
+
+#### Cordon Node
+
+#### Run Command
+
+
+
 All the code used in this solution can be found here: .
 
 1. The setup of the function can be done using the following link. This will deploy a Python Azure Function. 
