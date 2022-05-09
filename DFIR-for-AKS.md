@@ -136,6 +136,47 @@ The format used by the Azure function as input to trigger a response is based on
 
 #### Collect Artifacts Playbook 
 
+**Specification:**<br />
+This playbook allows to collect the following artifcats from a pod entity contained in a Defender for Container alert from Sentinel:
+- Pod logs (kubectl logs <pod>)
+- Pod full description (kubectl get <pod> -o json)
+- Pod description (kubectl describe <pod>)
+
+**Required Parameters:**<br />
+ 
+- Playbook Name: name you want to give to this playbook
+- Username: username for the connection of the playbook to Sentinel 
+- Storage Account: storage account name used to collect artifacts
+- BLOB Container Name: BLOB container name inside the storage account
+- SAS Token URI: the SAS token to be used to upload to the BLOB storage (make sure it is short-lived)
+- AKS Response Function name: the name of the related AKS response function part of this solution
+- AKS Response Functio code: the access key used to authenticate and call the Azure Function
+ 
+**Expected Entities in Sentinel Alert:** <br />
+
+ The minimum list of entities required in the JSON body of the alert is the following (can contain more entities, which will just be ignored):
+ 
+ ```
+  [
+    {
+      "ResourceId": "/subscriptions/6178a2ae-xxxx-xxxx-xxxx-xxx95af392b9/resourceGroups/k8s-demo-rg/providers/Microsoft.ContainerService/managedClusters/my-super-cluster",
+      "Type": "azure-resource"
+    },
+    {
+      "Name": "damn-vuln-cluster",
+      "Type": "K8s-cluster"
+    },
+    {
+      "Name": "default",
+      "Type": "K8s-namespace"
+    },
+    {
+      "Name": "health-check-deployment-7d78966d57-gjk49",
+      "Type": "K8s-pod"
+    }
+  ]
+ ```
+ 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CollectArtifacts/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GM4WRI7H65LZZRHEAYTYZSHA)
 
 #### Isolate Pod
