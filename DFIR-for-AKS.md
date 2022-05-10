@@ -131,10 +131,36 @@ This playbook allows to collect the following artifcats from a pod entity contai
 #### Cordon Node
 
 **Specification:**<br />
- 
+This playbook allows to cordon a node in a Kubernetes cluster, targetting a node entity contained in a Defender for Container alert from Sentinel.
+A node cordon means preventing Kubernetes to schedule pods on this node. This means as well that it can allow to avoid new pods being populated on a compromised node.
+
 **Required Parameters:**<br />
  
+- Playbook Name: name you want to give to this playbook
+- Username: username for the connection of the playbook to Sentinel 
+- AKS Response Function name: the name of the related AKS response function part of this solution
+- AKS Response Functio code: the access key used to authenticate and call the Azure Function
+ 
 **Expected Entities in Sentinel Alert:** <br />
+ 
+  The minimum list of entities required in the JSON body of the alert is the following (can contain more entities, which will just be ignored):
+ 
+ ```
+  [
+    {
+      "ResourceId": "/subscriptions/6178a2ae-xxxx-xxxx-xxxx-xxx95af392b9/resourceGroups/k8s-demo-rg/providers/Microsoft.ContainerService/managedClusters/my-super-cluster",
+      "Type": "azure-resource"
+    },
+    {
+      "Name": "damn-vuln-cluster",
+      "Type": "K8s-cluster"
+    },
+    {
+      "Name": "mysuperAKSpool",
+      "Type": "K8s-node"
+    }
+  ]
+ ```
  
 **Deploy Cordon Node playbook:** <br />
  
