@@ -138,7 +138,7 @@ This playbook allows to collect the following artifcats from a pod entity contai
  
 **Deploy Cordon Node playbook:** <br />
  
-[![Deploy to Azure](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CordonNode/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H2UY7R56LF2244GYMYT2YGDQ) 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CordonNode/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H2UY7R56LF2244GYMYT2YGDQ) 
  
 #### Run Command
 
