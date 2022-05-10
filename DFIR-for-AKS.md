@@ -110,8 +110,34 @@ This playbook allows to collect the following artifcats from a pod entity contai
 #### Isolate Pod
 
 **Specification:**<br />
- 
+This playbook allows to isolate a pod on a node using Kubernetes Network Policy (therefore a hard requirement is a network driver such as Calico or Azure network policy). The following policy will be created, blocking all ingress and egress flows for the targeted pod:
+
+```
+            apiVersion: networking.k8s.io/v1
+            kind: NetworkPolicy
+            metadata:
+                name: deny-all-affected
+            spec:
+                podSelector:
+                    matchLabels:
+                        status: quarantine
+                policyTypes:
+                    - Egress
+                    - Ingress
+```
+
+The playbook also adds a label ```status=quarantine``` to the target pod. 
+The pod selected is the pod present as part of the list of entities of a Defender for Container alert.
+
 **Required Parameters:**<br />
+ 
+- Playbook Name: name you want to give to this playbook
+- Username: username for the connection of the playbook to Sentinel 
+- Storage Account: storage account name used to collect artifacts
+- BLOB Container Name: BLOB container name inside the storage account
+- SAS Token URI: the SAS token to be used to upload to the BLOB storage (make sure it is short-lived)
+- AKS Response Function name: the name of the related AKS response function part of this solution
+- AKS Response Functio code: the access key used to authenticate and call the Azure Function
  
 **Expected Entities in Sentinel Alert:** <br />
  
