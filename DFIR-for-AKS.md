@@ -195,12 +195,45 @@ A node cordon means preventing Kubernetes to schedule pods on this node. This me
 #### Run Command
 
 **Specification:**<br />
- 
+This playbook allows to run a command on a pod in a Kubernetes cluster, targetting a the pod entity contained in a Defender for Container alert from Sentinel.
+Be mindful of the critical impact of running commands in a production pod or this logic app being misused to run malicious commands.
+
 **Required Parameters:**<br />
  
-**Expected Entities in Sentinel Alert:** <br />
+- Playbook Name: name you want to give to this playbook
+- Username: username for the connection of the playbook to Sentinel 
+- AKS Response Function name: the name of the related AKS response function part of this solution
+- AKS Response Functio code: the access key used to authenticate and call the Azure Function
+- Command: command to be executed on the pod 
  
-**Deploy Command Execution playbook:** <br />
+**Expected Entities in Sentinel Alert:** <br />
+  
+The minimum list of entities required in the JSON body of the alert is the following (can contain more entities, which will just be ignored):
+ 
+ ```
+  [
+    {
+      "ResourceId": "/subscriptions/6178a2ae-xxxx-xxxx-xxxx-xxx95af392b9/resourceGroups/k8s-demo-rg/providers/Microsoft.ContainerService/managedClusters/my-super-cluster",
+      "Type": "azure-resource"
+    },
+    {
+      "Name": "damn-vuln-cluster",
+      "Type": "K8s-cluster"
+    },
+    {
+      "Name": "default",
+      "Type": "K8s-namespace"
+    },
+    {
+      "Name": "health-check-deployment-7d78966d57-gjk49",
+      "Type": "K8s-pod"
+    }
+  ]
+ ```
+ 
+**Deploy Run Command playbook:** <br />
+ 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-RunCommand/azuredeploy.json?token=GHSAT0AAAAAABOR6J3HDLKHYIJIOAHH4DTSYT6RMYA) 
 
  
 ### All the code used in this solution can be found here: .
