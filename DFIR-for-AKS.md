@@ -133,11 +133,38 @@ The pod selected is the pod present as part of the list of entities of a Defende
  
 - Playbook Name: name you want to give to this playbook
 - Username: username for the connection of the playbook to Sentinel 
-- Storage Account: storage account name used to collect artifacts
-- BLOB Container Name: BLOB container name inside the storage account
-- SAS Token URI: the SAS token to be used to upload to the BLOB storage (make sure it is short-lived)
 - AKS Response Function name: the name of the related AKS response function part of this solution
 - AKS Response Functio code: the access key used to authenticate and call the Azure Function
+ 
+**Expected Entities in Sentinel Alert:** <br />
+ 
+  The minimum list of entities required in the JSON body of the alert is the following (can contain more entities, which will just be ignored):
+ 
+ ```
+  [
+    {
+      "ResourceId": "/subscriptions/6178a2ae-xxxx-xxxx-xxxx-xxx95af392b9/resourceGroups/k8s-demo-rg/providers/Microsoft.ContainerService/managedClusters/my-super-cluster",
+      "Type": "azure-resource"
+    },
+    {
+      "Name": "damn-vuln-cluster",
+      "Type": "K8s-cluster"
+    },
+    {
+      "Name": "mysuperAKSpool",
+      "Type": "K8s-pod"
+    },
+    {
+      "Name": "namespace-name",
+      "Type": "K8s-namespace"
+    }
+  ]
+ ```
+ 
+**Deploy Isolate Pod playbook:** <br />
+ 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ) 
+
  
 **Expected Entities in Sentinel Alert:** <br />
  
