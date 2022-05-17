@@ -59,6 +59,7 @@ All operations can be reverted (uncordon, remove isolation...)
 
 ### Playbooks 
 
+---
 #### Collect Artifacts Playbook 
 
 **Specification:**<br />
@@ -106,7 +107,9 @@ This playbook allows to collect the following artifcats from a pod entity contai
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CollectArtifacts/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GM4WRI7H65LZZRHEAYTYZSHA)
 
- 
+---
+
+---
 #### Isolate Pod
 
 **Specification:**<br />
@@ -165,12 +168,9 @@ The pod selected is the pod present as part of the list of entities of a Defende
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ) 
 
- 
-**Expected Entities in Sentinel Alert:** <br />
- 
-**Deploy Pod Isolation playbook:** <br />
+---
 
-
+---
 #### Isolate Namespace
  
 **Specification:**<br />
@@ -180,7 +180,11 @@ The pod selected is the pod present as part of the list of entities of a Defende
 **Expected Entities in Sentinel Alert:** <br />
  
 **Deploy Namespace Isolation playbook:** <br />
+ 
+---
 
+ 
+---
 #### Cordon Node
 
 **Specification:**<br />
@@ -218,7 +222,10 @@ A node cordon means preventing Kubernetes to schedule pods on this node. This me
 **Deploy Cordon Node playbook:** <br />
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CordonNode/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H2UY7R56LF2244GYMYT2YGDQ) 
+
+---
  
+---
 #### Run Command
 
 **Specification:**<br />
@@ -262,6 +269,7 @@ The minimum list of entities required in the JSON body of the alert is the follo
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-RunCommand/azuredeploy.json?token=GHSAT0AAAAAABOR6J3HDLKHYIJIOAHH4DTSYT6RMYA) 
 
+---
  
 ### All the code used in this solution can be found here: .
 
