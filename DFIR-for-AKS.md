@@ -24,7 +24,11 @@ description: Guillaume B., Cloud Security Architect
  <p></p>
 
 ---
-*DISCLAIMER: This solution and the code therein are meant to be run in a development or testing environment first and adapted to your own needs. The python code used for the Azure Function could benefit some refactoring and may lead to errors or exceptions in specific cases. The current set of supported scenarios is limited and meant to work with alerts raised by Defender for Cloud or alerts having entities formatted the same way (see corrsponding specification section). Current features, limitations and next steps are described here. Any idea or suggestion is welcomed as a GitHub Issue ().*
+
+*DISCLAIMER: This solution and the code therein are meant to be run in a development or testing environment first and adapted to your own needs. The python code used for the Azure Function could benefit some refactoring and may lead to errors or exceptions in specific cases. <br />
+The current set of supported scenarios is limited and meant to work with alerts raised by Defender for Cloud or alerts having entities formatted the same way (see corrsponding specification section). <br />
+Current features, limitations and next steps are described on this article. Any idea or suggestion is welcomed as a GitHub Issue ().*
+
 ---
 
 ## Description of the solution
