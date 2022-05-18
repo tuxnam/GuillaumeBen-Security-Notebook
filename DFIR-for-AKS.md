@@ -229,7 +229,7 @@ The namespace selected is the namespace present as part of the list of entities 
  
 **Deploy Isolate Namespace playbook:** <br />
  
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ) 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)]([https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolateNamespace/azuredeploy.json?token=GHSAT0AAAAAABOR6J3HX7BV2CBGM5U3FVPEYUESNVAP)
 
  
 ---
