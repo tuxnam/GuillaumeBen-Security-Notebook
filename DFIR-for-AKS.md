@@ -114,7 +114,7 @@ This playbook allows to collect the following artifcats from a pod entity contai
 ---
 
 ---
-#### Isolate Pod
+#### Isolate Pod (and remove isolation)
 
 **Specification:**<br />
 This playbook allows to isolate a pod on a node using Kubernetes Network Policy (therefore a hard requirement is a network driver such as Calico or Azure network policy). The following policy will be created, blocking all ingress and egress flows for the targeted pod:
@@ -135,6 +135,8 @@ This playbook allows to isolate a pod on a node using Kubernetes Network Policy 
 
 The playbook also adds a label ```status=quarantine``` to the target pod. 
 The pod selected is the pod present as part of the list of entities of a Defender for Container alert.
+ 
+The playbook 'remove isolation', removes both the network policy and the label.
 
 **Required Parameters:**<br />
  
@@ -171,12 +173,16 @@ The pod selected is the pod present as part of the list of entities of a Defende
 **Deploy Isolate Pod playbook:** <br />
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ) 
+ 
+**Deploy Remove Isolation Pod playbook:** <br />
+ 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-RemovePodIsolation/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GEL3DYQDMWLAE666SYUESXIA)
 
 ---
 
 ---
  
-#### Isolate Namespace
+#### Isolate Namespace (and remove isolation)
  
 
 **Specification:**<br />
@@ -198,6 +204,8 @@ This playbook allows to isolate a complete namespace using Kubernetes Network Po
 
 The playbook also adds a label ```status=quarantine``` to the target namespace. 
 The namespace selected is the namespace present as part of the list of entities of a Defender for Container alert.
+ 
+The 'remove isolation namespace' playbook deletes the network policy and removes the label associated. 
 
 **Required Parameters:**<br />
  
@@ -229,17 +237,22 @@ The namespace selected is the namespace present as part of the list of entities 
  
 **Deploy Isolate Namespace playbook:** <br />
  
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)]([https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolateNamespace/azuredeploy.json?token=GHSAT0AAAAAABOR6J3HX7BV2CBGM5U3FVPEYUESNVAP)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolateNamespace/azuredeploy.json?token=GHSAT0AAAAAABOR6J3HX7BV2CBGM5U3FVPEYUESNVAP)
 
+**Deploy Remove Isolation Namespace playbook:** <br />
+ 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolateNamespace/azuredeploy.json?token=GHSAT0AAAAAABOR6J3HX7BV2CBGM5U3FVPEYUESNVAP](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-RemoveNamespaceIsolation/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GLKYC22W546MPWTWMYUESZEA)
  
 ---
 
-#### Cordon Node
+#### Cordon Node (and remove cordon)
 
 **Specification:**<br />
 This playbook allows to cordon a node in a Kubernetes cluster, targetting a node entity contained in a Defender for Container alert from Sentinel.
 A node cordon means preventing Kubernetes to schedule pods on this node. This means as well that it can allow to avoid new pods being populated on a compromised node.
 
+The 'remove cordon' playbook, allows pods to be scheduled again to the node. 
+ 
 **Required Parameters:**<br />
  
 - Playbook Name: name you want to give to this playbook
@@ -272,7 +285,11 @@ A node cordon means preventing Kubernetes to schedule pods on this node. This me
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CordonNode/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H2UY7R56LF2244GYMYT2YGDQ) 
 
----
+**Deploy Cordon Node playbook:** <br />
+ 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CordonNode/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H2UY7R56LF2244GYMYT2YGDQ](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-UncordonNode/azuredeploy.json?token=GHSAT0AAAAAABOR6J3HQ7AVYJFTEFSGFKJIYUES2TA)
+
+ ---
  
 #### Run Command
 
