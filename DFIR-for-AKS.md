@@ -175,20 +175,65 @@ The pod selected is the pod present as part of the list of entities of a Defende
 ---
 
 ---
+ 
 #### Isolate Namespace
  
+
 **Specification:**<br />
- 
+This playbook allows to isolate a complete namespace using Kubernetes Network Policy (therefore a hard requirement is a network driver such as Calico or Azure network policy). The following policy will be created, blocking all ingress and egress flows for the targeted namespace:
+
+```
+            apiVersion: networking.k8s.io/v1
+            kind: NetworkPolicy
+            metadata:
+                name: deny-all-affected
+            spec:
+                podSelector:
+                    matchLabels:
+                        status: quarantine
+                policyTypes:
+                    - Egress
+                    - Ingress
+```
+
+The playbook also adds a label ```status=quarantine``` to the target namespace. 
+The namespace selected is the namespace present as part of the list of entities of a Defender for Container alert.
+
 **Required Parameters:**<br />
+ 
+- Playbook Name: name you want to give to this playbook
+- Username: username for the connection of the playbook to Sentinel 
+- AKS Response Function name: the name of the related AKS response function part of this solution
+- AKS Response Functio code: the access key used to authenticate and call the Azure Function
  
 **Expected Entities in Sentinel Alert:** <br />
  
-**Deploy Namespace Isolation playbook:** <br />
+  The minimum list of entities required in the JSON body of the alert is the following (can contain more entities, which will just be ignored):
  
----
+ ```
+  [
+    {
+      "ResourceId": "/subscriptions/6178a2ae-xxxx-xxxx-xxxx-xxx95af392b9/resourceGroups/k8s-demo-rg/providers/Microsoft.ContainerService/managedClusters/my-super-cluster",
+      "Type": "azure-resource"
+    },
+    {
+      "Name": "damn-vuln-cluster",
+      "Type": "K8s-cluster"
+    },
+    {
+      "Name": "namespace-name",
+      "Type": "K8s-namespace"
+    }
+  ]
+ ```
+ 
+**Deploy Isolate Namespace playbook:** <br />
+ 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ) 
 
  
 ---
+
 #### Cordon Node
 
 **Specification:**<br />
@@ -229,7 +274,6 @@ A node cordon means preventing Kubernetes to schedule pods on this node. This me
 
 ---
  
----
 #### Run Command
 
 **Specification:**<br />
