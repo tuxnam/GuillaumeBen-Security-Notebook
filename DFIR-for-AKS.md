@@ -61,6 +61,16 @@ All operations can be reverted (uncordon, remove isolation...)
 
 ### Azure Function
 
+The Azure Function is used to issue commands to the AKS cluster. It makes the bridge between Sentinel and the AKS cluster. 
+The code for the Azure Function can be found [here](https://github.com/tuxnam/Azure-AKS-Incident-Response/tree/main/AKSResponseFunction/AKSTriggerResponse).
+<br />
+Language: Python 3.8<br />
+Authentication: application key<br />
+Trigger: HTTP<br />
+
+The function needs to be created in a App Service Plan of your choice, and the python code of the above repository, used in a HTTP trigger function. 
+The name given will then need to be used as a parameter of the playbooks. 
+
 ### Playbooks 
 
 ---
