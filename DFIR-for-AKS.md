@@ -113,7 +113,6 @@ This playbook allows to collect the following artifcats from a pod entity contai
 
 ---
 
----
 #### Isolate Pod (and remove isolation)
 
 **Specification:**<br />
@@ -177,8 +176,6 @@ The playbook 'remove isolation', removes both the network policy and the label.
 **Deploy Remove Isolation Pod playbook:** <br />
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-RemovePodIsolation/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GEL3DYQDMWLAE666SYUESXIA)
-
----
 
 ---
  
@@ -336,18 +333,4 @@ The minimum list of entities required in the JSON body of the alert is the follo
 
 ---
  
-### All the code used in this solution can be found here: .
-
-1. The setup of the function can be done using the following link. This will deploy a Python Azure Function. 
-
-2. Assign roles to the managed identity of the Azure Function
-
-3. Playbooks 
-
-Microsoft Sentinel and Defender for Cloud playbooks can be imported by using the following link: 
-
-4. BLOB Storage (optional)
-
-## Usage
-
-## Limitations and next steps
+### All the code used in this solution can be found here: https://github.com/tuxnam/Azure-AKS-Incident-Response.
