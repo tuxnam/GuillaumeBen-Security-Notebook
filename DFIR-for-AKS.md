@@ -81,7 +81,7 @@ The name given, to both the app service and the HTTP trigger function, will then
 
 ### Playbooks 
 
-#### Collect Artifacts Playbook 
+<h4>Collect Artifacts Playbook</h4>
 
 **Specification:**<br />
 Artifacts collection is one of the primary need of any incident response team, but for ephermeral workloads this can be a challenge.
@@ -154,7 +154,7 @@ This playbook allows to collect the following artifcats from entities contained 
 <p></p>
 <p></p>
  
-#### Isolate Pod (and remove isolation)
+<h4>Isolate Pod (and remove isolation)</h4>
  
 **Specification:**<br />
 This playbook allows to isolate a pod on a node using Kubernetes Network Policy (therefore a hard requirement is a network driver such as Calico or Azure network policy). The following policy will be created, blocking all ingress and egress flows for the targeted pod:
