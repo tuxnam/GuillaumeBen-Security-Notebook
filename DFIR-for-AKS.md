@@ -154,7 +154,7 @@ This playbook allows to collect the following artifcats from entities contained 
 <p></p>
 <p></p>
  
-<h4>Isolate Pod (and remove isolation)</h4>
+<h4 style="color:#2e7bcf;">Isolate Pod (and remove isolation)</h4>
  
 **Specification:**<br />
 This playbook allows to isolate a pod on a node using Kubernetes Network Policy (therefore a hard requirement is a network driver such as Calico or Azure network policy). The following policy will be created, blocking all ingress and egress flows for the targeted pod:
@@ -219,9 +219,11 @@ The playbook 'remove isolation', removes both the network policy and the label.
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-RemovePodIsolation/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GEL3DYQDMWLAE666SYUESXIA)
 
 ---
+
+<p></p>
+<p></p>
  
-#### Isolate Namespace (and remove isolation)
- 
+<h4 style="color:#2e7bcf;">Isolate Namespace (and remove isolation)</h4> 
 
 **Specification:**<br />
 This playbook allows to isolate a complete namespace using Kubernetes Network Policy (therefore a hard requirement is a network driver such as Calico or Azure network policy). The following policy will be created, blocking all ingress and egress flows for the targeted namespace:
@@ -283,7 +285,10 @@ The 'remove isolation namespace' playbook deletes the network policy and removes
  
 ---
 
-#### Cordon Node (and remove cordon)
+<p></p>
+<p></p>
+ 
+<h4 style="color:#2e7bcf;">Cordon Node (and remove cordon)</h4>
 
 **Specification:**<br />
 This playbook allows to cordon a node in a Kubernetes cluster, targetting a node entity contained in a Defender for Container alert from Sentinel.
@@ -327,9 +332,12 @@ The 'remove cordon' playbook, allows pods to be scheduled again to the node.
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-UncordonNode/azuredeploy.json?token=GHSAT0AAAAAABOR6J3HQ7AVYJFTEFSGFKJIYUES2TA)
 
- ---
+---
+
+<p></p>
+<p></p>
  
-#### Run Command
+<h4 style="color:#2e7bcf;">Run Command</h4>
 
 **Specification:**<br />
 This playbook allows to run a command on a pod in a Kubernetes cluster, targetting a the pod entity contained in a Defender for Container alert from Sentinel.
