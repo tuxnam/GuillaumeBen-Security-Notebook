@@ -81,7 +81,7 @@ The name given, to both the app service and the HTTP trigger function, will then
 
 ### Playbooks 
 
-<h4>Collect Artifacts Playbook</h4>
+<h4 style="color:#2e7bcf;">Collect Artifacts Playbook</h4>
 
 **Specification:**<br />
 Artifacts collection is one of the primary need of any incident response team, but for ephermeral workloads this can be a challenge.
