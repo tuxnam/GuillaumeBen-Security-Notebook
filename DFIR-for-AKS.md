@@ -64,31 +64,29 @@ Malicious access to the function could lead to a full compromise of your AKS clu
 THe main repository used for this solution ([here](https://github.com/tuxnam/Azure-AKS-Incident-Response)), is describing some improvements written in the back of my head. Feel free to contribute or issue some recommendations.
 <br />
 
-## Installation
+## Description of the components and Installation
 
 ### Azure Function
 
 The Azure Function is used to issue commands to the AKS cluster. It makes the bridge between Sentinel and the AKS cluster. 
 The code for the Azure Function can be found [here](https://github.com/tuxnam/Azure-AKS-Incident-Response/tree/main/AKSResponseFunction/AKSTriggerResponse).
 <br />
-Language: Python 3.8<br />
-Authentication: application key<br />
-Trigger: HTTP<br />
-
+<br />
+**Language:** Python 3.8<br />
+**Authentication:** application key<br />
+**Trigger:** HTTP<br />
+<br />
 The function needs to be created in a App Service Plan of your choice, and the python code of the above repository, used in a HTTP trigger function. 
-The name given will then need to be used as a parameter of the playbooks. 
+The name given, to both the app service and the HTTP trigger function, will then need to be used as a parameter of the playbooks. 
 
 ### Playbooks 
 
----
 #### Collect Artifacts Playbook 
 
-**Description:**<br />
-Artifacts collection is one of the primary need of any incident response team, but for ephermeral workloads this can be a challenge.
-Based on entities present in a Sentinel alert body, this playbook will collect the list of artifacts mentionned in the specification and upload them to a BLOB storage of your choice.
-
 **Specification:**<br />
-This playbook allows to collect the following artifcats from entities contained in a Defender for Container alert from Sentinel. Artifacts collected will depend on entities available:
+Artifacts collection is one of the primary need of any incident response team, but for ephermeral workloads this can be a challenge.
+Based on entities present in a Sentinel alert body, this playbook will collect the list of artifacts mentionned in the specification and upload them to a BLOB storage of your choice. <br />
+This playbook allows to collect the following artifcats from entities contained in a Defender for Container alert from Sentinel or any alert having similar JSON body structure. Artifacts collected will depend on entities available:
 - Pod logs (kubectl logs <pod>)
 - Pod full description (kubectl get pod <podName> -o yaml)
 - Pod description (kubectl describe pod <podName>)
@@ -148,14 +146,16 @@ This playbook allows to collect the following artifcats from entities contained 
  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CollectArtifacts/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GM4WRI7H65LZZRHEAYTYZSHA)
 
- <p></p>
+<p></p>
+<p></p>
  
 ---
 
- <p></p>
+<p></p>
+<p></p>
  
 #### Isolate Pod (and remove isolation)
-
+ 
 **Specification:**<br />
 This playbook allows to isolate a pod on a node using Kubernetes Network Policy (therefore a hard requirement is a network driver such as Calico or Azure network policy). The following policy will be created, blocking all ingress and egress flows for the targeted pod:
 
