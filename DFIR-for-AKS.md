@@ -6,10 +6,10 @@ description: Guillaume B., Cloud Security Architect
 
 #### Last update: May 2022
 
-# DFIR for Kubernetes: leverage Azure SOAR capabilities to respond to Kubernetes security alerts
-<p></p>
-<span class="subtitle">In this article, I am describing and sharing a solution which allow incident responders to perform incident response on a target Kubernetes cluster, in Microsoft Sentinel, in a response to an alert raised by Microsoft Defender for Cloud or from Defender for Cloud directly. 
-<p></p>
+# DFIR for Kubernetes: leverage Azure SOAR capabilities to respond to Kubernetes security incidents
+
+
+***In this article, I am describing and sharing a solution which allow incident responders to perform incident response on a target Kubernetes cluster, in Microsoft Sentinel, in a response to an alert raised by Microsoft Defender for Cloud or from Defender for Cloud directly.***
 
 <p style="width: 100%; text-align: center;">
 <img src="images/AKS-resp-logo.png" style="align: center; margin: 5px; width: 65%;height: auto;" alt="DFIR on AKS" >
