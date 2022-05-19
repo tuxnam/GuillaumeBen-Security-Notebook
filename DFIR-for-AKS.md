@@ -4,9 +4,9 @@ title: Guillaume's Security Notebook
 description: Guillaume B., Cloud Security Architect
 ---
 
-#### Last update: April 2022
+#### Last update: May 2022
 
-# Automated incident response on Kubernetes: leverage Azure SOAR capabilities to respond to Kubernetes security alerts
+# DFIR for Kubernetes: leverage Azure SOAR capabilities to respond to Kubernetes security alerts
 <p></p>
 <span class="subtitle">In this article, I am describing and sharing playbooks which allow a SOC analyst to perform incident response on a target Kubernetes cluster, in Microsoft Sentinel, in a response to an alert raised by Microsoft Defender for Cloud or from Defender for Cloud directly. 
 <p></p>
