@@ -144,7 +144,7 @@ This playbook allows to collect the following artifcats from entities contained 
  
 **Deploy Artifcats Collection playbook:** <br />
  
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)(https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CollectArtifacts/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GM4WRI7H65LZZRHEAYTYZSHA)
+![Deploy to Azure](https://aka.ms/deploytoazurebutton)(https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-CollectArtifacts/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GM4WRI7H65LZZRHEAYTYZSHA)
 
 <p></p>
 <p></p>
@@ -212,11 +212,11 @@ The playbook 'remove isolation', removes both the network policy and the label.
  
 **Deploy Isolate Pod playbook:** <br />
  
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)(https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ) 
+![Deploy to Azure](https://aka.ms/deploytoazurebutton)(https://aka.ms/deploytoazurebutton)(https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-IsolatePod/azuredeploy.json?token=GHSAT0AAAAAABOR6J3H23ONQVDEKRCYJNRMYUDXZMQ) 
  
 **Deploy Remove Isolation Pod playbook:** <br />
  
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)(https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-RemovePodIsolation/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GEL3DYQDMWLAE666SYUESXIA)
+![Deploy to Azure](https://aka.ms/deploytoazurebutton)(https://aka.ms/deploytoazurebutton)(https://raw.githubusercontent.com/tuxnam/Azure-AKS-Incident-Response/main/LogicApps/AKS-Resp-RemovePodIsolation/azuredeploy.json?token=GHSAT0AAAAAABOR6J3GEL3DYQDMWLAE666SYUESXIA)
 
 ---
 
