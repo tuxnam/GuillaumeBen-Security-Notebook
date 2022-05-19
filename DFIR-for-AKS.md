@@ -17,11 +17,12 @@ description: Guillaume B., Cloud Security Architect
 </p>
  
 > As discussed in my [previous article](http://guillaumeben.xyz/defender-containers.html) on Defender for Containers, the skyrocketting usage of Kubernetes and containarized workloads over the past years has led to new attack vectors. We can expect these attacks to grow in number and sophistications in the future, and be also (more) leveraged by nation-state actors and in advanced persistent threats.<br /> 
-> One of the recurring issue for Security Operations teams is to be able not only to monitor critical Kubernetes environment in their respective organizations, have the ability, knowledge and tools to be able to detect a security incident on Kubernetes, but also respond adequately or collect evidence.
+> One of the recurring issue for Security Operations teams is to be able not only to monitor critical Kubernetes environment in their respective organizations, have the ability, knowledge and tools to be able to detect a security incident on Kubernetes, but also respond adequately or collect evidence. <br />
+> Containers are ephemeral in nature and this does not plays well with forensics. This does not mean incident response teams and SOC are powerless. 
 > Incident Response on Kubernetes can range fron artifacts collection and labelling to pod or namespace isolation. 
-> I am describing in this article a solution to automate incident response on AKS, from Defender for Cloud or Microsoft Sentinel. 
-> The solution will work natively with alerts raised by Defender for Containers, but can be adapted for your own alerts and detection capabilities in Azure.
- <p></p>
+> I am describing in this article a solution to automate incident response on Kubernetes, focusing on AKS, leveraging Microsoft Sentinel and alerts raised by Defender for Containers, which we explored in the above referenced article. 
+> The solution will work natively with Sentinel and Defender for Containers alerts, but can be adapted for your own alerts and detection capabilities in any CNCF-compliant Kubernetes environment: the principles remain, the only variable is the format of the information you gather or tools you use to do the same.
+
 
 ## Description of the solution
 
