@@ -382,4 +382,4 @@ The minimum list of entities required in the JSON body of the alert is the follo
 
 ---
  
-### All the code used in this solution can be found here: https://github.com/tuxnam/Azure-AKS-Incident-Response.
+<h4 style="color:#2e7bcf;">All the code used in this solution can be found here: https://github.com/tuxnam/Azure-AKS-Incident-Response.</h4>
