@@ -1,3 +1,4 @@
+---
 layout: post
 title: Guillaume's Security Notebook
 description: Guillaume B., Security Analyst (@ Microsoft)
@@ -16,6 +17,7 @@ description: Guillaume B., Security Analyst (@ Microsoft)
 - Even if an EDR, such as Microsoft Defender for Endpoint, is available on the Domain Controller, *raw* events are always useful to give additional context or cover specific scenarios in a SIEM solution, specifically for domain controllers
 - Specific products for AD security, such as Microsoft Defender for Identity are out-of-scope of this article
 - The article is not exhaustive but rather focuses on collecting events to gain information about well-known TTPs used by attackers these days
+- Some of the configuration changes applied here can trigger a lot of events ingestion, which could result in (i) high cost for your SIEM ingestion or storage, (ii) high number of false-positives. It is recommended to assess the need to change these settings in your own environment. 
 <p></p>
 
 ## Take the MITRE ATT&CK framework as a baseline
