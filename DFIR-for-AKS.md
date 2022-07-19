@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Guillaume's Security Notebook
-description: Guillaume B., Cloud Security Architect
+description: Guillaume B., Security Analyst (@ Microsoft)
 ---
 
 #### Last update: May 2022
