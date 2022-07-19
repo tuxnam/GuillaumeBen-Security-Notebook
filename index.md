@@ -10,13 +10,12 @@ ___
 ### Microsoft Defender for Cloud
 #### Features review. custom development or integration scenarios for Microsoft Defender for Cloud
 
-- [Container Security Series - Automated Incident Response on AKS](DFIR-for-AKS.md) - [WIP]
-- [Container Security Series - Defender for Containers and the goat in the boat](defender-containers.md)
+- \[2022\] [Container Security Series - Defender for Containers and the goat in the boat](defender-containers.md)
 
 ### Microsoft Sentinel
 #### Features review. custom development or integration scenarios for Microsoft Sentinel
 
-- [A comprehensive dashboard of your vulnerabilities]() - [WIP]
-- [Protect your GitLab instance(s) against threats](sentinel-gitlab.md)
+- \[2022\] Collecting, correlating and investigating security events from Domain Controllers with Sentinel 
+- \[2022\] Protect your GitLab instance(s) against threats](sentinel-gitlab.md)
 
 ___
